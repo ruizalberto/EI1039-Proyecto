@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OpenRouteService } from '../openrouteservice.service';
+import { OpenRouteService } from '../../services/openrouteservice.service';
 
 @Component({
   selector: 'app-ruta',
