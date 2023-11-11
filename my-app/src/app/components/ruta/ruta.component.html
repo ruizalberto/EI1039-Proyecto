@@ -1,7 +1,9 @@
-<div class="container">
-    <div class="ruta-container">
-      <h1 class="titulo">Calcular OpenRouteService</h1>
-    <h2 class="result-titulo">Resultado:</h2>
-    <div *ngIf="ruta" class="result">{{ ruta }}</div>
-    </div>
+<div class="contenedor-ruta">
+  <div>
+    <button (click)="calcularRuta()" class="boton-grande">Calcular Ruta</button>
+  </div>
+
+  <div *ngIf="ruta" class="resultado-ruta">
+    <pre>{{ ruta }}</pre>
+  </div>
 </div>

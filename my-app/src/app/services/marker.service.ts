@@ -1,0 +1,48 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import * as L from 'leaflet';
+import { Observable, BehaviorSubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MarkerService {
+  private readonly maxMarkers = 2;
+  private markers: L.Marker[] = [];
+  private markersSubject: BehaviorSubject<L.LatLng[]> = new BehaviorSubject<L.LatLng[]>([]);
+
+  constructor(private http: HttpClient) {}
+
+  makeCapitalMarkers(map: L.Map): void {
+    map.on('click', (e: L.LeafletMouseEvent) => {
+      if (this.markers.length < this.maxMarkers){
+        const lon = e.latlng.lng;
+        const lat = e.latlng.lat;
+
+        const marker = L.marker([lat, lon], { draggable: true })
+          .addTo(map)
+          .bindPopup('Click derecho para eliminar')
+          .on('contextmenu', () => {
+            map.removeLayer(marker);
+            this.markers = this.markers.filter(m => m !== marker);
+            this.updateMarkersSubject();
+          });
+
+        marker.openPopup();
+        this.markers.push(marker);
+        this.updateMarkersSubject();
+      }
+      
+    });
+  }
+
+  getMarkers(): Observable<L.LatLng[]> {
+    return this.markersSubject.asObservable();
+  }
+
+  private updateMarkersSubject(): void {
+    const markerPositions = this.markers.map(marker => marker.getLatLng());
+    this.markersSubject.next(markerPositions);
+    console.log('Marcadores actualizados:', markerPositions);
+  }
+}

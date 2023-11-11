@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
 import { RutaComponent } from './components/ruta/ruta.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MarkerService } from './services/marker.service';
+import { OpenRouteService } from './services/openrouteservice.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,10 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    MarkerService,
+    OpenRouteService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
