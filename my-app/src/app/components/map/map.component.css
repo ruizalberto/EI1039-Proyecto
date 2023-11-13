@@ -16,3 +16,18 @@
 #map {
   height: 100%;
 }
+
+.contenedor-ruta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;  
+  padding: 20px;
+}
+
+.boton-grande {
+  position: absolute;
+  top: 25%;
+  right: 15%;
+  font-size: 1.5em;
+  padding: 10px 20px;
+}

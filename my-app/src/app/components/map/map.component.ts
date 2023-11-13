@@ -1,6 +1,8 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
+import { Subscription } from 'rxjs';
 import { MarkerService } from 'src/app/services/marker.service';
+import { OpenRouteService } from 'src/app/services/openrouteservice.service';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -21,16 +23,31 @@ L.Marker.prototype.options.icon = iconDefault;
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
-  providers: [MarkerService]
+  providers: [MarkerService, OpenRouteService]
 })
 export class MapComponent implements AfterViewInit{
-  private map;
+  private map: any;
+  private markers!: L.LatLng[];
+  private markersSubscription!: Subscription;
+  private routeSubscription!: Subscription;
+  private routeLayer: any;
 
-  constructor(private markerService: MarkerService) {}
+  constructor(
+    private markerService: MarkerService,
+    private openRouteService: OpenRouteService
+  ) {}
 
   ngAfterViewInit(): void {
     this.initMap();
     this.markerService.makeCapitalMarkers(this.map);
+    this.markersSubscription = this.markerService.markersSubject.subscribe(
+      data => {
+        if (data != undefined && data[0]){
+          this.markers = data;
+          console.log(this.markers);
+          console.log("subscripcion: ", this.markers[0]);
+        }
+      })
   }
 
   private initMap(): void {
@@ -38,7 +55,26 @@ export class MapComponent implements AfterViewInit{
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
-    
   }
 
+  calcularRuta(): void {
+    this.routeSubscription = this.openRouteService.getDirections(this.markers[0], this.markers[1]).subscribe(
+      response => {
+        this.drawRoute(response.features[0].geometry);
+      }
+    )
+  }
+
+  private drawRoute(geometry: any): void{
+    if(this.routeLayer){
+      this.map.removeLayer(this.routeLayer)
+    }
+    this.routeLayer = L.geoJSON(geometry, {
+      style: {
+        color: 'purple',
+        weight: 3,
+      }
+    }).addTo(this.map);
+    this.map.fitBounds(this.routeLayer.getBounds());
+  }
 }
