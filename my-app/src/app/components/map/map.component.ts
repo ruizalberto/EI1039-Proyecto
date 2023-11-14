@@ -17,6 +17,8 @@ export class MapComponent implements AfterViewInit{
   private markersSubscription!: Subscription;
   private routeSubscription!: Subscription;
   private routeLayer: any;
+  private geocodeZone: any;
+
 
   constructor(
     private markerService: MarkerService,
@@ -44,13 +46,14 @@ export class MapComponent implements AfterViewInit{
       position: 'topleft',
       defaultMarkGeocode: false
     }).on('markgeocode', (e) => {
+      this.geocodeZone = e.geocode.bbox;
       var bbox = e.geocode.bbox;
       var poly = L.polygon([
         bbox.getSouthEast(),
         bbox.getNorthEast(),
         bbox.getNorthWest(),
         bbox.getSouthWest()
-      ]).addTo(this.map);
+      ])
       this.map.fitBounds(poly.getBounds());
     }).addTo(this.map);
   }

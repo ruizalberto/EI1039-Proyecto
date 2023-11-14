@@ -43,7 +43,6 @@ export class MarkerService {
             this.updateMarkersSubject();
           });
 
-        marker.openPopup();
         this.markers.push(marker);
         this.updateMarkersSubject();
       }
