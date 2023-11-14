@@ -1,23 +1,9 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
+import {Geocoder, geocoders} from 'leaflet-control-geocoder';
 import { Subscription } from 'rxjs';
 import { MarkerService } from 'src/app/services/marker.service';
 import { OpenRouteService } from 'src/app/services/openrouteservice.service';
-
-const iconRetinaUrl = 'assets/marker-icon-2x.png';
-const iconUrl = 'assets/marker-icon.png';
-const shadowUrl = 'assets/marker-shadow.png';
-const iconDefault = L.icon({
-  iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
-  shadowSize: [41, 41]
-});
-L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
   selector: 'app-map',
@@ -40,14 +26,33 @@ export class MapComponent implements AfterViewInit{
   ngAfterViewInit(): void {
     this.initMap();
     this.markerService.makeCapitalMarkers(this.map);
+    this.initGeocoderControl();
     this.markersSubscription = this.markerService.markersSubject.subscribe(
       data => {
         if (data != undefined && data[0]){
           this.markers = data;
-          console.log(this.markers);
-          console.log("subscripcion: ", this.markers[0]);
+          if(this.routeLayer){
+            this.map.removeLayer(this.routeLayer);
+          }
         }
       })
+  }
+
+  private initGeocoderControl() {
+    new Geocoder({
+      geocoder: new geocoders.Nominatim(),
+      position: 'topleft',
+      defaultMarkGeocode: false
+    }).on('markgeocode', (e) => {
+      var bbox = e.geocode.bbox;
+      var poly = L.polygon([
+        bbox.getSouthEast(),
+        bbox.getNorthEast(),
+        bbox.getNorthWest(),
+        bbox.getSouthWest()
+      ]).addTo(this.map);
+      this.map.fitBounds(poly.getBounds());
+    }).addTo(this.map);
   }
 
   private initMap(): void {
@@ -57,17 +62,19 @@ export class MapComponent implements AfterViewInit{
     }).addTo(this.map);
   }
 
-  calcularRuta(): void {
-    this.routeSubscription = this.openRouteService.getDirections(this.markers[0], this.markers[1]).subscribe(
-      response => {
-        this.drawRoute(response.features[0].geometry);
-      }
-    )
+  calculateRoute(): void {
+    if (this.markers.length == 2){
+      this.routeSubscription = this.openRouteService.getDirections(this.markers[0], this.markers[1]).subscribe(
+        response => {
+          this.drawRoute(response.features[0].geometry);
+        }
+      )
+    }
   }
 
   private drawRoute(geometry: any): void{
     if(this.routeLayer){
-      this.map.removeLayer(this.routeLayer)
+      this.map.removeLayer(this.routeLayer);
     }
     this.routeLayer = L.geoJSON(geometry, {
       style: {

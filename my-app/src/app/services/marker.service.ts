@@ -1,6 +1,21 @@
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+
+const iconRetinaUrl = 'assets/marker-icon-2x.png';
+const iconUrl = 'assets/marker-icon.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = L.icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+L.Marker.prototype.options.icon = iconDefault;
 
 @Injectable({
   providedIn: 'root'
@@ -32,14 +47,11 @@ export class MarkerService {
         this.markers.push(marker);
         this.updateMarkersSubject();
       }
-      
     });
   }
 
   private updateMarkersSubject(): void {
     const markerPositions = this.markers.map(marker => marker.getLatLng());
     this.markersSubject.next(markerPositions);
-    console.log('Marcadores actualizados:', markerPositions);
   }
-
 }

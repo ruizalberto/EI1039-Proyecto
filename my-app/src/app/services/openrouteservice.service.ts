@@ -12,12 +12,9 @@ export class OpenRouteService {
 
   getDirections(start: L.LatLng, end: L.LatLng): Observable<any> {
 
-    console.log("se llama a getDirections de OpenRouteService");
     const url = 'https://api.openrouteservice.org/v2/directions/driving-car';
     const startCoords = `${start.lng},${start.lat}`;
     const endCoords = `${end.lng},${end.lat}`;
-    console.log("startCoords:", startCoords);
-    console.log("endCoords: ", endCoords);
     
     const params = new HttpParams()
       .set('api_key', this.apiKey)
