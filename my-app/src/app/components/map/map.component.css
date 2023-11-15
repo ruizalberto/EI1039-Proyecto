@@ -31,3 +31,16 @@
   font-size: 1.5em;
   padding: 10px 20px;
 }
+
+.ruta-info {
+  position: absolute;
+  top: 35%;
+  right: 16%;
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: white; 
+}
+
+.ruta-info p {
+  margin: 5px 0;
+}

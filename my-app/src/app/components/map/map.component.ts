@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
-import {Geocoder, geocoders} from 'leaflet-control-geocoder';
+import { Geocoder, geocoders } from 'leaflet-control-geocoder';
 import { Subscription } from 'rxjs';
 import { MarkerService } from 'src/app/services/marker.service';
 import { OpenRouteService } from 'src/app/services/openrouteservice.service';
@@ -17,8 +17,9 @@ export class MapComponent implements AfterViewInit{
   private markersSubscription!: Subscription;
   private routeSubscription!: Subscription;
   private routeLayer: any;
-  private geocodeZone: any;
-
+  distanceInKMs: any | undefined;
+  timeInMinutes: any | undefined;
+  showRouteInfo: boolean = false;
 
   constructor(
     private markerService: MarkerService,
@@ -42,11 +43,14 @@ export class MapComponent implements AfterViewInit{
 
   private initGeocoderControl() {
     new Geocoder({
-      geocoder: new geocoders.Nominatim(),
+      geocoder: new geocoders.Nominatim({
+        geocodingQueryParams: {
+          "countrycodes": "es"
+        }
+      }),
       position: 'topleft',
       defaultMarkGeocode: false
     }).on('markgeocode', (e) => {
-      this.geocodeZone = e.geocode.bbox;
       var bbox = e.geocode.bbox;
       var poly = L.polygon([
         bbox.getSouthEast(),
@@ -67,13 +71,25 @@ export class MapComponent implements AfterViewInit{
 
   calculateRoute(): void {
     if (this.markers.length == 2){
-      this.routeSubscription = this.openRouteService.getDirections(this.markers[0], this.markers[1]).subscribe(
-        response => {
-          this.drawRoute(response.features[0].geometry);
+      this.routeSubscription = this.openRouteService.getDirections(this.markers[0], this.markers[1]).subscribe({
+        next: response => {
+            if (response && response.features && response.features.length > 0) {
+              this.drawRoute(response.features[0].geometry);
+              
+              this.distanceInKMs = response.features[0].properties.summary.distance/1000;
+              this.distanceInKMs = this.distanceInKMs.toFixed(2);
+              this.timeInMinutes = Math.ceil(response.features[0].properties.summary.duration/60);
+              this.showRouteInfo = true;
+            } else {
+              console.error('No se encontraron datos de ruta en la respuesta.');
+            }
+          },
+        error: err => {
+          console.error('Error al obtener la ruta:', err);
         }
-      )
-    }
+      })
   }
+}
 
   private drawRoute(geometry: any): void{
     if(this.routeLayer){
