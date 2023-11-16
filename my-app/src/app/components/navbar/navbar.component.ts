@@ -10,6 +10,7 @@ export class NavbarComponent {
   title = 'EI1039 Proyecto';
   email = 'usuario@usuario.com';
   password = 'usuario';
+  logged = false;
 
   constructor(
     private userService: UserService
@@ -18,8 +19,16 @@ export class NavbarComponent {
   logIn() {
     this.userService.login(this.email, this.password)
       .then(response => {
-        console.log(response);
+        this.logged = true;        
       })
       .catch(error => console.log(error));
+  }
+
+  logOut() {
+    this.userService.logout()
+    .then(() => {
+      this.logged = false;
+    })
+    .catch(error => console.log(error));
   }
 }

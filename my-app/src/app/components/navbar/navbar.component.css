@@ -1,43 +1,19 @@
 header {
-    width: auto;
-    display: block;
-    float: left;
-    margin-left: 10%;
-    z-index: 100;
-  }
-    
-  nav {
-    height: 60px;
-    text-align: center;
-  }
-  
-  nav ul {
-    list-style: none;
-    overflow: hidden; 
-    margin-left: 50px;
-  }
-  
-  nav ul li {
-    float: left;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-  }
-  
-  nav ul li a {
-    display: block;
-    padding: 10px;
-    color: #fff;
-    text-decoration: none;
-  }
-  
-  nav ul li:hover {
-    background: purple;
-  }
-  
-  #inicio {
-    margin-left: 900px;
-  }
+  display: flex;
+  color: #fff;
+  justify-content: space-between;
+}
 
-  #titulo {
-    margin-right: 50px;
-  }
+.botones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+    
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}

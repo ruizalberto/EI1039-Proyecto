@@ -1,10 +1,17 @@
 <header>
+	<div>
+		<p id="titulo">{{ title }}</p>
+	</div>
     <nav>
-        <ul>
-		<li id="titulo"><a href="#">{{ title }}</a></li>
-		<li><a routerLink="vehiculos"> Vehículos </a></li>
-		<li id="inicio"><a href="#"><button (click)="logIn()"> Iniciar Sesión </button></a></li>
-		<li><a href="#"><button> Registrar </button></a></li>
-	 </ul>
+		<ul>
+			<li><a routerLink="vehiculos" *ngIf="logged"> Vehículos </a></li>
+	 	</ul>
     </nav>
+	<div class="botones" *ngIf="!logged">
+		<button (click)="logIn()"> Iniciar Sesión </button>
+		<button> Registrar </button>
+	</div>
+	<div class="botones" *ngIf="logged">
+		<button (click)="logOut()"> Log Out </button>
+	</div>
 </header>
