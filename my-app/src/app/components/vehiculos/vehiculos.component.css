@@ -1,3 +1,10 @@
 p {
     color: #fff;
 }
+
+.separador {
+    height: 10px;
+    width: 250px;
+    background-color: white;
+    margin-bottom: 15px;
+}

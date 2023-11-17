@@ -1,9 +1,10 @@
 <app-navbar></app-navbar>
-<!-- <div *ngFor="let vehiculo of todo">
+<div *ngFor="let vehiculo of vehiclesData">
+    <div class="separador"></div>
     <p>Nombre: {{ vehiculo.nombre }}</p>
     <p>Tipo: {{ vehiculo.tipo }}</p>
     <p>Consumo: {{ vehiculo.consumo }}</p>
-</div> -->
+</div>
 <div class="content-wrapper">
     <button (click)="newVehicle()" mat-button>
       <mat-icon>add</mat-icon> Añadir Vehículo
