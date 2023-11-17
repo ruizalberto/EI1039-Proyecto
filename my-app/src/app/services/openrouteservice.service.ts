@@ -6,18 +6,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OpenRouteService {
-  private apiKey = '5b3ce3597851110001cf6248a3077ea0c1364912a6cf737d6958d901'; // Reemplaza con tu clave API de OpenRouteService
+  private apiKey = '5b3ce3597851110001cf6248a3077ea0c1364912a6cf737d6958d901';
 
   constructor(private http: HttpClient) { }
 
-  // Método para obtener direcciones entre dos ubicaciones
-  getDirections(start: string, end: string): Observable<any> {
+  getDirections(start: L.LatLng, end: L.LatLng): Observable<any> {
+
     const url = 'https://api.openrouteservice.org/v2/directions/driving-car';
+    const startCoords = `${start.lng},${start.lat}`;
+    const endCoords = `${end.lng},${end.lat}`;
     
     const params = new HttpParams()
       .set('api_key', this.apiKey)
-      .set('start', start)
-      .set('end', end);
+      .set('start', startCoords)
+      .set('end', endCoords);
 
     return this.http.get(url, { params });
   }

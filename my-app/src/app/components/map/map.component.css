@@ -1,18 +1,46 @@
 .map-container {
-    position: absolute;
-    top: 10%;
-    left: 10%;
-    right: 0;
-    bottom: 0;
-    margin: 30px;
-  }
-  
-  .map-frame {
-    border: 2px solid black;
-    height: 600px;
-    width: 50%;
-  }
-  
-  #map {
-    height: 100%;
-  }
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  right: 0;
+  bottom: 0;
+  margin: 30px;
+}
+
+.map-frame {
+  border: 2px solid black;
+  height: 600px;
+  width: 50%;
+}
+
+#map {
+  height: 100%;
+}
+
+.contenedor-ruta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;  
+  padding: 20px;
+}
+
+.boton-grande {
+  position: absolute;
+  top: 25%;
+  right: 15%;
+  font-size: 1.5em;
+  padding: 10px 20px;
+}
+
+.ruta-info {
+  position: absolute;
+  top: 35%;
+  right: 16%;
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: white; 
+}
+
+.ruta-info p {
+  margin: 5px 0;
+}
