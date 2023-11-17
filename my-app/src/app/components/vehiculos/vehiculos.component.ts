@@ -1,8 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Vehicle } from 'src/app/iterfaces/vehicle';
 import { MatDialog } from '@angular/material/dialog'
 import { VehiculosDialogComponent, VehiculosDialogResult } from '../vehiculos-dialog/vehiculos-dialog.component';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,10 +10,17 @@ import { Observable } from 'rxjs';
   templateUrl: './vehiculos.component.html',
   styleUrls: ['./vehiculos.component.css']
 })
-export class VehiculosComponent {
+export class VehiculosComponent implements OnInit {
   vehiclesDB = collection(this.firestore, 'vehicles');
+  vehiclesData: Vehicle[] = [];
 
   constructor(private dialog: MatDialog, private firestore: Firestore) {}
+
+  ngOnInit(): void {
+    this.getVehicles().subscribe( vehicles => {
+      this.vehiclesData = vehicles;
+    })
+  }
 
   newVehicle(): void {
     const dialogRef = this.dialog.open(VehiculosDialogComponent, {
@@ -36,6 +43,10 @@ export class VehiculosComponent {
           console.error('Error al agregar documento:', error);
         });
       });
+  }
+
+  getVehicles(): Observable<Vehicle[]> {
+    return collectionData(this.vehiclesDB, { idField: 'id'}) as Observable<Vehicle[]>; 
   }
 
   // editTask(Vehicle: Vehicle): void {
