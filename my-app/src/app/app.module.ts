@@ -1,5 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,21 +20,33 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { VehiculosComponent } from './components/vehiculos/vehiculos.component';
+import { VehiculosDialogComponent } from './components/vehiculos-dialog/vehiculos-dialog.component';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     NavbarComponent,
-    VehiculosComponent
+    VehiculosComponent,
+    VehiculosDialogComponent
   ],
   imports: [
     BrowserModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
     AppRoutingModule,
     HttpClientModule,
-    provideFirebaseApp(() => initializeApp({"projectId":"ei1039-proyecto","appId":"1:179739788323:web:eb7516375f3164d3391d96","storageBucket":"ei1039-proyecto.appspot.com","apiKey":"AIzaSyBA3ddHIlCvJkpcUK_b_arObp36f1hQEGQ","authDomain":"ei1039-proyecto.firebaseapp.com","messagingSenderId":"179739788323"})),
+    MatInputModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    provideFirebaseApp(() => initializeApp({"projectId":"ei1039-proyecto","appId":"1:179739788323:web:eb7516375f3164d3391d96","databaseURL":"https://ei1039-proyecto-default-rtdb.europe-west1.firebasedatabase.app","storageBucket":"ei1039-proyecto.appspot.com","apiKey":"AIzaSyBA3ddHIlCvJkpcUK_b_arObp36f1hQEGQ","authDomain":"ei1039-proyecto.firebaseapp.com","messagingSenderId":"179739788323"})),
     provideAuth(() => getAuth()),
-    provideDatabase(() => getDatabase())
+    provideDatabase(() => getDatabase()),
+    provideFirestore(() => getFirestore()),
   ],
   providers: [
     MarkerService,

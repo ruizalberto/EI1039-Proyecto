@@ -1,5 +1,5 @@
-export interface Vehicles {
-    $key?: string;
+export interface Vehicle {
+    id?: string;
     nombre: string;
     tipo: string;
     consumo: number;

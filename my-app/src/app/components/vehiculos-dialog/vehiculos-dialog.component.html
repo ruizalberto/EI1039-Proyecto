@@ -1,0 +1,27 @@
+<mat-form-field>
+    <mat-label>Nombre</mat-label>
+    <input matInput cdkFocusInitial [(ngModel)]="data.vehicle.nombre" />
+</mat-form-field>
+
+<mat-form-field>
+<mat-label>Tipo</mat-label>
+<textarea matInput [(ngModel)]="data.vehicle.tipo"></textarea>
+</mat-form-field>
+
+<mat-form-field>
+<mat-label>Consumo</mat-label>
+<textarea matInput [(ngModel)]="data.vehicle.consumo"></textarea>
+</mat-form-field>
+
+<div mat-dialog-actions>
+<button mat-button [mat-dialog-close]="{ vehicle: data.vehicle }">OK</button>
+<!-- <button mat-button (click)="cancel()">Cancel</button> -->
+<!-- <button
+    *ngIf="data.enableDelete"
+    mat-fab
+    color="primary"
+    aria-label="Delete"
+    [mat-dialog-close]="{ vehicle: data.vehicle, delete: true }">
+    <mat-icon>delete</mat-icon>
+</button> -->
+</div>
