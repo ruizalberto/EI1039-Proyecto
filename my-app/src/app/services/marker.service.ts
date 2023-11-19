@@ -28,7 +28,7 @@ export class MarkerService {
 
   constructor() {}
 
-  makeCapitalMarkers(map: L.Map): void {
+  makeMarkers(map: L.Map): void {
     map.on('click', (e: L.LeafletMouseEvent) => {
       if (this.markers.length < this.maxMarkers){
         const lon = e.latlng.lng;

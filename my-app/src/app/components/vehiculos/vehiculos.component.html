@@ -2,8 +2,12 @@
 <div *ngFor="let vehiculo of vehiclesData">
     <div class="separador"></div>
     <p>Nombre: {{ vehiculo.nombre }}</p>
+    <p>marca: {{ vehiculo.marca }}</p>
     <p>Tipo: {{ vehiculo.tipo }}</p>
     <p>Consumo: {{ vehiculo.consumo }}</p>
+    <button (click)="vehicleSelected(vehiculo)" mat-button>
+      <mat-icon>select</mat-icon> Seleccionar
+    </button>
 </div>
 <div class="content-wrapper">
     <button (click)="newVehicle()" mat-button>

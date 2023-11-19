@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Mobility } from '../interfaces/mobility.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,9 @@ export class OpenRouteService {
 
   constructor(private http: HttpClient) { }
 
-  getDirections(start: L.LatLng, end: L.LatLng): Observable<any> {
+  getDirections(start: L.LatLng, end: L.LatLng, transporte: Mobility): Observable<any> {
 
-    const url = 'https://api.openrouteservice.org/v2/directions/driving-car';
+    const url = 'https://api.openrouteservice.org/v2/directions/' + transporte.perfil;
     const startCoords = `${start.lng},${start.lat}`;
     const endCoords = `${end.lng},${end.lat}`;
     
@@ -21,7 +22,10 @@ export class OpenRouteService {
       .set('start', startCoords)
       .set('end', endCoords);
 
+    console.log(transporte);
     return this.http.get(url, { params });
   }
+
+  
 }
 
