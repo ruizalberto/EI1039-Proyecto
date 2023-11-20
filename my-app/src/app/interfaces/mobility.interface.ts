@@ -5,6 +5,8 @@ export interface Mobility{
     tipo: string; //
     consumo: number; //consumo en litros por 100 km´s "consumption"
     perfil: string;
+
+    getPerfil(): string;
 }
 // distintos posibles perfiles
 // -----------------------------

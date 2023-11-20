@@ -15,6 +15,10 @@ export class Bike implements Mobility{
         this.consumo= 45; // consumo por kilometro
         this.perfil= "cycling-regular";  
     }
+
+    getPerfil(): string {
+        return this.perfil;
+    }
 }
 
 //En general, se puede decir que un ciclista promedio que va a una velocidad moderada de unos 16 km/h quemará 

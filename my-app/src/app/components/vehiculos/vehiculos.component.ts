@@ -28,8 +28,6 @@ export class VehiculosComponent implements OnInit {
   ngOnInit(): void {
     this.getVehicles().subscribe( vehicles => {
       this.vehiclesData = vehicles;
-      console.log(this.vehiclesData)
-
     })
   }
   
@@ -64,14 +62,12 @@ export class VehiculosComponent implements OnInit {
   vehicleSelected(vehicle:Mobility){
     var vehicleSelected = new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo);
     this.mobilityService.setMobilySelected(vehicleSelected);
-    this.router.navigate(['/'])
+    this.router.navigate(['/']);
   }
-  deleteVehicle(vehicle: Mobility):void{
-    
-  }
-  modifyVehicle(vehicle: Mobility):void{
-    
-  }
+
+  deleteVehicle(vehicle: Mobility):void{}
+
+  modifyVehicle(vehicle: Mobility):void{}
 
   // editTask(Vehicle: Vehicle): void {
   //   const dialogRef = this.dialog.open(TaskDialogComponent, {

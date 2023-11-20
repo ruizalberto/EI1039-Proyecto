@@ -1,7 +1,6 @@
 import { Mobility } from "./mobility.interface";
 
-
-export class Vehiculo implements Mobility{
+export class Vehiculo implements Mobility {
     private id?:string;
     nombre: string;
     marca: string;
@@ -31,7 +30,10 @@ export class Vehiculo implements Mobility{
         this.perfil= "driving-car";  
     }
 
+    getPerfil(): string {
+        return this.perfil;
+    }
+
     getId(): string|undefined{return this.id;}
     setId(id: string){ this.id=id; }
-
 }

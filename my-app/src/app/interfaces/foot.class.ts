@@ -15,6 +15,10 @@ export class Foot implements Mobility{
         this.consumo= 75; // consumo por kilometro
         this.perfil= "foot-walking";  
     }
+
+    getPerfil(): string {
+        return this.perfil;
+    }
 }
 
 //En promedio, se estima que una persona quema aproximadamente 50-100 calorías por cada kilómetro caminado

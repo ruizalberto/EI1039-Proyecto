@@ -5,13 +5,13 @@
 		</div>
 		<div>
 			<ul>
-				<li><a routerLink="vehiculos" *ngIf="logged"> Vehículos </a></li>
+				<li><a routerLink="vehiculos"> Vehículos </a></li>
 			</ul>
 		</div>
 		<div class="login">
-			<button (click)="logIn()" class="my-button" *ngIf="!logged"> Iniciar Sesión </button>
+			<!-- <button (click)="logIn()" class="my-button" *ngIf="!logged"> Iniciar Sesión </button>
 			<button class="my-button"> Registrar </button>
-			<button (click)="logOut()" class="my-button" *ngIf="logged"> Log Out </button>
+			<button (click)="logOut()" class="my-button" *ngIf="logged"> Log Out </button> -->
 		</div>
 	</div>
 </ng-container>
