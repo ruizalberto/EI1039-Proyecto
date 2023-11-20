@@ -5,9 +5,14 @@
     <p>marca: {{ vehiculo.marca }}</p>
     <p>Tipo: {{ vehiculo.tipo }}</p>
     <p>Consumo: {{ vehiculo.consumo }}</p>
+    <div>
     <button (click)="vehicleSelected(vehiculo)" mat-button>
-      <mat-icon>select</mat-icon> Seleccionar
+      <mat-icon>directions_car</mat-icon> Seleccionar
     </button>
+    <button (click)="deleteVehicle(vehiculo)" mat-button>
+      <mat-icon>delete</mat-icon> Borrar
+    </button>
+  </div>
 </div>
 <div class="content-wrapper">
     <button (click)="newVehicle()" mat-button>

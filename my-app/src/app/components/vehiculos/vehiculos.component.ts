@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import { MobilityService } from 'src/app/services/mobility.service';
 import { Vehiculo } from 'src/app/interfaces/vehicle.class';
 
+//toda la gestion base de datos pasar a el service -> para jusgar con elementos locales y poder solicitar lo que sea en el service 
+
+
 @Component({
   selector: 'app-vehiculos',
   templateUrl: './vehiculos.component.html',
@@ -25,8 +28,11 @@ export class VehiculosComponent implements OnInit {
   ngOnInit(): void {
     this.getVehicles().subscribe( vehicles => {
       this.vehiclesData = vehicles;
+      console.log(this.vehiclesData)
+
     })
   }
+  
 
   newVehicle(): void {
     const dialogRef = this.dialog.open(VehiculosDialogComponent, {
@@ -52,13 +58,16 @@ export class VehiculosComponent implements OnInit {
   }
 
   getVehicles(): Observable<Mobility[]> {
-    return collectionData(this.vehiclesDB, { idField: 'id'}) as Observable<Mobility[]>; 
+    return collectionData(this.vehiclesDB, { idField: 'id'}) as Observable<Mobility[]>;
   }
 
   vehicleSelected(vehicle:Mobility){
     var vehicleSelected = new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo);
     this.mobilityService.setMobilySelected(vehicleSelected);
     this.router.navigate(['/'])
+  }
+  deleteVehicle(vehicle: Mobility):void{
+    
   }
 
   // editTask(Vehicle: Vehicle): void {

@@ -1,15 +1,39 @@
 <app-navbar></app-navbar>
-<div class="map-container">
-    <div class="map-frame">
-      <div id="map"></div>
-    </div>
-</div>
-<div class="contenedor-ruta">
-  <div>
-    <button (click)="calculateRoute()" class="boton-grande">Calcular Ruta</button>
-  </div>
-  <div class="ruta-info" *ngIf="showRouteInfo">
-    <p>Distancia: {{ distanceInKMs }} KMs</p>
-    <p>Duración: {{ timeInMinutes }} minutos</p>
-  </div>
-</div>
+<table class="tabla-base">
+  <tr class = "fila-base">
+    <td class="columna-base">
+      <div class="map-frame">
+        <div id="map"></div>
+      </div>
+    </td>
+    <td class="columna-base">
+      <div class="mobilidad-seleccionada" *ngIf="isMobilitySelected">
+        <p>Vehiculo Seleccionado</p>
+        <p>Nombre: {{ mobilitySelected.nombre }}</p>
+        <p>Marca: {{ mobilitySelected.marca }} </p>
+        <p>tipo: {{ mobilitySelected.tipo }} </p>
+        <p>consumo: {{ mobilitySelected.consumo }} </p>
+      </div>
+      <div>
+        <button (click)="eligeVehiculo()" class="my-button">Elige Vehiculo</button>
+      </div>
+
+    </td>
+  </tr>
+  <tr class = "fila-base">
+    <td class="columna-base">
+      <p>Vehiculo Seleccionado 3</p>
+    </td>
+    <td class="columna-base">
+      <p>Vehiculo Seleccionado 4</p>
+      <div>
+        <button (click)="calculateRoute()" class="my-button">Calcular Ruta</button>
+      </div>
+      <div class="ruta-info" *ngIf="showRouteInfo">
+        <p>Distancia: {{ distanceInKMs }} KMs</p>
+        <p>Duración: {{ timeInMinutes }} minutos</p>
+      </div>
+
+    </td>
+  </tr>
+</table>
