@@ -69,6 +69,9 @@ export class VehiculosComponent implements OnInit {
   deleteVehicle(vehicle: Mobility):void{
     
   }
+  modifyVehicle(vehicle: Mobility):void{
+    
+  }
 
   // editTask(Vehicle: Vehicle): void {
   //   const dialogRef = this.dialog.open(TaskDialogComponent, {

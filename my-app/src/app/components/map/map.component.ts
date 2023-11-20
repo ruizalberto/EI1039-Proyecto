@@ -18,11 +18,13 @@ import { Router } from '@angular/router';
 export class MapComponent implements AfterViewInit{
   private map;
   private routeLayer;
+  btn = true;
   distanceInKMs: string | undefined;
   timeInMinutes: number | undefined;
   showRouteInfo: boolean = false;
   isMobilitySelected:boolean = false;
   mobilitySelected!: Mobility;
+
 
 
   constructor(

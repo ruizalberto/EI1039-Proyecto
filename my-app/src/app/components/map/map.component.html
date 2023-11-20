@@ -1,39 +1,68 @@
 <app-navbar></app-navbar>
 <table class="tabla-base">
-  <tr class = "fila-base">
+  <tr class="fila-base">
     <td class="columna-base">
       <div class="map-frame">
         <div id="map"></div>
       </div>
     </td>
     <td class="columna-base">
-      <div class="mobilidad-seleccionada" *ngIf="isMobilitySelected">
-        <p>Vehiculo Seleccionado</p>
-        <p>Nombre: {{ mobilitySelected.nombre }}</p>
-        <p>Marca: {{ mobilitySelected.marca }} </p>
-        <p>tipo: {{ mobilitySelected.tipo }} </p>
-        <p>consumo: {{ mobilitySelected.consumo }} </p>
+      <div class="box-derecha">
+        <basic-data-box [title]="('Vehículo Seleccionado')" [isBtn]="true" [actionBtn]="('Elige Vehículo')"
+          (actionBtnTap)="eligeVehiculo()">
+          <table class="mobilidad-seleccionada">
+            <tr>
+              <td>Nombre: </td>
+              <td *ngIf="isMobilitySelected">{{ mobilitySelected.nombre }}</td>
+            </tr>
+            <tr>
+              <td>Marca: </td>
+              <td *ngIf="isMobilitySelected">{{ mobilitySelected.marca }}</td>
+            </tr>
+            <tr>
+              <td>tipo: </td>
+              <td *ngIf="isMobilitySelected">{{ mobilitySelected.tipo }}</td>
+            </tr>
+            <tr>
+              <td>Consumo: </td>
+              <td *ngIf="isMobilitySelected">{{ mobilitySelected.consumo }}</td>
+            </tr>
+          </table>
+        </basic-data-box>
       </div>
-      <div>
-        <button (click)="eligeVehiculo()" class="my-button">Elige Vehiculo</button>
-      </div>
-
     </td>
   </tr>
-  <tr class = "fila-base">
+  <tr class="fila-base">
     <td class="columna-base">
-      <p>Vehiculo Seleccionado 3</p>
+      <basic-data-box [title]="('title')" helpBtn="false">
+        <p>Vehiculo Seleccionado 3</p>
+        <p>Vehiculo Seleccionado 3</p>
+        <p>Vehiculo Seleccionado 3</p>
+        <p>Vehiculo Seleccionado 3</p>
+        <p>Vehiculo Seleccionado 3</p>
+      </basic-data-box>
     </td>
     <td class="columna-base">
-      <p>Vehiculo Seleccionado 4</p>
-      <div>
-        <button (click)="calculateRoute()" class="my-button">Calcular Ruta</button>
-      </div>
-      <div class="ruta-info" *ngIf="showRouteInfo">
-        <p>Distancia: {{ distanceInKMs }} KMs</p>
-        <p>Duración: {{ timeInMinutes }} minutos</p>
-      </div>
+      <div class="box-derecha">
+      <basic-data-box [title]="('Datos de ruta')" [isBtn]="true" [actionBtn]="('Calcula ruta')"
+        (actionBtnTap)="calculateRoute()">
+        <table class="mobilidad-seleccionada">
+          <tr>
+            <td>Distancia: </td>
+            <td *ngIf="showRouteInfo">{{ distanceInKMs }} Km</td>
+          </tr>
+          <tr>
+            <td>Duración: </td>
+            <td *ngIf="showRouteInfo">{{ timeInMinutes }} minutos</td>
+          </tr>
+          <tr>
+            <td>Consumo: </td>
+           <!-- <td *ngIf="showRouteInfo">{{ mobilitySelected.marca }}</td> -->
+          </tr>
 
+        </table>
+      </basic-data-box>
+    </div>
     </td>
   </tr>
 </table>
