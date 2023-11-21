@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit{
   title = 'EI1039 Proyecto';
   email = 'usuario@usuario.com';
   password = 'usuario';
-  logged: any;
+  // logged: any;
   loggedSubscription!: Subscription;
 
   constructor(
@@ -21,15 +21,12 @@ export class NavbarComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    this.loggedSubscription = this.userService.loggedSubject.subscribe(
-      data => {
-        if (data != undefined){
-          this.logged = data;
-        }
-      })
-  }
-
-  logIn() {
+    // this.loggedSubscription = this.userService.loggedSubject.subscribe(
+    //   data => {
+    //     if (data != undefined){
+    //       this.logged = data;
+    //     }
+    //   })
     this.userService.login(this.email, this.password)
     .then(response => {
       console.log(response);
@@ -37,12 +34,20 @@ export class NavbarComponent implements OnInit{
       .catch(error => console.log(error));
   }
 
-  logOut() {
-    this.userService.logout()
-    .then(response => {
-      console.log(response);
-      this.router.navigate(['']);
-    })
-    .catch(error => console.log(error));
-  }
+  // logIn() {
+  //   this.userService.login(this.email, this.password)
+  //   .then(response => {
+  //     console.log(response);
+  //   })
+  //     .catch(error => console.log(error));
+  // }
+
+  // logOut() {
+  //   this.userService.logout()
+  //   .then(response => {
+  //     console.log(response);
+  //     this.router.navigate(['']);
+  //   })
+  //   .catch(error => console.log(error));
+  // }
 }

@@ -1,0 +1,70 @@
+.card {
+    max-height: 480px;
+}
+
+.card-header {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.card-header div {
+    display: flex;
+    align-items: center;
+}
+
+.card-header .header-title {
+    justify-content: flex-start;
+}
+
+.card-header .header-buttons {
+    justify-content: flex-end;
+}
+
+.fa {
+    font-size: 1.5em;
+}
+.card {
+    max-height: 480px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #f0f0f0;
+    background-clip: border-box;
+    border: 1px solid rgb(201, 146, 253);
+    border-radius: 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .card-header {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem 0.5rem;
+    margin-bottom: 0;
+    background-color: rgb(201, 146, 253);
+    border-bottom: 1px solid rgb(201, 146, 253);
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+    font-size: medium;
+    font-weight: bold;
+    color: #4d0c8f;
+    height: 35px;
+  }
+  .my-button {
+    padding: 10px 20px;
+    background-color: #4d0c8f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+  }
+  .my-button:hover {
+    background-color: #8d33d1;
+  }
+  .my-button:active {
+    background-color: #965bd1;
+  }
+  

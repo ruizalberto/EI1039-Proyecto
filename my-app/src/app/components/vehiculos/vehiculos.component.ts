@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Vehicle } from 'src/app/iterfaces/vehicle';
 import { MatDialog } from '@angular/material/dialog'
 import { VehiculosDialogComponent, VehiculosDialogResult } from '../vehiculos-dialog/vehiculos-dialog.component';
 import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { Mobility } from 'src/app/interfaces/mobility.interface';
+import { Router } from '@angular/router';
+import { MobilityService } from 'src/app/services/mobility.service';
+import { Vehiculo } from 'src/app/interfaces/vehicle.class';
+
+//toda la gestion base de datos pasar a el service -> para jusgar con elementos locales y poder solicitar lo que sea en el service 
+
 
 @Component({
   selector: 'app-vehiculos',
@@ -12,15 +18,19 @@ import { Observable } from 'rxjs';
 })
 export class VehiculosComponent implements OnInit {
   vehiclesDB = collection(this.firestore, 'vehicles');
-  vehiclesData: Vehicle[] = [];
+  vehiclesData: Mobility[] = [];
 
-  constructor(private dialog: MatDialog, private firestore: Firestore) {}
+  constructor(private dialog: MatDialog, 
+              private firestore: Firestore, 
+              private router: Router, 
+              private mobilityService:MobilityService) {}
 
   ngOnInit(): void {
     this.getVehicles().subscribe( vehicles => {
       this.vehiclesData = vehicles;
     })
   }
+  
 
   newVehicle(): void {
     const dialogRef = this.dialog.open(VehiculosDialogComponent, {
@@ -45,9 +55,19 @@ export class VehiculosComponent implements OnInit {
       });
   }
 
-  getVehicles(): Observable<Vehicle[]> {
-    return collectionData(this.vehiclesDB, { idField: 'id'}) as Observable<Vehicle[]>; 
+  getVehicles(): Observable<Mobility[]> {
+    return collectionData(this.vehiclesDB, { idField: 'id'}) as Observable<Mobility[]>;
   }
+
+  vehicleSelected(vehicle:Mobility){
+    var vehicleSelected = new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo);
+    this.mobilityService.setMobilySelected(vehicleSelected);
+    this.router.navigate(['/']);
+  }
+
+  deleteVehicle(vehicle: Mobility):void{}
+
+  modifyVehicle(vehicle: Mobility):void{}
 
   // editTask(Vehicle: Vehicle): void {
   //   const dialogRef = this.dialog.open(TaskDialogComponent, {

@@ -1,9 +1,12 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import * as L from 'leaflet';
 import { Geocoder, geocoders } from 'leaflet-control-geocoder';
-import { Subscription } from 'rxjs';
+import { Mobility } from 'src/app/interfaces/mobility.interface';
 import { MarkerService } from 'src/app/services/marker.service';
+import { MobilityService } from 'src/app/services/mobility.service';
 import { OpenRouteService } from 'src/app/services/openrouteservice.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-map',
@@ -11,37 +14,55 @@ import { OpenRouteService } from 'src/app/services/openrouteservice.service';
   styleUrls: ['./map.component.css'],
   providers: [MarkerService, OpenRouteService]
 })
+
 export class MapComponent implements AfterViewInit{
-  private map: any;
-  private markers!: L.LatLng[];
-  private markersSubscription!: Subscription;
-  private routeSubscription!: Subscription;
-  private routeLayer: any;
-  distanceInKMs: any | undefined;
-  timeInMinutes: any | undefined;
+  private map;
+  private routeLayer;
+  btn = true;
+  distanceInKMs: string | undefined;
+  timeInMinutes: number | undefined;
   showRouteInfo: boolean = false;
+  isMobilitySelected:boolean = false;
+  mobilitySelected!: Mobility;
+
+
 
   constructor(
     private markerService: MarkerService,
-    private openRouteService: OpenRouteService
-  ) {}
+    private openRouteService: OpenRouteService,
+    private router: Router,
+    private mobilityService: MobilityService
+  ) {
+    this.mobilityService.mobilitySubject.subscribe(
+      data => {
+        if ( data != undefined && data[0] ){
+          this.isMobilitySelected = this.mobilityService.isMobilitySelected();
+          this.mobilitySelected = this.mobilityService.getMobilitySelected();
+        }
+      }
+    );
+  }
+
+  private initMap(): void {
+    this.map = L.map('map').setView([39.9874905, -0.0686626], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this.map);
+  }
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.markerService.makeCapitalMarkers(this.map);
+    this.markerService.makeMarkers(this.map);
     this.initGeocoderControl();
-    this.markersSubscription = this.markerService.markersSubject.subscribe(
+    this.markerService.markersSubject.subscribe(
       data => {
-        if (data != undefined && data[0]){
-          this.markers = data;
-          if(this.routeLayer){
-            this.map.removeLayer(this.routeLayer);
-          }
-        }
-      })
+        if (data != undefined && data[0] && this.routeLayer)
+          this.map.removeLayer(this.routeLayer);
+      });
+    
   }
 
-  private initGeocoderControl() {
+  private initGeocoderControl():void {
     new Geocoder({
       geocoder: new geocoders.Nominatim({
         geocodingQueryParams: {
@@ -62,39 +83,34 @@ export class MapComponent implements AfterViewInit{
     }).addTo(this.map);
   }
 
-  private initMap(): void {
-    this.map = L.map('map').setView([39.9874905, -0.0686626], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map);
+  eligeVehiculo():void{
+    this.router.navigate(['/vehiculos'])
   }
 
-  calculateRoute(): void {
-    if (this.markers.length == 2){
-      this.routeSubscription = this.openRouteService.getDirections(this.markers[0], this.markers[1]).subscribe({
-        next: response => {
-            if (response && response.features && response.features.length > 0) {
-              this.drawRoute(response.features[0].geometry);
-              
-              this.distanceInKMs = response.features[0].properties.summary.distance/1000;
-              this.distanceInKMs = this.distanceInKMs.toFixed(2);
-              this.timeInMinutes = Math.ceil(response.features[0].properties.summary.duration/60);
+   calculateRoute(): void {
+    if (this.markerService.isMaxMarkers() && this.mobilityService.isMobilitySelected()){
+      this.isMobilitySelected = this.mobilityService.isMobilitySelected();
+      this.mobilitySelected = this.mobilityService.getMobilitySelected();
+      this.openRouteService.setRouteData(
+        this.markerService.getStart(),
+        this.markerService.getEnd(), 
+        this.mobilityService.getMobilitySelected());
+        this.openRouteService.routeSubject.subscribe(
+          data =>{
+            if (data != undefined && data[0])
+              this.drawRoute(data[0]);
+              this.distanceInKMs = data[1] as string;
+              this.timeInMinutes = data[2] as number;
               this.showRouteInfo = true;
-            } else {
-              console.error('No se encontraron datos de ruta en la respuesta.');
-            }
-          },
-        error: err => {
-          console.error('Error al obtener la ruta:', err);
-        }
-      })
+          }
+        )
   }
 }
 
   private drawRoute(geometry: any): void{
-    if(this.routeLayer){
+    if(this.routeLayer)
       this.map.removeLayer(this.routeLayer);
-    }
+    
     this.routeLayer = L.geoJSON(geometry, {
       style: {
         color: 'purple',

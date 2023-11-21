@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { BasicDataBox } from './components/basic-data-box/basic-data-box.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
@@ -29,7 +30,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
     MapComponent,
     NavbarComponent,
     VehiculosComponent,
-    VehiculosDialogComponent
+    VehiculosDialogComponent,
+    BasicDataBox
   ],
   imports: [
     BrowserModule,
@@ -48,6 +50,10 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
     provideDatabase(() => getDatabase()),
     provideFirestore(() => getFirestore()),
   ],
+  exports: [
+    BasicDataBox
+  ],
+
   providers: [
     MarkerService,
     OpenRouteService

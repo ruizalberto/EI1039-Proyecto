@@ -1,17 +1,17 @@
-<header>
-	<div>
-		<p id="titulo" routerLink="">{{ title }}</p>
+<ng-container>
+	<div class="my-header">
+		<div class="my-title-app">
+			<p id="titulo" routerLink="">{{ title }}</p>
+		</div>
+		<div>
+			<ul>
+				<li><a routerLink="vehiculos"> Vehículos </a></li>
+			</ul>
+		</div>
+		<div class="login">
+			<!-- <button (click)="logIn()" class="my-button" *ngIf="!logged"> Iniciar Sesión </button>
+			<button class="my-button"> Registrar </button>
+			<button (click)="logOut()" class="my-button" *ngIf="logged"> Log Out </button> -->
+		</div>
 	</div>
-    <nav>
-		<ul>
-			<li><a routerLink="vehiculos" *ngIf="logged"> Vehículos </a></li>
-	 	</ul>
-    </nav>
-	<div class="botones" *ngIf="!logged">
-		<button (click)="logIn()"> Iniciar Sesión </button>
-		<button> Registrar </button>
-	</div>
-	<div class="botones" *ngIf="logged">
-		<button (click)="logOut()"> Log Out </button>
-	</div>
-</header>
+</ng-container>
