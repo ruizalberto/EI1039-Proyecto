@@ -9,6 +9,12 @@ p {
     margin-bottom: 15px;
 }
 
+.content-wrapper {
+  margin: 20px;
+  text-align: right;
+  margin-right: 100px;
+}
+
 .my-button {
     height: 100%;
     padding: 5px 5px;
