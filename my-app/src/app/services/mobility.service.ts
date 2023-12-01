@@ -26,7 +26,7 @@ export class MobilityService{
     isMobilitySelected():boolean{
         return this.isSelected;
     }
-    updateMobilitySubject(){
+    updateMobilitySubject():void{
         const mobilityData = [this.mobilitySelected];
         this.mobilitySubject.next(mobilityData);
     }

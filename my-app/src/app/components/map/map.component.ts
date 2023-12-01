@@ -18,9 +18,11 @@ import { Router } from '@angular/router';
 export class MapComponent implements AfterViewInit{
   private map;
   private routeLayer;
-  btn = true;
+  
   distanceInKMs: string | undefined;
   timeInMinutes: number | undefined;
+  costRoute: number | undefined;
+
   showRouteInfo: boolean = false;
   isMobilitySelected:boolean = false;
   mobilitySelected!: Mobility;
@@ -87,7 +89,7 @@ export class MapComponent implements AfterViewInit{
     this.router.navigate(['/vehiculos'])
   }
 
-   calculateRoute(): void {
+  calculateRoute(): void {
     if (this.markerService.isMaxMarkers() && this.mobilityService.isMobilitySelected()){
       this.isMobilitySelected = this.mobilityService.isMobilitySelected();
       this.mobilitySelected = this.mobilityService.getMobilitySelected();
@@ -101,11 +103,15 @@ export class MapComponent implements AfterViewInit{
               this.drawRoute(data[0]);
               this.distanceInKMs = data[1] as string;
               this.timeInMinutes = data[2] as number;
+              this.costRoute = data[3] as number;
               this.showRouteInfo = true;
+              
           }
         )
   }
-}
+  }
+
+
 
   private drawRoute(geometry: any): void{
     if(this.routeLayer)
