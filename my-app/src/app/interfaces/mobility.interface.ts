@@ -1,4 +1,3 @@
-
 export interface Mobility{
     nombre: string;
     marca: string;
@@ -8,6 +7,7 @@ export interface Mobility{
 
     getPerfil(): string;
 }
+
 // distintos posibles perfiles
 // -----------------------------
 // driving-car -> vehiculo normal
