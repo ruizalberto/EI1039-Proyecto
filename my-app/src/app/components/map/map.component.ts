@@ -23,6 +23,7 @@ export class MapComponent implements OnInit {
   btn = true;
   distanceInKMs: string | undefined;
   timeInMinutes: number | undefined;
+  costRoute: number = 0;
   showRouteInfo: boolean = false;
   isMobilitySelected: boolean = false;
   mobilitySelected!: Mobility;
@@ -123,6 +124,7 @@ export class MapComponent implements OnInit {
               this.drawRoute(data[0]);
               this.distanceInKMs = data[1] as string;
               this.timeInMinutes = data[2] as number;
+              this.costRoute = data[3] as number;
               this.showRouteInfo = true;
           }
         )
