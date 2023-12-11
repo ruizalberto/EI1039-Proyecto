@@ -37,6 +37,7 @@ export class OpenRouteService {
   }
   
 
+
   private getDirections(start: L.LatLng, end: L.LatLng, transporte: Mobility, strategy: RouteStrategy): Observable<any> {
     const url = 'https://api.openrouteservice.org/v2/directions/' + transporte.perfil + '/geojson';
  
@@ -87,6 +88,10 @@ export class OpenRouteService {
     });
   }
 
+  getcccc(){
+    
+  }
+  
   getCosteBicicleta(){
     this.costRoute = Number(this.distance) * 45;
     this.updateRouteSubject();
