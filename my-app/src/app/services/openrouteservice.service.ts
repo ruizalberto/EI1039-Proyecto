@@ -20,7 +20,7 @@ export class OpenRouteService {
   constructor(private http: HttpClient, private mobilityService: MobilityService) { }
 
   private fuelPrice = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/';
-  private lightPrice = "https://api.preciodelaluz.org/v1/prices/now?zone=PCB";
+  private lightPrice = "https://cors-anywhere.herokuapp.com/https://api.preciodelaluz.org/v1/prices/now?zone=PCB";
 
   getFuelPrice(): Observable<any> {
     return this.http.get(this.fuelPrice);
@@ -28,12 +28,8 @@ export class OpenRouteService {
   getCosteCombustible(){
     this.getFuelPrice().subscribe(
       fuelPriceData => {
-        //console.log(fuelPriceData.ListaEESSPrecio[3557]['Precio Gasoleo A']); // PRECIO DE COCHE GASOLINA
         const aux: String = fuelPriceData.ListaEESSPrecio[3557]['Precio Gasoleo A'];
         const precioGasolina = aux.replace(',','.');
-
-        console.log(Number(precioGasolina));
-        
         this.costRoute = Number(this.distance) * 0.01 * this.mobilityService.getMobilitySelected().consumo * Number(precioGasolina);
         this.costRoute = Number(this.costRoute.toFixed(2))
         this.updateRouteSubject();
@@ -75,8 +71,18 @@ export class OpenRouteService {
             this.geometry = response.features[0].geometry;
             this.distance = (response.features[0].properties.summary.distance/1000).toFixed(2);
             this.time = Math.ceil(response.features[0].properties.summary.duration/60);
-            this.getCosteCombustible();
-            this.getCosteElectricidad();
+            if(mobility.getPerfil() == "driving-car"){
+              if(mobility.tipo == "Gasolina")
+                this.getCosteCombustible();
+              else if (mobility.tipo == "Electrico")
+                this.getCosteElectricidad();
+            } else if (mobility.getPerfil() == "cycling-regular")
+                this.getCosteBicicleta();
+              else if (mobility.getPerfil() == "foot-walking")
+                this.getCostePie();
+
+            this.updateRouteSubject();
+            
           } else {
             console.error('No se encontraron datos de ruta en la respuesta.');
           }
@@ -85,6 +91,15 @@ export class OpenRouteService {
         console.error('Error al obtener la ruta:', err);
       }
     });
+  }
+
+  getCosteBicicleta(){
+    this.costRoute = Number(this.distance) * 45;
+    this.updateRouteSubject();
+  }
+  getCostePie(){
+    this.costRoute = Number(this.distance) * 75;
+    this.updateRouteSubject();
   }
 
   getGeometry():any{ return this.geometry; }

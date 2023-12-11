@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://api.preciodelaluz.org",
+    "secure": false
+  }
+}
+
+
