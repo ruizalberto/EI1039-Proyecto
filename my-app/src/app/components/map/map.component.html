@@ -33,6 +33,11 @@
             </tr>
           </table>
         </basic-data-box>
+        <mat-radio-group aria-labelledby="route-strategies" class="radio-group" (change)="onRadioChange($event)">
+          <mat-radio-button value="1" class="radio-button">Fastest</mat-radio-button>
+          <mat-radio-button value="2" class="radio-button">Shortest</mat-radio-button>
+          <mat-radio-button value="3" class="radio-button">Recommended</mat-radio-button>
+        </mat-radio-group>
       </div>
     </td>
   </tr>
@@ -63,7 +68,6 @@
             <td>Coste: </td>
             <td *ngIf="showRouteInfo">{{ costRoute }} {{ uniCost }}</td>
           </tr>
-
         </table>
       </basic-data-box>
     </div>

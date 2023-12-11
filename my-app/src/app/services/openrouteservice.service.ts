@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Mobility } from '../interfaces/mobility.interface';
+import { RouteStrategy } from '../interfaces/route-strategy';
 import { MobilityService } from './mobility.service';
 
 @Injectable({
@@ -9,63 +10,56 @@ import { MobilityService } from './mobility.service';
 })
 export class OpenRouteService {
   private apiKey = '5b3ce3597851110001cf6248a3077ea0c1364912a6cf737d6958d901';
-  private geometry:any;
-  private distance: string = ''; //distancia en kilometros
-  private time: number = 0; //tiempo en minutos
+  private geometry: any;
+  private distance: string = '';
+  private time: number = 0;
   private costRoute: number = 0;
+  private precioGasolina: number = 0;
+  private lightPrice = "https://api.preciodelaluz.org/v1/prices/now?zone=PCB";
 
   routeSubject: BehaviorSubject<Object[]> = new BehaviorSubject<Object[]>([]);
   routeData$ = this.routeSubject.asObservable();
 
-  constructor(private http: HttpClient, private mobilityService: MobilityService) { }
-
-  private fuelPrice = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/';
-  private lightPrice = "https://cors-anywhere.herokuapp.com/https://api.preciodelaluz.org/v1/prices/now?zone=PCB";
-
-  getFuelPrice(): Observable<any> {
-    return this.http.get(this.fuelPrice);
+  constructor(private http: HttpClient, private mobilityService: MobilityService) {
+    this.getFuelPrice();
   }
-  getCosteCombustible(){
-    this.getFuelPrice().subscribe(
-      fuelPriceData => {
-        const aux: String = fuelPriceData.ListaEESSPrecio[3557]['Precio Gasoleo A'];
-        const precioGasolina = aux.replace(',','.');
-        this.costRoute = Number(this.distance) * 0.01 * this.mobilityService.getMobilitySelected().consumo * Number(precioGasolina);
-        this.costRoute = Number(this.costRoute.toFixed(2))
-        this.updateRouteSubject();
-      });
-  }
-
-  // FALLA ALGO AL SOLICITAR A LA API
-  // FALTA ELEGIR EL TIPO DE PRECIO A UTILIZAR SEGUN EL TIPO DE TRANSPORTE.
   
-  getLightPrice(): Observable<any> {
-    return this.http.get<any>(this.lightPrice);
+  private getFuelPrice(): void {
+    const fuelPriceUrl = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/';
+
+    this.http.get<any>(fuelPriceUrl).subscribe(
+      fuelPriceData => {
+        const fuelPrice: string = fuelPriceData.ListaEESSPrecio[3557]['Precio Gasoleo A'].replace(',', '.');
+        const pricePerLiter: number = Number(fuelPrice);
+        this.precioGasolina = pricePerLiter;
+      }
+    );
   }
-  getCosteElectricidad(){
-    this.getLightPrice().subscribe(
-      lightPriceData => {
-        console.log(lightPriceData);
-      });
+  
+
+  private getDirections(start: L.LatLng, end: L.LatLng, transporte: Mobility, strategy: RouteStrategy): Observable<any> {
+    const url = 'https://api.openrouteservice.org/v2/directions/' + transporte.perfil + '/geojson';
+ 
+    const headers = new HttpHeaders()
+      .set('Accept', 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8')
+      .set('Content-Type', 'application/json')
+      .set('Authorization', this.apiKey);
+
+    const coordinates = [
+      [start.lng, start.lat],
+      [end.lng, end.lat]
+    ];
+        
+    const body = {
+      coordinates: coordinates,
+      preference: strategy.getPreference()
+    };
+
+    return this.http.post(url, body, { headers });
   }
 
-
-
-  private getDirections(start: L.LatLng, end: L.LatLng, transporte: Mobility): Observable<any> {
-    const url = 'https://api.openrouteservice.org/v2/directions/' + transporte.perfil;
-    const startCoords = `${start.lng},${start.lat}`;
-    const endCoords = `${end.lng},${end.lat}`;
-    
-    const params = new HttpParams()
-      .set('api_key', this.apiKey)
-      .set('start', startCoords)
-      .set('end', endCoords);
-    return this.http.get(url, { params });
-  }
-
-  //recibe los datos de la ruta y almacena en el servicio la geometria de la ruta la distancia y el tiempo
-  setRouteData(start:L.LatLng, end:L.LatLng, mobility: Mobility){
-    this.getDirections(start, end, mobility).subscribe({
+  setRouteData(start: L.LatLng, end: L.LatLng, mobility: Mobility, strategy: RouteStrategy){
+    this.getDirections(start, end, mobility, strategy).subscribe({
       next: response => {
           if (response && response.features && response.features.length > 0) {
             this.geometry = response.features[0].geometry;
@@ -73,9 +67,9 @@ export class OpenRouteService {
             this.time = Math.ceil(response.features[0].properties.summary.duration/60);
             if(mobility.getPerfil() == "driving-car"){
               if(mobility.tipo == "Gasolina")
-                this.getCosteCombustible();
+                this.getFuelPrice();
               else if (mobility.tipo == "Electrico")
-                this.getCosteElectricidad();
+                this.getLightCost();
             } else if (mobility.getPerfil() == "cycling-regular")
                 this.getCosteBicicleta();
               else if (mobility.getPerfil() == "foot-walking")
@@ -111,6 +105,19 @@ export class OpenRouteService {
     this.routeSubject.next(routeData);
   }
 
+  getFuelCost(){
+      this.costRoute = Number((Number(this.distance) * 0.01 * this.mobilityService.getMobilitySelected().consumo * this.precioGasolina).toFixed(2));
+  }
+  
+  getLightPrice(): Observable<any> {
+    return this.http.get<any>(this.lightPrice);
+  }
 
+  getLightCost(){
+    this.getLightPrice().subscribe(
+      lightPriceData => {
+        console.log(lightPriceData);
+      });
+  }
 }
 
