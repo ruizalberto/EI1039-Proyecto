@@ -102,8 +102,6 @@ export class OpenRouteService {
       this.costRoute = Number((Number(this.distance) * 0.01 * this.mobilityService.getMobilitySelected().consumo * this.precioGasolina).toFixed(2));
   }
   
-
-
   // getLightPrice(): Observable<any> {
   //   return this.http.get<any>(this.lightPrice);
   // }
@@ -114,5 +112,13 @@ export class OpenRouteService {
   //       console.log(lightPriceData);
   //     });
   // }
+
+  getCosteBicicleta(){
+    this.costRoute = Number((Number(this.distance) * 45).toFixed(2));
+  }
+
+  getCostePie(){
+    this.costRoute = Number((Number(this.distance) * 75).toFixed(2));
+  }
 }
 
