@@ -22,6 +22,16 @@ export class VehiculosDialogComponent {
   //   this.data.vehicle.consumo = this.backupVehicle.consumo;
   //   this.dialogRef.close(this.data);
   // }
+
+  validarFormulario(): boolean {
+    return !!(
+      this.data.vehicle &&
+      this.data.vehicle.nombre &&
+      this.data.vehicle.marca &&
+      this.data.vehicle.tipo &&
+      this.data.vehicle.consumo !== undefined
+    );
+  }
 }
 
 export interface VehicleDialogData {

@@ -128,24 +128,16 @@ export class MapComponent implements OnInit {
               this.distanceInKMs = data[1] as string;
               this.timeInMinutes = data[2] as number;
               this.costRoute = data[3] as number;
-              if ( this.mobilitySelected.getPerfil() == "driving-car" )
+              if ( this.mobilitySelected.getPerfil() == "driving-car" ){
                 this.uniCost = "€";
-              else
+              } else {
                 this.uniCost = "Calorias";
+              }
               this.showRouteInfo = true;   
             }
           } 
       );
     }
-  }
-  cicleBoton() {
-    var bike = new Bike("Bicicleta","Bicicleta");
-    this.mobilityService.setMobilySelected(bike);
-  }
-
-  footBoton() {
-    var foot = new Foot("A pie");
-    this.mobilityService.setMobilySelected(foot);
   }
 
   private drawRoute(geometry: any): void{

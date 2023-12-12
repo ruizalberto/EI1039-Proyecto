@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Mobility } from '../interfaces/mobility.interface';
@@ -35,8 +35,6 @@ export class OpenRouteService {
       }
     );
   }
-  
-
 
   private getDirections(start: L.LatLng, end: L.LatLng, transporte: Mobility, strategy: RouteStrategy): Observable<any> {
     const url = 'https://api.openrouteservice.org/v2/directions/' + transporte.perfil + '/geojson';
@@ -66,18 +64,21 @@ export class OpenRouteService {
             this.geometry = response.features[0].geometry;
             this.distance = (response.features[0].properties.summary.distance/1000).toFixed(2);
             this.time = Math.ceil(response.features[0].properties.summary.duration/60);
-            if(mobility.getPerfil() == "driving-car"){
-              if(mobility.tipo == "Gasolina")
-                this.getFuelPrice();
-              else if (mobility.tipo == "Electrico")
-                this.getLightCost();
-            } else if (mobility.getPerfil() == "cycling-regular")
-                this.getCosteBicicleta();
-              else if (mobility.getPerfil() == "foot-walking")
-                this.getCostePie();
 
-            this.updateRouteSubject();
+            if (mobility.getPerfil() == "driving-car"){
+              if (mobility.tipo == "Gasolina"){
+                this.getFuelCost();
+              } else if (mobility.tipo == "Eléctrico"){
+                console.log("Funciono correctamente");
+                // this.getLightCost();
+              }
+            } else if (mobility.getPerfil() == "cycling-regular") {
+              // this.getCosteBicicleta();
+            } else if (mobility.getPerfil() == "foot-walking") {
+              // this.getCostePie();
+            }
             
+            this.updateRouteSubject();
           } else {
             console.error('No se encontraron datos de ruta en la respuesta.');
           }
@@ -86,19 +87,6 @@ export class OpenRouteService {
         console.error('Error al obtener la ruta:', err);
       }
     });
-  }
-
-  getcccc(){
-    
-  }
-  
-  getCosteBicicleta(){
-    this.costRoute = Number(this.distance) * 45;
-    this.updateRouteSubject();
-  }
-  getCostePie(){
-    this.costRoute = Number(this.distance) * 75;
-    this.updateRouteSubject();
   }
 
   getGeometry():any{ return this.geometry; }
@@ -114,15 +102,17 @@ export class OpenRouteService {
       this.costRoute = Number((Number(this.distance) * 0.01 * this.mobilityService.getMobilitySelected().consumo * this.precioGasolina).toFixed(2));
   }
   
-  getLightPrice(): Observable<any> {
-    return this.http.get<any>(this.lightPrice);
-  }
 
-  getLightCost(){
-    this.getLightPrice().subscribe(
-      lightPriceData => {
-        console.log(lightPriceData);
-      });
-  }
+
+  // getLightPrice(): Observable<any> {
+  //   return this.http.get<any>(this.lightPrice);
+  // }
+
+  // getLightCost(){
+  //   this.getLightPrice().subscribe(
+  //     lightPriceData => {
+  //       console.log(lightPriceData);
+  //     });
+  // }
 }
 

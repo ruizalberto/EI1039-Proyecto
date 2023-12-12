@@ -10,23 +10,10 @@ export class Vehiculo implements Mobility {
 
 
     constructor(name: string, marca: string, tipo: string, consumo: number){
-        if(name != undefined)
-            this.nombre= name;
-        else
-            this.nombre="-";
-        if(marca != undefined)
-            this.marca= marca;
-        else
-            this.marca = "-";
-        if(tipo != undefined)
-            this.tipo = tipo;
-        else
-            this.tipo= "Gasolina";
-        if(consumo != undefined)
-            this.consumo= consumo;
-        else
-            this.consumo = 0;
-
+        this.nombre = name;
+        this.marca = marca;
+        this.tipo = tipo;
+        this.consumo = consumo;
         this.perfil= "driving-car";
     }
 

@@ -59,7 +59,7 @@ export class VehiculosComponent implements OnInit {
     return collectionData(this.vehiclesDB, { idField: 'id'}) as Observable<Mobility[]>;
   }
 
-  vehicleSelected(vehicle:Mobility){
+  vehicleSelected(vehicle: Mobility){
     var vehicleSelected = new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo);
     this.mobilityService.setMobilySelected(vehicleSelected);
     this.router.navigate(['/']);
