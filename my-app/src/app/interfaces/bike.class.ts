@@ -11,7 +11,7 @@ export class Bike implements Mobility{
     constructor(name: string, marca: string){
         this.nombre= name;
         this.marca= marca;
-        this.tipo= "";
+        this.tipo= "Bicicleta";
         this.consumo= 45; // consumo por kilometro
         this.perfil= "cycling-regular";  
     }
