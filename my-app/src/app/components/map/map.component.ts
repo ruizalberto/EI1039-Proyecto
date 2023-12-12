@@ -140,6 +140,16 @@ export class MapComponent implements OnInit {
     }
   }
 
+  cicleBoton() {
+    var bike = new Bike("Bicicleta","Bicicleta");
+    this.mobilityService.setMobilySelected(bike);
+  }
+
+  footBoton() {
+    var foot = new Foot("A pie");
+    this.mobilityService.setMobilySelected(foot);
+  }
+
   private drawRoute(geometry: any): void{
     if(this.routeLayer)
       this.map.removeLayer(this.routeLayer);

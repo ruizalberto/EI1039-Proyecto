@@ -8,6 +8,10 @@
     </td>
     <td class="columna-base">
       <div class="box-derecha">
+        <div class="additional-buttons">
+          <button (click)="cicleBoton()"><mat-icon> directions_bike</mat-icon></button>
+          <button (click)="footBoton()"><mat-icon> directions_walk</mat-icon></button>
+        </div>
         <basic-data-box [title]="('Vehículo Seleccionado')" [isBtn]="true" [actionBtn]="('Elige Vehículo')"
           (actionBtnTap)="eligeVehiculo()">
           <table class="mobilidad-seleccionada">
