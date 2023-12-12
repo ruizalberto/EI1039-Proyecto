@@ -10,44 +10,39 @@ import { Subscription } from 'rxjs/internal/Subscription';
 })
 export class NavbarComponent implements OnInit{
   title = 'EI1039 Proyecto';
-  email = 'usuario@usuario.com';
-  password = 'usuario';
-  // logged: any;
-  loggedSubscription!: Subscription;
+  // email = 'usuario@usuario.com';
+  // password = 'usuario';
+  logged: boolean;
+  user: any;
 
   constructor(
     private userService: UserService,
     private router: Router
-  ){}
+  ){ this.logged = false; }
 
   ngOnInit(): void {
-    // this.loggedSubscription = this.userService.loggedSubject.subscribe(
-    //   data => {
-    //     if (data != undefined){
-    //       this.logged = data;
-    //     }
-    //   })
-    this.userService.login(this.email, this.password)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => console.log(error));
+    this.userLogged();
   }
 
-  // logIn() {
-  //   this.userService.login(this.email, this.password)
-  //   .then(response => {
-  //     console.log(response);
-  //   })
-  //     .catch(error => console.log(error));
-  // }
+  userLogged(){
+    this.userService.getInfoUserLogged().subscribe(res=>{
+      if(res != null){
+        this.logged = true;
+        this.user = res;
+      }
+      else {
+        this.logged = false;
+      }
+    });
+  }
 
-  // logOut() {
-  //   this.userService.logout()
-  //   .then(response => {
-  //     console.log(response);
-  //     this.router.navigate(['']);
-  //   })
-  //   .catch(error => console.log(error));
-  // }
+  logOut(): void {
+    this.userService.logout()
+      .then(response => {
+        console.log(response);
+        this.logged = false;
+        this.router.navigate(['']);
+      })
+      .catch(error => console.log(error));
+  }
 }

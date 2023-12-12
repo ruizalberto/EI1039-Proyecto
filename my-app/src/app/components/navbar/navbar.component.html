@@ -8,10 +8,12 @@
 				<li><a routerLink="vehiculos"> Vehículos </a></li>
 			</ul>
 		</div>
-		<div class="login">
-			<!-- <button (click)="logIn()" class="my-button" *ngIf="!logged"> Iniciar Sesión </button>
-			<button class="my-button"> Registrar </button>
-			<button (click)="logOut()" class="my-button" *ngIf="logged"> Log Out </button> -->
+		<div class="login" *ngIf="!logged">
+			<button mat-raised-button color="accent" routerLink="">Iniciar Sesión</button>
+			<button mat-raised-button color="accent" routerLink="registro">Registrar</button>
+		</div>
+		<div class="logout" *ngIf="logged">
+			<button mat-raised-button color="warn" (click)="logOut()" *ngIf="logged">Log Out</button>
 		</div>
 	</div>
 </ng-container>

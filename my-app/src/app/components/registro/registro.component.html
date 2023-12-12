@@ -1,0 +1,41 @@
+<app-navbar></app-navbar>
+<form #formRegistro="ngForm">
+    <label>Email</label>
+    <input type="email" name="email" #email placeholder="example@example.com" class="form-control">
+    <br/>
+    <label>Contraseña</label>
+    <input type="password" name="password" #password placeholder="123456" class="form-control" minlength="6" maxlength="20" pattern="[A-Za-z0-9]{6,20}">
+    <br/>
+    <button class="btn btn-success" (click)="registro()">
+        Registrar
+    </button>
+    
+</form>
+<!-- <mat-form-field>
+    <mat-label>Email</mat-label>
+        <input matInput
+            [(ngModel)]="email"
+            type="email"
+            name="email" />
+</mat-form-field>
+<mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput
+           [(ngModel)]="password"
+           [type]="hide ? 'password' : 'text'"
+           name="password" />
+    <button mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+<button mat-flat-button
+        color="primary"
+        class="button"
+        type="submit"
+        (click)="registro()">
+    Registrarme
+</button> -->
