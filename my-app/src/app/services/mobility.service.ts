@@ -20,15 +20,17 @@ export class MobilityService{
         this.isSelected = true;
         this.updateMobilitySubject();
     }
+
     getMobilitySelected():Mobility{
         return this.mobilitySelected;
     }
+
     isMobilitySelected():boolean{
         return this.isSelected;
     }
-    updateMobilitySubject(){
+
+    updateMobilitySubject():void{
         const mobilityData = [this.mobilitySelected];
         this.mobilitySubject.next(mobilityData);
     }
-
 }

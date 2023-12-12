@@ -9,6 +9,8 @@ import { OpenRouteService } from 'src/app/services/openrouteservice.service';
 import { Router } from '@angular/router';
 import { RouteStrategyService } from 'src/app/services/route-strategy.service';
 import { FastestRouteStrategy, RecommendedRouteStrategy, RouteStrategy, ShortestRouteStrategy } from 'src/app/interfaces/route-strategy';
+import { Bike } from 'src/app/interfaces/bike.class';
+import { Foot } from 'src/app/interfaces/foot.class';
 
 @Component({
   selector: 'app-map',
@@ -23,6 +25,8 @@ export class MapComponent implements OnInit {
   btn = true;
   distanceInKMs: string | undefined;
   timeInMinutes: number | undefined;
+  costRoute: number = 0;
+  uniCost: string = "€";
   showRouteInfo: boolean = false;
   isMobilitySelected: boolean = false;
   mobilitySelected!: Mobility;
@@ -119,13 +123,20 @@ export class MapComponent implements OnInit {
         );
         this.openRouteService.routeSubject.subscribe(
           data =>{
-            if (data != undefined && data[0])
+            if (data != undefined && data[0]){
               this.drawRoute(data[0]);
               this.distanceInKMs = data[1] as string;
               this.timeInMinutes = data[2] as number;
-              this.showRouteInfo = true;
-          }
-        )
+              this.costRoute = data[3] as number;
+              if ( this.mobilitySelected.getPerfil() == "driving-car" ){
+                this.uniCost = "€";
+              } else {
+                this.uniCost = "Calorias";
+              }
+              this.showRouteInfo = true;   
+            }
+          } 
+      );
     }
   }
 
