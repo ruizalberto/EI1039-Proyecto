@@ -15,7 +15,6 @@ export class UserService {
     }
     catch(error) {
       alert("No se ha podido hacer el log-in correctamente. Error: " + error)
-      console.log("No se ha podido hacer el log-in correctamente. Error: " + error);
       return null;
     }
   }
@@ -26,7 +25,6 @@ export class UserService {
     }
     catch(error) {
       alert("No se ha podido hacer el log-in correctamente. Error: " + error)
-      console.log("No se ha podido hacer el log-in correctamente. Error: " + error);
       return null;
     }
   }
