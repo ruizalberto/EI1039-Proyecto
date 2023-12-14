@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <div class="container">
-  <form #formRegistro="ngForm" class="form">
+  <form #formLogin="ngForm" class="form">
     <div class="input-group">
       <mat-form-field appearance="fill" class="input-field">
         <mat-label>Email</mat-label>
@@ -16,8 +16,8 @@
     </div>
 
     <div class="input-group">
-      <button mat-raised-button color="primary" (click)="registro()" [disabled]="formRegistro.invalid">
-        Registrar
+      <button mat-raised-button color="primary" (click)="login()" [disabled]="formLogin.invalid">
+        Iniciar Sesión
       </button>
     </div>
   </form>
