@@ -25,8 +25,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { VehiculosComponent } from './components/vehiculos/vehiculos.component';
 import { VehiculosDialogComponent } from './components/vehiculos-dialog/vehiculos-dialog.component';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { RegistroComponent } from './components/registro/registro.component';
-import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -35,9 +33,7 @@ import { LoginComponent } from './components/login/login.component';
     NavbarComponent,
     VehiculosComponent,
     VehiculosDialogComponent,
-    BasicDataBox,
-    RegistroComponent,
-    LoginComponent
+    BasicDataBox
   ],
   imports: [
     BrowserModule,

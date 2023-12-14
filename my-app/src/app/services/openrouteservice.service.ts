@@ -73,9 +73,9 @@ export class OpenRouteService {
                 // this.getLightCost();
               }
             } else if (mobility.getPerfil() == "cycling-regular") {
-              this.getCosteBicicleta();
+              // this.getCosteBicicleta();
             } else if (mobility.getPerfil() == "foot-walking") {
-              this.getCostePie();
+              // this.getCostePie();
             }
             
             this.updateRouteSubject();
