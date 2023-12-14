@@ -1,0 +1,57 @@
+<!-- <app-navbar></app-navbar>
+<form #formRegistro="ngForm">
+    <label>Email</label>
+    <input type="email" name="email" #email placeholder="example@example.com" class="form-control">
+    <br/>
+    <label>Contraseña</label>
+    <input type="password" name="password" #password placeholder="123456" class="form-control" minlength="6" maxlength="20" pattern="[A-Za-z0-9]{6,20}">
+    <br/>
+    <button class="btn btn-success" (click)="registro()">
+        Registrar
+    </button>
+    
+</form> -->
+
+<!-- <app-navbar></app-navbar>
+
+<form #formRegistro="ngForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" name="email" #email placeholder="example@example.com" ngModel required>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Contraseña</mat-label>
+    <input matInput type="password" name="password" #password placeholder="123456" ngModel required minlength="6" maxlength="20" pattern="[A-Za-z0-9]{6,20}">
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="registro()" [disabled]="formRegistro.invalid">
+    Registrar
+  </button>
+</form> -->
+
+<app-navbar></app-navbar>
+
+<div class="container">
+  <form #formRegistro="ngForm" class="form">
+    <div class="input-group">
+      <mat-form-field appearance="fill" class="input-field">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" name="email" #email placeholder="example@example.com" ngModel required>
+      </mat-form-field>
+    </div>
+
+    <div class="input-group">
+      <mat-form-field appearance="fill" class="input-field">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" name="password" #password placeholder="123456" ngModel required minlength="6" maxlength="20" pattern="[A-Za-z0-9]{6,20}">
+      </mat-form-field>
+    </div>
+
+    <div class="input-group">
+      <button mat-raised-button color="primary" (click)="registro()" [disabled]="formRegistro.invalid">
+        Registrar
+      </button>
+    </div>
+  </form>
+</div>
