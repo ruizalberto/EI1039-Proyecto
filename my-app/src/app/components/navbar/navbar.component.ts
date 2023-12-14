@@ -10,10 +10,8 @@ import { Subscription } from 'rxjs/internal/Subscription';
 })
 export class NavbarComponent implements OnInit {
   title = 'EI1039 Proyecto';
-  // email = 'usuario@usuario.com';
-  // password = 'usuario';
   logged: boolean;
-  user: any;
+  userEmail: any;
 
   constructor(
     private userService: UserService,
@@ -28,9 +26,8 @@ export class NavbarComponent implements OnInit {
     this.userService.getInfoUserLogged().subscribe(res=>{
       if(res != null){
         this.logged = true;
-        this.user = res;
-      }
-      else {
+        this.userEmail = res.email;
+      } else {
         this.logged = false;
       }
     });

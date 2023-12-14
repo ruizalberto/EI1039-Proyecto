@@ -13,6 +13,7 @@
 			<button mat-raised-button color="accent" routerLink="registro">Registrar</button>
 		</div>
 		<div class="logout" *ngIf="logged">
+			{{ userEmail }}
 			<button mat-raised-button color="warn" (click)="logOut()" *ngIf="logged" routerLink="">Log Out</button>
 		</div>
 	</div>

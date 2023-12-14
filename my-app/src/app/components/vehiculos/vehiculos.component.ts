@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'
 import { VehiculosDialogComponent, VehiculosDialogResult } from '../vehiculos-dialog/vehiculos-dialog.component';
 import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
@@ -14,9 +14,10 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './vehiculos.component.html',
   styleUrls: ['./vehiculos.component.css']
 })
-export class VehiculosComponent implements OnInit {
+export class VehiculosComponent implements OnInit, OnDestroy {
   vehiclesDB: any;
   vehiclesData: Mobility[] = [];
+  vehiclesSubscription!: Subscription;
   userSubscription!: Subscription;
   userInfo: any;
 
@@ -25,6 +26,12 @@ export class VehiculosComponent implements OnInit {
               private router: Router, 
               private mobilityService: MobilityService,
               private userService: UserService) {}
+
+  ngOnDestroy(): void {
+    if (this.vehiclesSubscription){
+      this.vehiclesSubscription.unsubscribe();
+    }
+  }
 
   ngOnInit(): void {
     this.initUserSubscription();
@@ -41,7 +48,7 @@ export class VehiculosComponent implements OnInit {
   }
 
   private initGetVehiclesSubsrciption() {
-    this.getVehicles().subscribe( vehicles => {
+    this.vehiclesSubscription = this.getVehicles().subscribe( vehicles => {
       this.vehiclesData = vehicles;
     })
   }
