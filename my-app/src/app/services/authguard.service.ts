@@ -21,27 +21,3 @@ export const AuthguardService: CanActivateFn = (
     })
   );
 };
-// export class AuthguardService {
-
-//   constructor(private userService: UserService, private router: Router) {}
-
-//   canActivate(): boolean {
-
-//     this.userService.getInfoUserLogged().pipe(
-//       map(user => {
-//         console.log("revisando...");
-//         if (user) {
-//           return true; // Usuario autenticado, permitir acceso
-//         } else {
-//           this.router.navigate(['/login']); // Usuario no autenticado, redirigir a la página de inicio de sesión
-//           return false;
-//         }
-//       })
-//     );
-//     return false;
-//   }
-// }
-
-// export const authGuardGuard: CanActivateFn = (route, state) => {
-//   return inject(AuthguardService).canActivate();
-// };
