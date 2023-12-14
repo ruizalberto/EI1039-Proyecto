@@ -1,28 +1,44 @@
-import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Auth, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { signOut } from 'firebase/auth';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
-  loggedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  loggeData$ = this.loggedSubject.asObservable();
-
+export class UserService implements OnDestroy {
+  
   constructor(private auth: Auth) {}
 
-  // register({ email, password }: any) {
-  //   return createUserWithEmailAndPassword(this.auth, email, password);
-  // }
-
-  login( email: any, password: any) {
-    this.loggedSubject.next(true);
-    return signInWithEmailAndPassword(this.auth, email, password);
+  ngOnDestroy(): void {
+    this.logout();
   }
 
-  // logout(){
-  //   this.loggedSubject.next(false);
-  //   return signOut(this.auth);
-  // }
+  async register(email: string, password: string) {
+    try {
+      return await createUserWithEmailAndPassword(this.auth, email, password);
+    }
+    catch(error) {
+      alert("No se ha podido hacer el log-in correctamente. Error: " + error)
+      return null;
+    }
+  }
+
+  async login(email: string, password: string) {
+    try {
+      return await signInWithEmailAndPassword(this.auth, email, password);
+    }
+    catch(error) {
+      alert("No se ha podido hacer el log-in correctamente. Error: " + error)
+      return null;
+    }
+  }
+
+  async logout(){
+    return signOut(this.auth);
+  }
+
+  getInfoUserLogged() {
+    return authState(this.auth);
+  }
+
 }
