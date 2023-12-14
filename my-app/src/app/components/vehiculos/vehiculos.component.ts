@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'
 import { VehiculosDialogComponent, VehiculosDialogResult } from '../vehiculos-dialog/vehiculos-dialog.component';
 import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Mobility } from 'src/app/interfaces/mobility.interface';
 import { Router } from '@angular/router';
 import { MobilityService } from 'src/app/services/mobility.service';
 import { Vehiculo } from 'src/app/interfaces/vehicle.class';
-
-//toda la gestion base de datos pasar a el service -> para jusgar con elementos locales y poder solicitar lo que sea en el service 
-
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-vehiculos',
@@ -17,21 +15,37 @@ import { Vehiculo } from 'src/app/interfaces/vehicle.class';
   styleUrls: ['./vehiculos.component.css']
 })
 export class VehiculosComponent implements OnInit {
-  vehiclesDB = collection(this.firestore, 'vehicles');
+  vehiclesDB: any;
   vehiclesData: Mobility[] = [];
+  userSubscription!: Subscription;
+  userInfo: any;
 
   constructor(private dialog: MatDialog, 
               private firestore: Firestore, 
               private router: Router, 
-              private mobilityService:MobilityService) {}
+              private mobilityService: MobilityService,
+              private userService: UserService) {}
 
   ngOnInit(): void {
+    this.initUserSubscription();
+  }
+
+  private initUserSubscription() {
+    this.userSubscription = this.userService.getInfoUserLogged().subscribe(user => {
+      if (user){
+        this.userInfo = user.uid;
+        this.vehiclesDB = collection(this.firestore, 'users/'+ this.userInfo +'/vehicles');
+        this.initGetVehiclesSubsrciption();
+      }
+    });
+  }
+
+  private initGetVehiclesSubsrciption() {
     this.getVehicles().subscribe( vehicles => {
       this.vehiclesData = vehicles;
     })
   }
   
-
   newVehicle(): void {
     const dialogRef = this.dialog.open(VehiculosDialogComponent, {
       width: '270px',
@@ -45,6 +59,7 @@ export class VehiculosComponent implements OnInit {
         if (!result) {
           return;
         }
+
         addDoc(this.vehiclesDB, result.vehicle)
         .then((docRef) => {
           console.log('Documento agregado con ID:', docRef.id);
@@ -56,7 +71,7 @@ export class VehiculosComponent implements OnInit {
   }
 
   getVehicles(): Observable<Mobility[]> {
-    return collectionData(this.vehiclesDB, { idField: 'id'}) as Observable<Mobility[]>;
+    return collectionData(this.vehiclesDB, { idField: this.userInfo }) as Observable<Mobility[]>;
   }
 
   vehicleSelected(vehicle: Mobility){

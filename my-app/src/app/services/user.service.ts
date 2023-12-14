@@ -1,13 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, authState } from '@angular/fire/auth';
 import { signOut } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService implements OnDestroy {
   
   constructor(private auth: Auth) {}
+
+  ngOnDestroy(): void {
+    this.logout();
+  }
 
   async register(email: string, password: string) {
     try {
@@ -36,4 +40,5 @@ export class UserService {
   getInfoUserLogged() {
     return authState(this.auth);
   }
+
 }

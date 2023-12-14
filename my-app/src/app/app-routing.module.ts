@@ -4,6 +4,7 @@ import { VehiculosComponent } from './components/vehiculos/vehiculos.component';
 import { MapComponent } from './components/map/map.component';
 import { RegistroComponent } from './components/registro/registro.component';
 import { LoginComponent } from './components/login/login.component';
+// import { AuthguardService } from './services/authguard.service';
 
 const routes: Routes = [
   { path: '', component: MapComponent},
