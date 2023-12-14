@@ -9,11 +9,12 @@
 			</ul>
 		</div>
 		<div class="login" *ngIf="!logged">
-			<button mat-raised-button color="accent" routerLink="">Iniciar Sesión</button>
+			<button mat-raised-button color="accent" routerLink="login" class="inicio-sesion">Iniciar Sesión</button>
 			<button mat-raised-button color="accent" routerLink="registro">Registrar</button>
 		</div>
 		<div class="logout" *ngIf="logged">
-			<button mat-raised-button color="warn" (click)="logOut()" *ngIf="logged">Log Out</button>
+			{{ userEmail }}
+			<button mat-raised-button color="warn" (click)="logOut()" *ngIf="logged" routerLink="">Log Out</button>
 		</div>
 	</div>
 </ng-container>
