@@ -1,58 +1,37 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'
 import { VehiculosDialogComponent, VehiculosDialogResult } from '../vehiculos-dialog/vehiculos-dialog.component';
 import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Mobility } from 'src/app/interfaces/mobility.interface';
 import { Router } from '@angular/router';
 import { MobilityService } from 'src/app/services/mobility.service';
 import { Vehiculo } from 'src/app/interfaces/vehicle.class';
-import { UserService } from 'src/app/services/user.service';
+
+//toda la gestion base de datos pasar a el service -> para jusgar con elementos locales y poder solicitar lo que sea en el service 
+
 
 @Component({
   selector: 'app-vehiculos',
   templateUrl: './vehiculos.component.html',
   styleUrls: ['./vehiculos.component.css']
 })
-export class VehiculosComponent implements OnInit, OnDestroy {
-  vehiclesDB: any;
+export class VehiculosComponent implements OnInit {
+  vehiclesDB = collection(this.firestore, 'vehicles');
   vehiclesData: Mobility[] = [];
-  vehiclesSubscription!: Subscription;
-  userSubscription!: Subscription;
-  userInfo: any;
 
   constructor(private dialog: MatDialog, 
               private firestore: Firestore, 
               private router: Router, 
-              private mobilityService: MobilityService,
-              private userService: UserService) {}
-
-  ngOnDestroy(): void {
-    if (this.vehiclesSubscription){
-      this.vehiclesSubscription.unsubscribe();
-    }
-  }
+              private mobilityService:MobilityService) {}
 
   ngOnInit(): void {
-    this.initUserSubscription();
-  }
-
-  private initUserSubscription() {
-    this.userSubscription = this.userService.getInfoUserLogged().subscribe(user => {
-      if (user){
-        this.userInfo = user.uid;
-        this.vehiclesDB = collection(this.firestore, 'users/'+ this.userInfo +'/vehicles');
-        this.initGetVehiclesSubsrciption();
-      }
-    });
-  }
-
-  private initGetVehiclesSubsrciption() {
-    this.vehiclesSubscription = this.getVehicles().subscribe( vehicles => {
+    this.getVehicles().subscribe( vehicles => {
       this.vehiclesData = vehicles;
     })
   }
   
+
   newVehicle(): void {
     const dialogRef = this.dialog.open(VehiculosDialogComponent, {
       width: '270px',
@@ -66,7 +45,6 @@ export class VehiculosComponent implements OnInit, OnDestroy {
         if (!result) {
           return;
         }
-
         addDoc(this.vehiclesDB, result.vehicle)
         .then((docRef) => {
           console.log('Documento agregado con ID:', docRef.id);
@@ -78,7 +56,7 @@ export class VehiculosComponent implements OnInit, OnDestroy {
   }
 
   getVehicles(): Observable<Mobility[]> {
-    return collectionData(this.vehiclesDB, { idField: this.userInfo }) as Observable<Mobility[]>;
+    return collectionData(this.vehiclesDB, { idField: 'id'}) as Observable<Mobility[]>;
   }
 
   vehicleSelected(vehicle: Mobility){

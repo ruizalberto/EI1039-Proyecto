@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import * as L from 'leaflet';
 import { Geocoder, geocoders } from 'leaflet-control-geocoder';
 import { Mobility } from 'src/app/interfaces/mobility.interface';
@@ -10,7 +11,6 @@ import { RouteStrategyService } from 'src/app/services/route-strategy.service';
 import { FastestRouteStrategy, RecommendedRouteStrategy, RouteStrategy, ShortestRouteStrategy } from 'src/app/interfaces/route-strategy';
 import { Bike } from 'src/app/interfaces/bike.class';
 import { Foot } from 'src/app/interfaces/foot.class';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-map',
@@ -37,8 +37,7 @@ export class MapComponent implements OnInit {
     private openRouteService: OpenRouteService,
     private router: Router,
     private mobilityService: MobilityService,
-    private routeStrategyService: RouteStrategyService,
-    private userService: UserService
+    private routeStrategyService: RouteStrategyService
   ) {}
 
   ngOnInit(): void {
