@@ -1,5 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, authState, deleteUser } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, authState } from '@angular/fire/auth';
+import { Firestore, collection, deleteDoc, getDocs, getFirestore, query } from '@angular/fire/firestore';
 import { signOut } from 'firebase/auth';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { signOut } from 'firebase/auth';
 })
 export class UserService implements OnDestroy {
   
-  constructor(private auth: Auth) {}
+  constructor(private auth: Auth, private firestore: Firestore) {}
 
   ngOnDestroy(): void {
     this.logout();
@@ -45,6 +46,14 @@ export class UserService implements OnDestroy {
     try {
       const user = this.auth.currentUser;
       if (user) {
+        const vehiclesRef = collection(this.firestore, 'users/', user.uid, '/vehicles');
+        const q = query(vehiclesRef);
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach(async (doc) => {
+          await deleteDoc(doc.ref);
+          console.log(`Documento ${doc.id} eliminado correctamente`);
+        });
         await user.delete();
         console.log("Usuario eliminado correctamente");
       }
@@ -52,4 +61,5 @@ export class UserService implements OnDestroy {
       console.error("No se ha podido borrar el usuario:", error);
     }
   }
+  
 }
