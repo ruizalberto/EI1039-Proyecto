@@ -27,6 +27,7 @@ import { VehiculosDialogComponent } from './components/vehiculos-dialog/vehiculo
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { RegistroComponent } from './components/registro/registro.component';
 import { LoginComponent } from './components/login/login.component';
+import { EliminarCuentaDialogComponent } from './components/eliminar-cuenta-dialog/eliminar-cuenta-dialog.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { LoginComponent } from './components/login/login.component';
     VehiculosDialogComponent,
     BasicDataBox,
     RegistroComponent,
-    LoginComponent
+    LoginComponent,
+    EliminarCuentaDialogComponent
   ],
   imports: [
     BrowserModule,

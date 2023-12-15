@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, authState } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, authState, deleteUser } from '@angular/fire/auth';
 import { signOut } from 'firebase/auth';
 
 @Injectable({
@@ -41,4 +41,15 @@ export class UserService implements OnDestroy {
     return authState(this.auth);
   }
 
+  async removeAccount() {
+    try {
+      const user = this.auth.currentUser;
+      if (user) {
+        await user.delete();
+        console.log("Usuario eliminado correctamente");
+      }
+    } catch (error) {
+      console.error("No se ha podido borrar el usuario:", error);
+    }
+  }
 }

@@ -11,6 +11,7 @@ import { FastestRouteStrategy, RecommendedRouteStrategy, RouteStrategy, Shortest
 import { Bike } from 'src/app/interfaces/bike.class';
 import { Foot } from 'src/app/interfaces/foot.class';
 import { UserService } from 'src/app/services/user.service';
+import { Vehiculo } from 'src/app/interfaces/vehicle.class';
 
 @Component({
   selector: 'app-map',
@@ -47,6 +48,14 @@ export class MapComponent implements OnInit {
     this.initGeocoderControl();
     this.initMarkerSubsription();
     this.initMobilitySubscription();
+    this.initUserSubscription();
+  }
+
+  private initUserSubscription(): void {
+    this.userService.getInfoUserLogged().subscribe(user => {
+      if (!user){
+      }
+    });
   }
 
   private initMobilitySubscription(): void {

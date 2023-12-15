@@ -99,7 +99,7 @@ export class OpenRouteService {
   }
 
   getFuelCost(){
-      this.costRoute = Number((Number(this.distance) * 0.01 * this.mobilityService.getMobilitySelected().consumo * this.precioGasolina).toFixed(2));
+    this.costRoute = Number((Number(this.distance) * 0.01 * this.mobilityService.getMobilitySelected().consumo * this.precioGasolina).toFixed(2));
   }
   
   // getLightPrice(): Observable<any> {
