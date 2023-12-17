@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MobilityService } from 'src/app/services/mobility.service';
 import { Vehiculo } from 'src/app/interfaces/vehicle.class';
 import { UserService } from 'src/app/services/user.service';
+import { VehiculosService } from 'src/app/services/vehiculos.service';
 
 @Component({
   selector: 'app-vehiculos',
@@ -15,17 +16,16 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./vehiculos.component.css']
 })
 export class VehiculosComponent implements OnInit {
-  vehiclesDB: any;
   vehiclesData: Mobility[] = [];
   vehiclesSubscription!: Subscription;
   userSubscription!: Subscription;
-  userInfo: any;
+  userID: any;
 
   constructor(private dialog: MatDialog, 
-              private firestore: Firestore, 
               private router: Router, 
               private mobilityService: MobilityService,
-              private userService: UserService) {}
+              private userService: UserService,
+              private vehiculosService: VehiculosService) {}
 
   ngOnDestroy(): void {
     if (this.vehiclesSubscription){
@@ -43,15 +43,14 @@ export class VehiculosComponent implements OnInit {
   private initUserSubscription() {
     this.userSubscription = this.userService.getInfoUserLogged().subscribe(user => {
       if (user){
-        this.userInfo = user.uid;
-        this.vehiclesDB = collection(this.firestore, 'users/'+ this.userInfo +'/vehicles');
-        this.initGetVehiclesSubsrciption();
+        this.userID = user.uid;
+        this.initVehiclesSubsrciption();
       }
     });
   }
 
-  private initGetVehiclesSubsrciption() {
-    this.vehiclesSubscription = this.getVehicles().subscribe( vehicles => {
+  private initVehiclesSubsrciption() {
+    this.vehiclesSubscription = this.vehiculosService.getVehicles(this.userID).subscribe( vehicles => {
       this.vehiclesData = vehicles;
     })
   }
@@ -69,8 +68,7 @@ export class VehiculosComponent implements OnInit {
         if (!result) {
           return;
         }
-
-        addDoc(this.vehiclesDB, result.vehicle)
+        this.vehiculosService.addVehicleToUserCollection(this.userID, result.vehicle)
         .then((docRef) => {
           console.log('Documento agregado con ID:', docRef.id);
         })
@@ -80,17 +78,16 @@ export class VehiculosComponent implements OnInit {
       });
   }
 
-  getVehicles(): Observable<Mobility[]> {
-    return collectionData(this.vehiclesDB, { idField: this.userInfo }) as Observable<Mobility[]>;
-  }
-
-  vehicleSelected(vehicle: Mobility){
+  vehicleSelected(vehicle: Mobility) {
     var vehicleSelected = new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo);
     this.mobilityService.setMobilySelected(vehicleSelected);
     this.router.navigate(['/']);
   }
 
-  deleteVehicle(vehicle: Mobility):void{}
+  deleteVehicle(vehicle: Mobility): void {
+    this.vehiculosService.removeVehicleFromUserCollection(this.userID, vehicle);
+    this.mobilityService.setIsMobilitySelected(false);
+  }
 
   modifyVehicle(vehicle: Mobility):void{}
 
