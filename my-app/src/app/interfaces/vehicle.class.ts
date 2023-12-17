@@ -4,9 +4,9 @@ export class Vehiculo implements Mobility {
     private id?:string;
     nombre: string;
     marca: string;
-    tipo: string; //Electrico o Gasolina ( por defecto es gasolina )
-    consumo: number; //consumo en litros por 100 km´s "consumption"
-    perfil: string;//profile "driving-car" / "cycling-regular" / "foot-walking"
+    tipo: string;
+    consumo: number;
+    perfil: string;
 
 
     constructor(name: string, marca: string, tipo: string, consumo: number){
@@ -21,6 +21,6 @@ export class Vehiculo implements Mobility {
         return this.perfil;
     }
 
-    getId(): string|undefined{return this.id;}
-    setId(id: string){ this.id=id; }
+    getId(): string | undefined { return this.id; }
+    setId(id: string) { this.id = id; }
 }

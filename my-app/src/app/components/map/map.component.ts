@@ -11,6 +11,8 @@ import { RouteStrategyService } from 'src/app/services/route-strategy.service';
 import { FastestRouteStrategy, RecommendedRouteStrategy, RouteStrategy, ShortestRouteStrategy } from 'src/app/interfaces/route-strategy';
 import { Bike } from 'src/app/interfaces/bike.class';
 import { Foot } from 'src/app/interfaces/foot.class';
+import { UserService } from 'src/app/services/user.service';
+import { Vehiculo } from 'src/app/interfaces/vehicle.class';
 
 @Component({
   selector: 'app-map',
@@ -37,7 +39,8 @@ export class MapComponent implements OnInit {
     private openRouteService: OpenRouteService,
     private router: Router,
     private mobilityService: MobilityService,
-    private routeStrategyService: RouteStrategyService
+    private routeStrategyService: RouteStrategyService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +49,16 @@ export class MapComponent implements OnInit {
     this.initGeocoderControl();
     this.initMarkerSubsription();
     this.initMobilitySubscription();
+    this.initUserSubscription();
+  }
+
+  private initUserSubscription() {
+    this.userService.getInfoUserLogged().subscribe(user => {
+      if (!user){
+        this.isMobilitySelected = false;
+        this.showRouteInfo = false;
+      }
+    });
   }
 
   private initMobilitySubscription(): void {

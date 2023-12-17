@@ -15,16 +15,17 @@ export class OpenRouteService {
   private time: number = 0;
   private costRoute: number = 0;
   private precioGasolina: number = 0;
-  private lightPrice = "https://api.preciodelaluz.org/v1/prices/now?zone=PCB";
+  private precioLuz: any;
 
   routeSubject: BehaviorSubject<Object[]> = new BehaviorSubject<Object[]>([]);
   routeData$ = this.routeSubject.asObservable();
 
   constructor(private http: HttpClient, private mobilityService: MobilityService) {
     this.getFuelPrice();
+    this.getLightPrice();
   }
   
-  private getFuelPrice(): void {
+  getFuelPrice(): void {
     const fuelPriceUrl = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/';
 
     this.http.get<any>(fuelPriceUrl).subscribe(
@@ -32,8 +33,23 @@ export class OpenRouteService {
         const fuelPrice: string = fuelPriceData.ListaEESSPrecio[3557]['Precio Gasoleo A'].replace(',', '.');
         const pricePerLiter: number = Number(fuelPrice);
         this.precioGasolina = pricePerLiter;
+        console.log("Precio gasolina: " + this.precioGasolina);
       }
     );
+  }
+
+  getLightPrice(): void {
+    const lightPriceUrl = "v1/prices/now?zone=PCB";
+    
+    this.http.get<any>(lightPriceUrl).subscribe({
+      next: lightPriceData => {
+        this.precioLuz = lightPriceData;
+        console.log("Precio luz: " + this.precioLuz);
+      },
+      error: err => {
+        console.log("Error al obtener precio de la luz: " + err);
+      }
+    });
   }
 
   private getDirections(start: L.LatLng, end: L.LatLng, transporte: Mobility, strategy: RouteStrategy): Observable<any> {
@@ -70,7 +86,7 @@ export class OpenRouteService {
                 this.getFuelCost();
               } else if (mobility.tipo == "Eléctrico"){
                 console.log("Funciono correctamente");
-                // this.getLightCost();
+                this.getLightCost();
               }
             } else if (mobility.getPerfil() == "cycling-regular") {
               // this.getCosteBicicleta();
@@ -99,19 +115,12 @@ export class OpenRouteService {
   }
 
   getFuelCost(){
-      this.costRoute = Number((Number(this.distance) * 0.01 * this.mobilityService.getMobilitySelected().consumo * this.precioGasolina).toFixed(2));
+    this.costRoute = Number((Number(this.distance) * 0.01 * this.mobilityService.getMobilitySelected().consumo * this.precioGasolina).toFixed(2));
   }
-  
-  // getLightPrice(): Observable<any> {
-  //   return this.http.get<any>(this.lightPrice);
-  // }
 
-  // getLightCost(){
-  //   this.getLightPrice().subscribe(
-  //     lightPriceData => {
-  //       console.log(lightPriceData);
-  //     });
-  // }
+  getLightCost(){
+    this.costRoute = Number((Number(this.distance) * 0.01 * this.mobilityService.getMobilitySelected().consumo * this.precioLuz * 0.001).toFixed(2));
+  }
 
   getCosteBicicleta(){
     this.costRoute = Number((Number(this.distance) * 45).toFixed(2));
