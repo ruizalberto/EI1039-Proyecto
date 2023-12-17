@@ -51,9 +51,11 @@ export class MapComponent implements OnInit {
     this.initUserSubscription();
   }
 
-  private initUserSubscription(): void {
+  private initUserSubscription() {
     this.userService.getInfoUserLogged().subscribe(user => {
       if (!user){
+        this.isMobilitySelected = false;
+        this.showRouteInfo = false;
       }
     });
   }

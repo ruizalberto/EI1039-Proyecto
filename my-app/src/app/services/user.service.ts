@@ -14,23 +14,21 @@ export class UserService implements OnDestroy {
     this.logout();
   }
 
-  async register(email: string, password: string) {
+  async register(email: string, password: string): Promise<any> {
     try {
       return await createUserWithEmailAndPassword(this.auth, email, password);
     }
     catch(error) {
-      alert("No se ha podido hacer el log-in correctamente. Error: " + error)
-      return null;
+      return await error;
     }
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<any> {
     try {
       return await signInWithEmailAndPassword(this.auth, email, password);
     }
     catch(error) {
-      alert("No se ha podido hacer el log-in correctamente. Error: " + error)
-      return null;
+      return await error;
     }
   }
 

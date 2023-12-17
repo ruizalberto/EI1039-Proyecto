@@ -8,6 +8,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent {
+  error: string = "";
 
   @ViewChild("email") email! : ElementRef;
   @ViewChild("password") password! : ElementRef;
@@ -17,9 +18,13 @@ export class RegistroComponent {
   registro():void{
     var email = this.email.nativeElement.value;
     var password = this.password.nativeElement.value;
-    this.userService.register(email, password).then(res=>{
-      console.log(res);
-      this.router.navigate(['']);
+    this.userService.register(email, password)
+    .then(res => {
+      if (res.code){
+        this.error = "Error: " + res.code;
+      } else {
+        this.router.navigate(['']);
+      }
     });
   }
 }

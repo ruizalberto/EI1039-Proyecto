@@ -17,6 +17,11 @@
 .input-group {
     margin-bottom: 20px;
 }
+
+.error {
+    margin-bottom: 20px;
+    color: red;
+}
   
 .input-field {
     width: 100%;

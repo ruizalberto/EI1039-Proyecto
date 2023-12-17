@@ -15,7 +15,7 @@
 		<div class="logout" *ngIf="logged">
 			{{ userEmail }}
 			<button mat-raised-button color="warn" (click)="logOut()" *ngIf="logged" routerLink="" class="salir-sesion">Log Out</button>
-			<button mat-raised-button (click)="openDialogRemoveAccount('1500ms', '750ms')" >Borrar Cuenta</button>
+			<button mat-raised-button (click)="openDialogRemoveAccount('600ms', '300ms')" >Borrar Cuenta</button>
 		</div>
 	</div>
 </ng-container>
