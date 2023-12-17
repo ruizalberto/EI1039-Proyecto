@@ -15,6 +15,10 @@
       </mat-form-field>
     </div>
 
+    <div class="error">
+      {{ error }}
+    </div>
+
     <div class="input-group">
       <button mat-raised-button color="primary" (click)="login()" [disabled]="formLogin.invalid">
         Iniciar Sesión

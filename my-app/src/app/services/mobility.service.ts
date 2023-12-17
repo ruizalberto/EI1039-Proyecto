@@ -21,11 +21,11 @@ export class MobilityService{
         this.updateMobilitySubject();
     }
 
-    getMobilitySelected():Mobility{
+    getMobilitySelected(): Mobility {
         return this.mobilitySelected;
     }
 
-    isMobilitySelected():boolean{
+    isMobilitySelected(): boolean {
         return this.isSelected;
     }
 

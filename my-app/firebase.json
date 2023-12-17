@@ -2,5 +2,8 @@
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
+  },
+  "extensions": {
+    "delete-user-data": "firebase/delete-user-data@0.1.19"
   }
 }

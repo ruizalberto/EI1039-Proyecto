@@ -1,8 +1,7 @@
 {
-  "/api": {
+  "/v1/prices/*": {
     "target": "https://api.preciodelaluz.org",
-    "secure": false
+    "secure": false,
+    "changeOrigin": true
   }
 }
-
-

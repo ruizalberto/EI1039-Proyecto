@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { MatDialog } from '@angular/material/dialog';
+import { EliminarCuentaDialogComponent } from '../eliminar-cuenta-dialog/eliminar-cuenta-dialog.component';
 
 @Component({
   selector: 'app-navbar',
@@ -14,6 +15,7 @@ export class NavbarComponent implements OnInit {
   userEmail: any;
 
   constructor(
+    private dialog: MatDialog,
     private userService: UserService,
     private router: Router
   ){ this.logged = false; }
@@ -41,5 +43,22 @@ export class NavbarComponent implements OnInit {
         this.router.navigate(['']);
       })
       .catch(error => console.log(error));
+  }
+
+  openDialogRemoveAccount(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    const dialogRef = this.dialog.open(EliminarCuentaDialogComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration
+    });
+    dialogRef
+      .afterClosed()
+      .subscribe((result: boolean) => {
+        if (result) {
+          this.logged = false;
+          this.userService.removeAccount();
+          this.router.navigate(['']);
+        }
+      });
   }
 }
