@@ -9,7 +9,7 @@ import { EliminarCuentaDialogComponent } from '../eliminar-cuenta-dialog/elimina
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit{
   title = 'EI1039 Proyecto';
   logged: boolean;
   userEmail: any;

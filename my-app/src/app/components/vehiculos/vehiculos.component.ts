@@ -14,7 +14,7 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './vehiculos.component.html',
   styleUrls: ['./vehiculos.component.css']
 })
-export class VehiculosComponent implements OnInit, OnDestroy {
+export class VehiculosComponent implements OnInit {
   vehiclesDB: any;
   vehiclesData: Mobility[] = [];
   vehiclesSubscription!: Subscription;
