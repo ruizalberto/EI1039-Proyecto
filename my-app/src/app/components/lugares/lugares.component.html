@@ -1,0 +1,51 @@
+<app-navbar></app-navbar>
+<!--<div *ngFor="let vehiculo of vehiclesData">
+    <div class="separador"></div>
+    <p>Nombre: {{ vehiculo.nombre }}</p>
+    <p>marca: {{ vehiculo.marca }}</p>
+    <p>Tipo: {{ vehiculo.tipo }}</p>
+    <p>Consumo: {{ vehiculo.consumo }}</p>
+    <div>
+    <button (click)="vehicleSelected(vehiculo)" mat-button>
+      <mat-icon>directions_car</mat-icon> Seleccionar
+    </button>
+    <button (click)="deleteVehicle(vehiculo)" mat-button>
+      <mat-icon>delete</mat-icon> Borrar
+    </button>
+  </div>
+</div> -->
+
+<table class="prueba-tabla prueba-tabla-general">
+  <thead class="thead-table">
+    <tr>
+      <th>Nombre</th>
+      <th>Latitud</th>
+      <th>Longitud</th>
+      <th>Seleccionar</th>
+      <th>Modificar</th>
+      <th>Borrar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let site of sitesData">  
+      <td>{{ site.name }}</td>
+      <td>{{ site.coorLat }}</td>
+      <td>{{ site.coorLon }}</td>
+      <td>
+        <button class="my-button" (click)="selectedSite(site)">Seleccionar <mat-icon>room</mat-icon></button>
+      </td>
+      <td>
+        <button class="my-button" (click)="modifySite(site)">Modificar <mat-icon>edit</mat-icon><!--</button>[disabled]="!p.timeLastAccess"> --></button>
+      </td>
+      <td>
+        <button class="my-button" (click)="deleteSite(site)">Borrar <mat-icon>delete</mat-icon></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- <div class="content-wrapper">
+  <button (click)="newVehicle()" mat-button>
+    <mat-icon>add</mat-icon> Añadir Vehículo
+  </button>
+</div> -->

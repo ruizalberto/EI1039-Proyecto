@@ -1,0 +1,58 @@
+p {
+    color: #fff;
+}
+
+.separador {
+    height: 10px;
+    width: 250px;
+    background-color: white;
+    margin-bottom: 15px;
+}
+
+.content-wrapper {
+  margin: 20px;
+  text-align: right;
+  margin-right: 100px;
+}
+
+.my-button {
+    height: 100%;
+    padding: 5px 5px;
+    background-color: #4d0c8f;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .my-button:hover {
+    background-color: #8d33d1;
+  }
+  .my-button:active {
+    background-color: #965bd1;
+  }
+
+
+
+  .prueba-tabla-general {
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 2.5%;
+    border-bottom: 1px solid #c8ced3;
+    background-color: #ffffff;
+    border-spacing: 0px;
+    text-align: center;
+  }
+  
+  .thead-table {
+    height: 30px;
+    color: #5c6873;
+    background-color: #e4e7ea;
+    border-color: #c8ced3;
+    vertical-align: bottom;
+    border-bottom: 2px solid #c8ced3;
+  }
+  
+  
+  .prueba-tabla tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }

@@ -1,36 +1,32 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'
 import { MatIconModule } from '@angular/material/icon';
-import { VehiculosDialogComponent, VehiculosDialogResult } from '../vehiculos-dialog/vehiculos-dialog.component';
-import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
 import { Observable, Subscription } from 'rxjs';
-import { Mobility } from 'src/app/interfaces/mobility.interface';
+import { Sites } from 'src/app/interfaces/site.class';
 import { Router } from '@angular/router';
-import { MobilityService } from 'src/app/services/mobility.service';
-import { Vehiculo } from 'src/app/interfaces/vehicle.class';
 import { UserService } from 'src/app/services/user.service';
-import { VehiculosService } from 'src/app/services/vehiculos.service';
+import { SitesService } from 'src/app/services/site.service';
+import { LugaresDialogComponent, SitesDialogResult } from './lugares-dialog/lugares-dialog.component';
 
 @Component({
-  selector: 'app-vehiculos',
-  templateUrl: './vehiculos.component.html',
-  styleUrls: ['./vehiculos.component.css']
+  selector: 'app-lugares',
+  templateUrl: './lugares.component.html',
+  styleUrls: ['./lugares.component.css']
 })
-export class VehiculosComponent implements OnInit {
-  vehiclesData: Mobility[] = [];
-  vehiclesSubscription!: Subscription;
+export class LugaresComponent implements OnInit {
+  sitesData: Sites[] = [];
+  siteSubscription!: Subscription;
   userSubscription!: Subscription;
   userID: any;
 
   constructor(private dialog: MatDialog, 
               private router: Router, 
-              private mobilityService: MobilityService,
-              private userService: UserService,
-              private vehiculosService: VehiculosService) {}
+              private sitesService: SitesService,
+              private userService: UserService) {}
 
   ngOnDestroy(): void {
-    if (this.vehiclesSubscription){
-      this.vehiclesSubscription.unsubscribe();
+    if (this.siteSubscription){
+      this.siteSubscription.unsubscribe();
     }
     if (this.userSubscription){
       this.userSubscription.unsubscribe();
@@ -45,40 +41,52 @@ export class VehiculosComponent implements OnInit {
     this.userSubscription = this.userService.getInfoUserLogged().subscribe(user => {
       if (user){
         this.userID = user.uid;
-        this.initVehiclesSubsrciption();
+        this.initSitesSubsrciption();
       }
     });
   }
 
-  private initVehiclesSubsrciption() {
-    this.vehiclesSubscription = this.vehiculosService.getVehicles(this.userID).subscribe( vehicles => {
-      this.vehiclesData = vehicles;
+  private initSitesSubsrciption() {
+    this.siteSubscription = this.sitesService.getSites(this.userID).subscribe( sites => {
+      this.sitesData = sites;
     })
   }
   
-  newVehicle(): void {
-    const dialogRef = this.dialog.open(VehiculosDialogComponent, {
+  newSite(): void {
+    const dialogRef = this.dialog.open(LugaresDialogComponent, {
       width: '270px',
       data: {
-        vehicle: {},
+        site: {},
       },
     });
     dialogRef
       .afterClosed()
-      .subscribe((result: VehiculosDialogResult|undefined) => {
+      .subscribe((result: SitesDialogResult|undefined) => {
         if (!result) {
           return;
         }
-        this.vehiculosService.addVehicleToUserCollection(this.userID, result.vehicle)
+        this.sitesService.addSiteToUserCollection(this.userID, result.site)
         .then((docRef) => {
-          console.log('Documento agregado con ID:', docRef.id);
+          console.log('Lugar agregado con ID:', docRef.id);
         })
         .catch((error) => {
-          console.error('Error al agregar documento:', error);
+          console.error('Error al agregar el lugar:', error);
         });
       });
   }
 
+  selectedSite(site: Sites){
+
+  }
+
+  deleteSite(site:Sites){
+
+  }
+
+  modifySite(site: Sites){
+    
+  }
+/*
   vehicleSelected(vehicle: Mobility) {
     var vehicleSelected = new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo);
     this.mobilityService.setMobilySelected(vehicleSelected);
@@ -112,5 +120,5 @@ export class VehiculosComponent implements OnInit {
   //       dataList[taskIndex] = task;
   //     }
   //   });
-  // }
+  // }*/
 }
