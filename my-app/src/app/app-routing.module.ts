@@ -8,12 +8,13 @@ import { AuthguardService } from './services/authguard.service';
 import { LugaresComponent } from './components/lugares/lugares.component';
 
 const routes: Routes = [
-  { path: '', component: MapComponent},
+  { path: '', redirectTo:'home', pathMatch: "full"},
+  { path: 'home', component: MapComponent, canActivate: [AuthguardService]},
   { path: 'vehiculos', component: VehiculosComponent, canActivate: [AuthguardService]},
   { path: 'lugares', component: LugaresComponent, canActivate:[AuthguardService]},
   { path: 'registro', component: RegistroComponent},
   { path: 'login', component: LoginComponent},
-  { path: '**', redirectTo: ''}
+  //{ path: '**', redirectTo: ''}
 ];
 
 @NgModule({

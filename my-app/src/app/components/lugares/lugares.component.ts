@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { SitesService } from 'src/app/services/site.service';
 import { LugaresDialogComponent, SitesDialogResult } from './lugares-dialog/lugares-dialog.component';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-lugares',
@@ -18,6 +19,7 @@ export class LugaresComponent implements OnInit {
   siteSubscription!: Subscription;
   userSubscription!: Subscription;
   userID: any;
+  map:any;
 
   constructor(private dialog: MatDialog, 
               private router: Router, 
@@ -35,6 +37,15 @@ export class LugaresComponent implements OnInit {
 
   ngOnInit(): void {
     this.initUserSubscription();
+    this.initMap()
+    console.log("se ha iniciado todo")
+  }
+
+  private initMap(): void {
+    this.map = L.map('map').setView([39.9874905, -0.0686626], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this.map);
   }
 
   private initUserSubscription() {
@@ -51,7 +62,7 @@ export class LugaresComponent implements OnInit {
       this.sitesData = sites;
     })
   }
-  
+  /*
   newSite(): void {
     const dialogRef = this.dialog.open(LugaresDialogComponent, {
       width: '270px',
@@ -73,7 +84,7 @@ export class LugaresComponent implements OnInit {
           console.error('Error al agregar el lugar:', error);
         });
       });
-  }
+  }*/
 
   selectedSite(site: Sites){
 
@@ -84,6 +95,8 @@ export class LugaresComponent implements OnInit {
   }
 
   modifySite(site: Sites){
+    
+
     
   }
 /*

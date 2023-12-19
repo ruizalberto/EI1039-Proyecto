@@ -1,0 +1,59 @@
+.dialog-class{
+    background-color: rgb(63, 63, 63);
+}
+.field-class{
+    height: 50px;
+    padding-top: 13px;
+    padding-left: 13px;
+    font-size: 16px;
+    width: 92%;
+    background-color: lightgray;
+    color: black;
+    resize: none;
+}
+.field-class:invalid{
+    outline: 1px solid #ff0000;
+}
+.select-class{
+    height: 65px;
+    width: 100%;
+    padding-top: 13px;
+    padding-left: 13px;
+    padding-bottom: 15px;
+    font-size: 16px;
+    font-family: monospace;
+    background-color: lightgray;
+    ;
+}
+.select-class:invalid{
+    outline: 1px solid #ff0000;
+}
+
+.my-button {
+    height: 100%;
+    padding: 5px 20px;
+    background-color: #4d0c8f;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 10px;
+    margin-top: 5px;
+    vertical-align: middle;
+    /*margin-left: 120px;*/
+  }
+
+  .my-button:hover {
+    background-color: #8d33d1;
+  }
+  .my-button:active {
+    background-color: #965bd1;
+  }
+  .my-button:disabled{
+    background-color: gray;
+  }
+
+  .myalign-div{
+    float: right;
+    margin-right: -8px;
+  }

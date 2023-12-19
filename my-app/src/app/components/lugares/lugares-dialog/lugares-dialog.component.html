@@ -1,0 +1,22 @@
+<div class="map-frame">
+    <div id="map"></div>
+</div>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Nombre</mat-label>
+        <input matInput cdkFocusInitial [(ngModel)]="data.site.name" required/>
+    </mat-form-field>
+    
+    <mat-form-field>
+        <mat-label>Latitud</mat-label>
+        <textarea matInput [(ngModel)]="data.site.coorLat" required></textarea>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Longitud</mat-label>
+        <textarea matInput [(ngModel)]="data.site.coorLon" required></textarea>
+    </mat-form-field>
+    
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="{ site: data.site }" [disabled]="!validarFormulario()">OK</button>
+    </div>
+</mat-dialog-content>

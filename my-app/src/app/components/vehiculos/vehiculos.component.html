@@ -1,53 +1,31 @@
 <app-navbar></app-navbar>
-<!--<div *ngFor="let vehiculo of vehiclesData">
-    <div class="separador"></div>
-    <p>Nombre: {{ vehiculo.nombre }}</p>
-    <p>marca: {{ vehiculo.marca }}</p>
-    <p>Tipo: {{ vehiculo.tipo }}</p>
-    <p>Consumo: {{ vehiculo.consumo }}</p>
-    <div>
-    <button (click)="vehicleSelected(vehiculo)" mat-button>
-      <mat-icon>directions_car</mat-icon> Seleccionar
-    </button>
-    <button (click)="deleteVehicle(vehiculo)" mat-button>
-      <mat-icon>delete</mat-icon> Borrar
-    </button>
-  </div>
-</div> -->
-
 <table class="prueba-tabla prueba-tabla-general">
-  <thead class="thead-table">
-    <tr>
-      <th>Nombre</th>
-      <th>Marca</th>
-      <th>Tipo</th>
-      <th>Consumo</th>
-      <th>Seleccionar</th>
-      <th>Modificar</th>
-      <th>Borrar</th>
+  <thead>
+    <tr class="header-table">
+      <th class="data-cell">Nombre</th>
+      <th class="data-cell">Marca</th>
+      <th class="data-cell">Tipo</th>
+      <th class="data-cell">Consumo</th>
+      <th class="bt-cell">Seleccionar</th>
+      <th class="bt-cell">Modificar</th>
+      <th class="bt-cell">Borrar</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let vehiculo of vehiclesData">  
-      <td>{{ vehiculo.nombre }}</td>
-      <td>{{ vehiculo.marca }}</td>
-      <td>{{ vehiculo.tipo }}</td>
-      <td>{{ vehiculo.consumo }}</td>
-      <td>
-        <button class="my-button" (click)="vehicleSelected(vehiculo)">Seleccionar <mat-icon>directions_car</mat-icon></button>
-      </td>
-      <td>
-        <button class="my-button" (click)="modifyVehicle(vehiculo)">Modificar <mat-icon>edit</mat-icon><!--</button>[disabled]="!p.timeLastAccess"> --></button>
-      </td>
-      <td>
-        <button class="my-button" (click)="deleteVehicle(vehiculo)">Borrar <mat-icon>delete</mat-icon></button>
-      </td>
+      <td class="data-cell">{{ vehiculo.nombre }}</td>
+      <td class="data-cell">{{ vehiculo.marca }}</td>
+      <td class="data-cell">{{ vehiculo.tipo }}</td>
+      <td class="data-cell">{{ vehiculo.consumo }}</td>
+      <td class="bt-cell"><button class="my-button" (click)="vehicleSelected(vehiculo)"><mat-icon>directions_car</mat-icon></button></td>
+      <td class="bt-cell"><button class="my-button" (click)="modifyVehicle(vehiculo)"><mat-icon>edit</mat-icon><!--</button>[disabled]="!p.timeLastAccess"> --></button></td>
+      <td class="bt-cell"><button class="my-button" (click)="deleteVehicle(vehiculo)"><mat-icon>delete</mat-icon></button></td>
     </tr>
   </tbody>
 </table>
 
 <div class="content-wrapper">
-  <button (click)="newVehicle()" mat-button>
-    <mat-icon>add</mat-icon> Añadir Vehículo
+  <button (click)="newVehicle()" class="bt-add my-button">
+    Añadir Vehículo
   </button>
 </div>
