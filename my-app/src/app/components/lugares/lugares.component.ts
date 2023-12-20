@@ -100,31 +100,6 @@ export class LugaresComponent implements OnInit, AfterViewInit {
     this.posMarker = L.marker([this.selectedLat,this.selectedLon]).addTo(this.mapSite);
   }
 
-
-  /*
-  newSite(): void {
-    const dialogRef = this.dialog.open(LugaresDialogComponent, {
-      width: '270px',
-      data: {
-        site: {},
-      },
-    });
-    dialogRef
-      .afterClosed()
-      .subscribe((result: SitesDialogResult|undefined) => {
-        if (!result) {
-          return;
-        }
-        this.sitesService.addSiteToUserCollection(this.userID, result.site)
-        .then((docRef) => {
-          console.log('Lugar agregado con ID:', docRef.id);
-        })
-        .catch((error) => {
-          console.error('Error al agregar el lugar:', error);
-        });
-      });
-  }*/
-
   saveSite(){
     const siteToAdd = {
       name: this.selectedName,
@@ -171,44 +146,13 @@ export class LugaresComponent implements OnInit, AfterViewInit {
 
   }
 
+  deleteSite(site: Sites): void {
+    console.log("entrando en delete");
+    this.sitesService.removeSiteFromUserCollection(this.userID, site);
+  }
+
   selectedSite(site: Sites){}
-  deleteSite(site:Sites){}
   modifySite(site: Sites){}
-/*
-  vehicleSelected(vehicle: Mobility) {
-    var vehicleSelected = new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo);
-    this.mobilityService.setMobilySelected(vehicleSelected);
-    this.router.navigate(['/']);
-  }
-
-  deleteVehicle(vehicle: Mobility): void {
-    this.vehiculosService.removeVehicleFromUserCollection(this.userID, vehicle);
-    this.mobilityService.setIsMobilitySelected(false);
-  }
-
-  modifyVehicle(vehicle: Mobility):void{}
-
-  // editTask(Vehicle: Vehicle): void {
-  //   const dialogRef = this.dialog.open(TaskDialogComponent, {
-  //     width: '270px',
-  //     data: {
-  //       task,
-  //       enableDelete: true,
-  //     },
-  //   });
-  //   dialogRef.afterClosed().subscribe((result: TaskDialogResult|undefined) => {
-  //     if (!result) {
-  //       return;
-  //     }
-  //     const dataList = this[list];
-  //     const taskIndex = dataList.indexOf(task);
-  //     if (result.delete) {
-  //       dataList.splice(taskIndex, 1);
-  //     } else {
-  //       dataList[taskIndex] = task;
-  //     }
-  //   });
-  // }*/
 }
 
 export interface SiteResult {
