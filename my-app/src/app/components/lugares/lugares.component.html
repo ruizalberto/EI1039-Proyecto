@@ -52,13 +52,13 @@
   </div>
   <div>
     <textarea placeholder="Nombre*" [(ngModel)]="selectedName" class="field-class" required></textarea>
-    <button class="my-button" (click)="searchSite()"><mat-icon>search</mat-icon></button>
     <!--boton buscar?-->
   </div>
   <div>
     <textarea id="latitud" placeholder="Latitud*" [(ngModel)]="selectedLat" class="field-class" required></textarea>
     <textarea id="longitud" placeholder="Longitud*" [(ngModel)]="selectedLon" class="field-class" required></textarea>
-    <button class="my-button" (click)="saveSite()"><mat-icon>save</mat-icon></button>
+    <button class="my-button" (click)="searchSite()">Buscar Coordenadas<mat-icon>search</mat-icon></button>
+    <button class="my-button" (click)="saveSite()">Guardar<mat-icon>save</mat-icon></button>
   </div>
 </th>
 </tr>

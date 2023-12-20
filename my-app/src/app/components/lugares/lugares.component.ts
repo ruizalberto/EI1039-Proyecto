@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { SitesService } from 'src/app/services/site.service';
 import { Geocoder, geocoders } from 'leaflet-control-geocoder';
-import { LatLngExpression, LeafletMouseEvent } from 'leaflet';
 
 import * as L from 'leaflet';
 
@@ -21,23 +20,17 @@ export class LugaresComponent implements OnInit, AfterViewInit {
   userSubscription!: Subscription;
   userID: any;
   mapSite:any;
-  geocoder:any;
 
-  //----------------------------------------------------------
   selectedName: string = "";
   selectedLat: number = 0;
   selectedLon: number = 0;
 
-  latitudTextArea:HTMLTextAreaElement|undefined;
-  longitudTextArea:HTMLTextAreaElement|undefined;
+  latitudTextArea: HTMLTextAreaElement | undefined;
+  longitudTextArea: HTMLTextAreaElement | undefined;
 
   posMarker: L.Marker|null = null;
-
-  //----------------------------------------------------------
   
-  constructor(private dialog: MatDialog, 
-              private router: Router, 
-              private sitesService: SitesService,
+  constructor(private sitesService: SitesService,
               private userService: UserService) {}
 
   ngOnDestroy(): void {
@@ -52,22 +45,24 @@ export class LugaresComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initMap();
     this.mapSite.on('click', (e: L.LeafletMouseEvent) => {
-      this.mapSiteNewSite(e.latlng.lat,e.latlng.lng);
+      this.mapSiteNewSite(e.latlng.lat, e.latlng.lng);
     });
     this.initGeocoderControl()
   }
+
   ngOnInit(): void {
     this.latitudTextArea = document.getElementById('latitud') as HTMLTextAreaElement;
     this.longitudTextArea = document.getElementById('longitud') as HTMLTextAreaElement;
     this.initUserSubscription();
-
   }
+
   private initMap(): void {
     this.mapSite = L.map('mapSites').setView([39.9874905, -0.0686626], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.mapSite);
   }
+
   private initUserSubscription() {
     this.userSubscription = this.userService.getInfoUserLogged().subscribe(user => {
       if (user){
@@ -76,22 +71,32 @@ export class LugaresComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
   private initSitesSubsrciption() {
     this.siteSubscription = this.sitesService.getSites(this.userID).subscribe( sites => {
       this.sitesData = sites;
     })
   }
 
-  mapSiteNewSite(lat:number, lng:number){
-    if(this.posMarker){
+  private removeInfoShowed() {
+    this.selectedName = "";
+    this.selectedLat = 0;
+    this.selectedLon = 0;
+  }
+
+  mapSiteNewSite(lat: number, lng: number){
+    if (this.posMarker){
       this.mapSite.removeLayer(this.posMarker);
     }
-    this.selectedLat = lat
-    this.selectedLon = lng
-    if ( this.latitudTextArea && this.longitudTextArea){
+
+    this.selectedLat = lat;
+    this.selectedLon = lng;
+
+    if (this.latitudTextArea && this.longitudTextArea){
       this.latitudTextArea.value = this.selectedLat.toString();
       this.longitudTextArea.value = this.selectedLon.toString();
     }
+
     this.posMarker = L.marker([this.selectedLat,this.selectedLon]).addTo(this.mapSite);
   }
 
@@ -119,12 +124,24 @@ export class LugaresComponent implements OnInit, AfterViewInit {
         });
       });
   }*/
+
   saveSite(){
-    console.log(this.selectedName + " - " + this.selectedLat + " - " + this.selectedLon);
+    const siteToAdd = {
+      name: this.selectedName,
+      coorLat: this.selectedLat,
+      coorLon: this.selectedLon
+    };
+    this.sitesService.addSiteToUserCollection(this.userID, siteToAdd)
+    .then((docRef) => {
+      console.log('Documento agregado con ID:', docRef.id);
+    })
+    .catch((error) => {
+      console.error('Error al agregar documento:', error);
+    });
+    this.removeInfoShowed();
   }
 
   searchSite(){
-
     this.mapSiteNewSite(this.selectedLat,this.selectedLon);
   }
 
@@ -192,4 +209,9 @@ export class LugaresComponent implements OnInit, AfterViewInit {
   //     }
   //   });
   // }*/
+}
+
+export interface SiteResult {
+  site: Sites;
+  delete?: boolean;
 }

@@ -9,7 +9,7 @@ import { LugaresComponent } from './components/lugares/lugares.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'home', pathMatch: "full"},
-  { path: 'home', component: MapComponent, canActivate: [AuthguardService]},
+  { path: 'home', component: MapComponent},
   { path: 'vehiculos', component: VehiculosComponent, canActivate: [AuthguardService]},
   { path: 'lugares', component: LugaresComponent, canActivate:[AuthguardService]},
   { path: 'registro', component: RegistroComponent},

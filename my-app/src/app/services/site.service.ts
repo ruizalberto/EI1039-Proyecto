@@ -10,14 +10,13 @@ export class SitesService{
 
   constructor(private firestore: Firestore) {}
 
-  getSites(userID: string): Observable<Sites[]> {
-    const sitesRef = collection(this.firestore, 'users/' + userID + '/sites');
-    return collectionData(sitesRef, { idField: userID }) as Observable<Sites[]>;
-  }
-
   async addSiteToUserCollection(userId: string, site: Sites): Promise<any> {
     const sitesRef = collection(this.firestore, 'users/' + userId + '/sites');
     return await addDoc(sitesRef, site);
   }
 
+  getSites(userID: string): Observable<Sites[]> {
+    const sitesRef = collection(this.firestore, 'users/' + userID + '/sites');
+    return collectionData(sitesRef, { idField: userID }) as Observable<Sites[]>;
+  }
 }

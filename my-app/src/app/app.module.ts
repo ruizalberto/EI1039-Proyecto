@@ -29,7 +29,6 @@ import { RegistroComponent } from './components/registro/registro.component';
 import { LoginComponent } from './components/login/login.component';
 import { EliminarCuentaDialogComponent } from './components/eliminar-cuenta-dialog/eliminar-cuenta-dialog.component';
 import { LugaresComponent } from './components/lugares/lugares.component';
-import { LugaresDialogComponent } from './components/lugares/lugares-dialog/lugares-dialog.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +37,6 @@ import { LugaresDialogComponent } from './components/lugares/lugares-dialog/luga
     NavbarComponent,
     VehiculosComponent,
     LugaresComponent,
-    LugaresDialogComponent,
     VehiculosDialogComponent,
     BasicDataBox,
     RegistroComponent,

@@ -23,6 +23,7 @@ p {
     border: none;
     cursor: pointer;
     font-size: 12px;
+    margin-right: 7.5px;
   }
   .my-button:hover {
     background-color: #8d33d1;
