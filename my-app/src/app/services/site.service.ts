@@ -6,13 +6,36 @@ import { Observable } from "rxjs";
 @Injectable({
     providedIn: 'root',
   })
-export class SitesService{
+export class SitesService {
+  private foundFirstDoc: boolean = false;
 
   constructor(private firestore: Firestore) {}
 
   async addSiteToUserCollection(userId: string, site: Sites): Promise<any> {
     const sitesRef = collection(this.firestore, 'users/' + userId + '/sites');
     return await addDoc(sitesRef, site);
+  }
+
+  async removeSiteFromUserCollection(userId: string, site: Sites): Promise<any> {
+    this.foundFirstDoc = false;
+    const siteToRemoveRef = collection(this.firestore, 'users/', userId, '/sites');
+    const querySnapshot = await getDocs(query(siteToRemoveRef,
+      where('name', '==', site.name),
+      where('coorLat', '==', site.coorLat),
+      where('coorLon', '==', site.coorLon)
+    ));
+
+    querySnapshot.forEach((doc) => {
+      if (!this.foundFirstDoc) { // Si todavía no hemos encontrado el primer documento
+        try {
+          deleteDoc(doc.ref);
+          console.log(`Documento ${doc.id} eliminado correctamente.`);
+          this.foundFirstDoc = true;
+        } catch (error) {
+          console.error(`Error al eliminar documento ${doc.id}:`, error);
+        }
+      }
+    });
   }
 
   getSites(userID: string): Observable<Sites[]> {
