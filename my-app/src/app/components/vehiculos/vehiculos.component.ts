@@ -90,27 +90,19 @@ export class VehiculosComponent implements OnInit {
     this.mobilityService.setIsMobilitySelected(false);
   }
 
-  modifyVehicle(vehicle: Mobility):void{}
-
-  // editTask(Vehicle: Vehicle): void {
-  //   const dialogRef = this.dialog.open(TaskDialogComponent, {
-  //     width: '270px',
-  //     data: {
-  //       task,
-  //       enableDelete: true,
-  //     },
-  //   });
-  //   dialogRef.afterClosed().subscribe((result: TaskDialogResult|undefined) => {
-  //     if (!result) {
-  //       return;
-  //     }
-  //     const dataList = this[list];
-  //     const taskIndex = dataList.indexOf(task);
-  //     if (result.delete) {
-  //       dataList.splice(taskIndex, 1);
-  //     } else {
-  //       dataList[taskIndex] = task;
-  //     }
-  //   });
-  // }
+  modifyVehicle(vehiclePast: Mobility): void {
+    const vehicleToUpdate = new Vehiculo(vehiclePast.nombre, vehiclePast.marca, vehiclePast.tipo, vehiclePast.consumo);
+    const dialogRef = this.dialog.open(VehiculosDialogComponent, {
+      width: '270px',
+      data: {
+        vehicle: vehiclePast
+      },
+    });
+    dialogRef.afterClosed().subscribe((result: VehiculosDialogResult|undefined) => {
+      if (!result) {
+        return;
+      }
+      this.vehiculosService.modifyVehicleFromUserCollection(this.userID, vehicleToUpdate, result.vehicle);
+    });
+  }
 }

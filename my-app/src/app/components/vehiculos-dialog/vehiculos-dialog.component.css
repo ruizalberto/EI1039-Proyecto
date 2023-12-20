@@ -1,6 +1,7 @@
 .dialog-class{
     background-color: rgb(63, 63, 63);
 }
+
 .field-class{
     height: 50px;
     padding-top: 13px;
@@ -11,9 +12,11 @@
     color: black;
     resize: none;
 }
+
 .field-class:invalid{
     outline: 1px solid #ff0000;
 }
+
 .select-class{
     height: 65px;
     width: 100%;
@@ -23,8 +26,8 @@
     font-size: 16px;
     font-family: monospace;
     background-color: lightgray;
-    ;
 }
+
 .select-class:invalid{
     outline: 1px solid #ff0000;
 }
