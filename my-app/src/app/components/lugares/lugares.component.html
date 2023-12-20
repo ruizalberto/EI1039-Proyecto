@@ -14,9 +14,9 @@
     </button>
   </div>
 </div> -->
-<table>
+<table class="lugares-all-table">
   <tr>
-    <th>
+  <th>
 <table class="prueba-tabla prueba-tabla-general">
   <thead class="thead-table">
     <tr>
@@ -48,7 +48,17 @@
 </th>
 <th>
   <div class="map-frame">
-    <div id="map"></div>
+    <div id="mapSites"></div>
+  </div>
+  <div>
+    <textarea placeholder="Nombre*" [(ngModel)]="selectedName" class="field-class" required></textarea>
+    <button class="my-button" (click)="searchSite()"><mat-icon>search</mat-icon></button>
+    <!--boton buscar?-->
+  </div>
+  <div>
+    <textarea id="latitud" placeholder="Latitud*" [(ngModel)]="selectedLat" class="field-class" required></textarea>
+    <textarea id="longitud" placeholder="Longitud*" [(ngModel)]="selectedLon" class="field-class" required></textarea>
+    <button class="my-button" (click)="saveSite()"><mat-icon>save</mat-icon></button>
   </div>
 </th>
 </tr>

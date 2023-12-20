@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'
-import { MatIconModule } from '@angular/material/icon';
 import { Observable, Subscription } from 'rxjs';
 import { Sites } from 'src/app/interfaces/site.class';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { SitesService } from 'src/app/services/site.service';
-import { LugaresDialogComponent, SitesDialogResult } from './lugares-dialog/lugares-dialog.component';
+import { Geocoder, geocoders } from 'leaflet-control-geocoder';
+import { LatLngExpression, LeafletMouseEvent } from 'leaflet';
+
 import * as L from 'leaflet';
 
 @Component({
@@ -14,13 +15,26 @@ import * as L from 'leaflet';
   templateUrl: './lugares.component.html',
   styleUrls: ['./lugares.component.css']
 })
-export class LugaresComponent implements OnInit {
+export class LugaresComponent implements OnInit, AfterViewInit {
   sitesData: Sites[] = [];
   siteSubscription!: Subscription;
   userSubscription!: Subscription;
   userID: any;
-  map:any;
+  mapSite:any;
+  geocoder:any;
 
+  //----------------------------------------------------------
+  selectedName: string = "";
+  selectedLat: number = 0;
+  selectedLon: number = 0;
+
+  latitudTextArea:HTMLTextAreaElement|undefined;
+  longitudTextArea:HTMLTextAreaElement|undefined;
+
+  posMarker: L.Marker|null = null;
+
+  //----------------------------------------------------------
+  
   constructor(private dialog: MatDialog, 
               private router: Router, 
               private sitesService: SitesService,
@@ -35,19 +49,25 @@ export class LugaresComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.initUserSubscription();
-    this.initMap()
-    console.log("se ha iniciado todo")
+  ngAfterViewInit(): void {
+    this.initMap();
+    this.mapSite.on('click', (e: L.LeafletMouseEvent) => {
+      this.mapSiteNewSite(e.latlng.lat,e.latlng.lng);
+    });
+    this.initGeocoderControl()
   }
+  ngOnInit(): void {
+    this.latitudTextArea = document.getElementById('latitud') as HTMLTextAreaElement;
+    this.longitudTextArea = document.getElementById('longitud') as HTMLTextAreaElement;
+    this.initUserSubscription();
 
+  }
   private initMap(): void {
-    this.map = L.map('map').setView([39.9874905, -0.0686626], 13);
+    this.mapSite = L.map('mapSites').setView([39.9874905, -0.0686626], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map);
+    }).addTo(this.mapSite);
   }
-
   private initUserSubscription() {
     this.userSubscription = this.userService.getInfoUserLogged().subscribe(user => {
       if (user){
@@ -56,12 +76,26 @@ export class LugaresComponent implements OnInit {
       }
     });
   }
-
   private initSitesSubsrciption() {
     this.siteSubscription = this.sitesService.getSites(this.userID).subscribe( sites => {
       this.sitesData = sites;
     })
   }
+
+  mapSiteNewSite(lat:number, lng:number){
+    if(this.posMarker){
+      this.mapSite.removeLayer(this.posMarker);
+    }
+    this.selectedLat = lat
+    this.selectedLon = lng
+    if ( this.latitudTextArea && this.longitudTextArea){
+      this.latitudTextArea.value = this.selectedLat.toString();
+      this.longitudTextArea.value = this.selectedLon.toString();
+    }
+    this.posMarker = L.marker([this.selectedLat,this.selectedLon]).addTo(this.mapSite);
+  }
+
+
   /*
   newSite(): void {
     const dialogRef = this.dialog.open(LugaresDialogComponent, {
@@ -85,20 +119,44 @@ export class LugaresComponent implements OnInit {
         });
       });
   }*/
+  saveSite(){
+    console.log(this.selectedName + " - " + this.selectedLat + " - " + this.selectedLon);
+  }
 
-  selectedSite(site: Sites){
+  searchSite(){
+
+    this.mapSiteNewSite(this.selectedLat,this.selectedLon);
+  }
+
+  private initGeocoderControl():void {
+    new Geocoder({
+      geocoder: new geocoders.Nominatim({
+        geocodingQueryParams: {
+          "countrycodes": "es"
+        }
+      }),
+      position: 'topleft',
+      defaultMarkGeocode: false
+    }).on('markgeocode', (e) => {
+      var bbox = e.geocode.bbox;
+      var poly = L.polygon([
+        bbox.getSouthEast(),
+        bbox.getNorthEast(),
+        bbox.getNorthWest(),
+        bbox.getSouthWest()
+      ]);
+      this.selectedLat = e.geocode.center.lat;
+      this.selectedLon = e.geocode.center.lng;
+      this.selectedName = e.geocode.name;
+      this.mapSiteNewSite(this.selectedLat,this.selectedLon)
+      this.mapSite.fitBounds(poly.getBounds());
+    }).addTo(this.mapSite);
 
   }
 
-  deleteSite(site:Sites){
-
-  }
-
-  modifySite(site: Sites){
-    
-
-    
-  }
+  selectedSite(site: Sites){}
+  deleteSite(site:Sites){}
+  modifySite(site: Sites){}
 /*
   vehicleSelected(vehicle: Mobility) {
     var vehicleSelected = new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo);

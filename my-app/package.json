@@ -25,6 +25,7 @@
     "http-proxy-middleware": "^2.0.6",
     "leaflet": "^1.9.4",
     "leaflet-control-geocoder": "^2.4.0",
+    "leaflet-geosearch": "^3.11.0",
     "rxjs": "~7.8.0",
     "zone.js": "~0.13.0"
   },
