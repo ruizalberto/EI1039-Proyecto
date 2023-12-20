@@ -13,7 +13,9 @@ export class VehiculosDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<VehiculosDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: VehicleDialogData
-  ) {}
+  ) { 
+    data.vehicle.tipo="";
+  }
 
   // cancel(): void {
   //   this.data.vehicle.nombre = this.backupVehicle.nombre;

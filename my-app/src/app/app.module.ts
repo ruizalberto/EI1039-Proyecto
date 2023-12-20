@@ -28,6 +28,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { RegistroComponent } from './components/registro/registro.component';
 import { LoginComponent } from './components/login/login.component';
 import { EliminarCuentaDialogComponent } from './components/eliminar-cuenta-dialog/eliminar-cuenta-dialog.component';
+import { LugaresComponent } from './components/lugares/lugares.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { EliminarCuentaDialogComponent } from './components/eliminar-cuenta-dial
     MapComponent,
     NavbarComponent,
     VehiculosComponent,
+    LugaresComponent,
     VehiculosDialogComponent,
     BasicDataBox,
     RegistroComponent,

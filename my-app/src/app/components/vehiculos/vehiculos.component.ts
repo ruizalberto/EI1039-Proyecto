@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'
+import { MatIconModule } from '@angular/material/icon';
 import { VehiculosDialogComponent, VehiculosDialogResult } from '../vehiculos-dialog/vehiculos-dialog.component';
 import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
 import { Observable, Subscription } from 'rxjs';
