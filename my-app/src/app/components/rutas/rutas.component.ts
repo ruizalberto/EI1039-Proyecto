@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Vehiculo } from 'src/app/interfaces/vehicle.class';
 import { UserService } from 'src/app/services/user.service';
 import { Route } from 'src/app/interfaces/route.class';
+import { RouteService } from 'src/app/services/route.service';
 
 @Component({
   selector: 'app-rutas',
@@ -19,7 +20,8 @@ export class RutasComponent implements OnInit {
   userID: any;
 
   constructor(private router: Router,
-              private userService: UserService) {}
+              private userService: UserService,
+              private routeService: RouteService) {}
 
   ngOnDestroy(): void {
     if (this.routeSubscription){
@@ -43,10 +45,10 @@ export class RutasComponent implements OnInit {
     });
   }
 
-  private initRoutesSubsrciption() {/*
+  private initRoutesSubsrciption() {
     this.routeSubscription = this.routeService.getRoutes(this.userID).subscribe( routes => {
       this.routesData = routes;
-    })*/
+    })
   }
   
   selectedRoute(route: Route) {
