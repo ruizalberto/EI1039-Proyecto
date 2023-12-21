@@ -147,7 +147,6 @@ export class LugaresComponent implements OnInit, AfterViewInit {
   }
 
   deleteSite(site: Sites): void {
-    console.log("entrando en delete");
     this.sitesService.removeSiteFromUserCollection(this.userID, site);
   }
 
