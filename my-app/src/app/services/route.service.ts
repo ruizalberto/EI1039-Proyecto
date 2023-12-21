@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, arrayUnion, updateDoc, GeoPoint, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, deleteDoc, GeoPoint, collectionData, getDocs, query, where } from '@angular/fire/firestore';
 import { Route } from '../interfaces/route.class';
 import { Observable } from 'rxjs';
 import { Sites } from '../interfaces/site.class';
@@ -20,6 +20,28 @@ export class RouteService {
 
     const routeRef = collection(this.firestore, 'users/' + userId + '/routes');
     return await addDoc(routeRef, routeCopy);
+  }
+
+  async removeRotueFromUserCollection(userId: string, route: Route): Promise<any> {
+    this.foundFirstDoc = false;
+    const routeToRemoveRef = collection(this.firestore, 'users/', userId, '/routes');
+    const querySnapshot = await getDocs(query(routeToRemoveRef,
+      where('nombre', '==', route.nombre),
+      where('distancia', '==', route.distancia),
+      where('duracion', '==', route.duracion)
+    ));
+
+    querySnapshot.forEach((doc) => {
+      if (!this.foundFirstDoc) { // Si todavía no hemos encontrado el primer documento
+        try {
+          deleteDoc(doc.ref);
+          console.log(`Documento ${doc.id} eliminado correctamente.`);
+          this.foundFirstDoc = true;
+        } catch (error) {
+          console.error(`Error al eliminar documento ${doc.id}:`, error);
+        }
+      }
+    });
   }
 
   getRoutes(userID: string): Observable<Route[]> {

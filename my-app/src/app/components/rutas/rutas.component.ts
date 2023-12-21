@@ -57,8 +57,7 @@ export class RutasComponent implements OnInit {
     this.router.navigate(['/']);*/
   }
 
-  deleteRoute(route: Route): void {/*
-    this.vehiculosService.removeVehicleFromUserCollection(this.userID, vehicle);
-    this.mobilityService.setIsMobilitySelected(false);*/
+  deleteRoute(route: Route): void {
+    this.routeService.removeRotueFromUserCollection(this.userID, route);
   }
 }
