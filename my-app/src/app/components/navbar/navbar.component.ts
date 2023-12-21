@@ -31,6 +31,9 @@ export class NavbarComponent implements OnInit{
   clickSites(){
     this.router.navigate(['lugares']);
   }
+  clickRoutes(){
+    this.router.navigate(['rutas']);
+  }
   clickRegister(){
     this.router.navigate(['registro']);
   }
