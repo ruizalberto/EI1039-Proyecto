@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import * as L from 'leaflet';
 import { Geocoder, geocoders } from 'leaflet-control-geocoder';
 import { Mobility } from 'src/app/interfaces/mobility.interface';
@@ -12,7 +11,8 @@ import { FastestRouteStrategy, RecommendedRouteStrategy, RouteStrategy, Shortest
 import { Bike } from 'src/app/interfaces/bike.class';
 import { Foot } from 'src/app/interfaces/foot.class';
 import { UserService } from 'src/app/services/user.service';
-import { Vehiculo } from 'src/app/interfaces/vehicle.class';
+import { RouteService } from 'src/app/services/route.service';
+import { Route } from 'src/app/interfaces/route.class';
 
 
 @Component({
@@ -25,6 +25,7 @@ import { Vehiculo } from 'src/app/interfaces/vehicle.class';
 export class MapComponent implements OnInit {
   private map: any;
   private routeLayer: any;
+  private userID: string = "";
   btn = true;
   distanceInKMs: string | undefined;
   timeInMinutes: number | undefined;
@@ -34,6 +35,8 @@ export class MapComponent implements OnInit {
   isMobilitySelected: boolean = false;
   mobilitySelected!: Mobility;
   routeStrategy: RouteStrategy | undefined;
+  route: Route | undefined;
+  routeName: string = "";
 
   constructor(
     private markerService: MarkerService,
@@ -41,7 +44,8 @@ export class MapComponent implements OnInit {
     private router: Router,
     private mobilityService: MobilityService,
     private routeStrategyService: RouteStrategyService,
-    private userService: UserService
+    private userService: UserService,
+    private routeService: RouteService
   ) {}
 
   ngOnInit(): void {
@@ -58,6 +62,8 @@ export class MapComponent implements OnInit {
       if (!user){
         this.isMobilitySelected = false;
         this.showRouteInfo = false;
+      } else {
+        this.userID = user.uid;
       }
     });
   }
@@ -131,26 +137,57 @@ export class MapComponent implements OnInit {
       this.mobilitySelected = this.mobilityService.getMobilitySelected();
       this.openRouteService.setRouteData(
         this.markerService.getStart(),
-        this.markerService.getEnd(), 
+        this.markerService.getEnd(),
         this.mobilityService.getMobilitySelected(),
         this.routeStrategyService.getStrategySelected()
         );
-        this.openRouteService.routeSubject.subscribe(
-          data =>{
-            if (data != undefined && data[0]){
-              this.drawRoute(data[0]);
-              this.distanceInKMs = data[1] as string;
-              this.timeInMinutes = data[2] as number;
-              this.costRoute = data[3] as number;
-              if ( this.mobilitySelected.getPerfil() == "driving-car" ){
-                this.uniCost = "€";
-              } else {
-                this.uniCost = "Calorias";
-              }
-              this.showRouteInfo = true;   
+      this.openRouteService.routeSubject.subscribe(
+        data => {
+          if (data != undefined && data[0]){
+            this.drawRoute(data[0]);
+            this.distanceInKMs = data[1] as string;
+            this.timeInMinutes = data[2] as number;
+            this.costRoute = data[3] as number;
+        
+            this.setRouteData(this.markerService.getStart().toString(), this.markerService.getEnd().toString(), data[0], this.distanceInKMs, this.timeInMinutes);
+            if ( this.mobilitySelected.getPerfil() == "driving-car" ){
+              this.uniCost = "€";
+            } else {
+              this.uniCost = "Calorias";
             }
-          } 
+            this.showRouteInfo = true;
+          }
+        } 
       );
+    }
+  }
+
+  private setRouteData(inicio: string, final: string, geometry: any, distance: string, time: number): void {
+    const coordinates = geometry.coordinates;
+    this.route = new Route("", inicio, final, coordinates, distance, time);
+  }
+
+  saveRoute(): void {
+    if (this.route){
+      this.route.nombre = this.routeName;
+      const routeToAdd = {
+        nombre: this.route.nombre,
+        inicio: this.route.inicio,
+        final: this.route.final,
+        trayecto: this.route.trayecto,
+        distancia: this.route.distancia,
+        duracion: this.route.duracion
+      };
+
+      this.routeService.addRouteToUserCollection(this.userID, routeToAdd)
+      .then((docRef) => {
+        console.log('Documento agregado con ID:', docRef.id);
+      })
+      .catch((error) => {
+        console.error('Error al agregar documento:', error);
+      });
+    } else {
+      console.log("No se ha podido guardar el nombre de la ruta...");
     }
   }
 

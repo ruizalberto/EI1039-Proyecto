@@ -64,3 +64,20 @@
 .radio-button {
   margin: 5px;
 }
+
+.my-button {
+  height: 10%;
+  padding: 5px 5px;
+  background-color: #4d0c8f;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 7.5px;
+}
+.my-button:hover {
+  background-color: #8d33d1;
+}
+.my-button:active {
+  background-color: #965bd1;
+}
