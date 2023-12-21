@@ -128,7 +128,7 @@ export class MapComponent implements OnInit {
   }
 
   eligeVehiculo():void{
-    this.router.navigate(['/vehiculos'])
+    this.router.navigate(['/vehiculos']);
   }
 
   calculateRoute(): void {
@@ -182,6 +182,7 @@ export class MapComponent implements OnInit {
       this.routeService.addRouteToUserCollection(this.userID, routeToAdd)
       .then((docRef) => {
         console.log('Documento agregado con ID:', docRef.id);
+        this.router.navigate(['/rutas']);
       })
       .catch((error) => {
         console.error('Error al agregar documento:', error);
