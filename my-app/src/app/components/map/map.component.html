@@ -42,14 +42,12 @@
     </td>
   </tr>
   <tr class="fila-base">
-    <td class="columna-base">
-      <!-- <basic-data-box [title]="('title')" helpBtn="false">
-        <p>Vehiculo Seleccionado 3</p>
-        <p>Vehiculo Seleccionado 3</p>
-        <p>Vehiculo Seleccionado 3</p>
-        <p>Vehiculo Seleccionado 3</p>
-        <p>Vehiculo Seleccionado 3</p>
-      </basic-data-box> -->
+    <td class="columna-base" >
+      <div *ngIf="showRouteInfo">
+        <p></p>
+        <textarea id="routeName" placeholder="Introduce un nombre para la ruta..." [(ngModel)]="routeName" class="field-class" required></textarea>
+        <button class="my-button" (click)="saveRoute()">¿Quieres guardar esta ruta (distancia, trayecto y duración)?<mat-icon>save</mat-icon></button>
+      </div>
     </td>
     <td class="columna-base">
       <div class="box-derecha">
