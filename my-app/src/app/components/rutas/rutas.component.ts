@@ -58,6 +58,6 @@ export class RutasComponent implements OnInit {
   }
 
   deleteRoute(route: Route): void {
-    this.routeService.removeRotueFromUserCollection(this.userID, route);
+    this.routeService.removeRouteFromUserCollection(this.userID, route);
   }
 }

@@ -22,7 +22,7 @@ export class RouteService {
     return await addDoc(routeRef, routeCopy);
   }
 
-  async removeRotueFromUserCollection(userId: string, route: Route): Promise<any> {
+  async removeRouteFromUserCollection(userId: string, route: Route): Promise<any> {
     this.foundFirstDoc = false;
     const routeToRemoveRef = collection(this.firestore, 'users/', userId, '/routes');
     const querySnapshot = await getDocs(query(routeToRemoveRef,
