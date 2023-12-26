@@ -20,10 +20,7 @@ export class OpenRouteService {
   routeSubject: BehaviorSubject<Object[]> = new BehaviorSubject<Object[]>([]);
   routeData$ = this.routeSubject.asObservable();
 
-  constructor(private http: HttpClient, private mobilityService: MobilityService) {
-    this.getFuelPrice();
-    this.getLightPrice();
-  }
+  constructor(private http: HttpClient, private mobilityService: MobilityService) {}
   
   getFuelPrice(): void {
     const fuelPriceUrl = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/';

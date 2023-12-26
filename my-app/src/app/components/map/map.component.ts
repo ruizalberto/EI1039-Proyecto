@@ -49,6 +49,8 @@ export class MapComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.openRouteService.getFuelPrice();
+    this.openRouteService.getLightPrice();
     this.initMap();
     this.markerService.makeMarkers(this.map);
     this.initGeocoderControl();
