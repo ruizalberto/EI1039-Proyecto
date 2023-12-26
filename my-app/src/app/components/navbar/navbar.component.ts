@@ -55,12 +55,11 @@ export class NavbarComponent implements OnInit{
 
   logOut(): void {
     this.userService.logout()
-      .then(response => {
-        console.log(response);
-        this.logged = false;
-        this.router.navigate(['login']); // tendria que llevarte a la ventana de iniciar sesion o registrarse.
-      })
-      .catch(error => console.log(error));
+    .then(response => {
+      console.log(response);
+      this.logged = false;
+    })
+    .catch(error => console.log(error));
   }
 
   openDialogRemoveAccount(enterAnimationDuration: string, exitAnimationDuration: string): void {

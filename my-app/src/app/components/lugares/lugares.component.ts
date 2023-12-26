@@ -150,11 +150,6 @@ export class LugaresComponent implements OnInit, AfterViewInit {
     this.sitesService.removeSiteFromUserCollection(this.userID, site);
   }
 
-  selectedSite(site: Sites){}
-  modifySite(site: Sites){}
-}
-
-export interface SiteResult {
-  site: Sites;
-  delete?: boolean;
+  // selectedSite(site: Sites){}
+  // modifySite(site: Sites){}
 }

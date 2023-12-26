@@ -13,6 +13,9 @@ import { Foot } from 'src/app/interfaces/foot.class';
 import { UserService } from 'src/app/services/user.service';
 import { RouteService } from 'src/app/services/route.service';
 import { Route } from 'src/app/interfaces/route.class';
+import { SitesService } from 'src/app/services/site.service';
+import { Subscription } from 'rxjs';
+import { Sites } from 'src/app/interfaces/site.class';
 
 
 @Component({
@@ -23,10 +26,15 @@ import { Route } from 'src/app/interfaces/route.class';
 })
 
 export class MapComponent implements OnInit {
+  // map
   private map: any;
   private routeLayer: any;
+
+  // user
   private userID: string = "";
   btn = true;
+
+  // route info (distance, time, cost)
   distanceInKMs: string | undefined;
   timeInMinutes: number | undefined;
   costRoute: number = 0;
@@ -34,10 +42,17 @@ export class MapComponent implements OnInit {
   showRouteInfo: boolean = false;
   isMobilitySelected: boolean = false;
   mobilitySelected!: Mobility;
+
+  // routes
   routeStrategy: RouteStrategy | undefined;
   route: Route | undefined;
   routeName: string = "";
 
+  // sites
+  sitesData: Sites[] = [];
+  siteSubscription!: Subscription;
+  panelOpenState = false;
+  
   constructor(
     private markerService: MarkerService,
     private openRouteService: OpenRouteService,
@@ -45,7 +60,8 @@ export class MapComponent implements OnInit {
     private mobilityService: MobilityService,
     private routeStrategyService: RouteStrategyService,
     private userService: UserService,
-    private routeService: RouteService
+    private routeService: RouteService,
+    private sitesService: SitesService
   ) {}
 
   ngOnInit(): void {
@@ -62,18 +78,33 @@ export class MapComponent implements OnInit {
   private initUserSubscription() {
     this.userService.getInfoUserLogged().subscribe(user => {
       if (!user){
+        if (this.siteSubscription) {
+          this.siteSubscription.unsubscribe();
+        }
+        if (this.routeLayer) {
+          this.map.removeLayer(this.routeLayer);
+        }
+        // falta borrar marcadores y mirar si se puede deseleccionar el fastest shortest recommended
+        // tambien falta quitar lo de seleccionar ruta en el apartado de rutas y poner datos relevantes de esa ruta paq ue haya mas chicha
         this.isMobilitySelected = false;
         this.showRouteInfo = false;
       } else {
         this.userID = user.uid;
+        this.initSitesSubscription();
       }
     });
+  }
+
+  private initSitesSubscription(): void {
+    this.siteSubscription = this.sitesService.getSites(this.userID).subscribe( sites => {
+      this.sitesData = sites;
+    })
   }
 
   private initMobilitySubscription(): void {
     this.mobilityService.mobilitySubject.subscribe(
       data => {
-        if ( data != undefined && data[0] ){
+        if (data != undefined && data[0]) {
           this.isMobilitySelected = this.mobilityService.isMobilitySelected();
           this.mobilitySelected = this.mobilityService.getMobilitySelected();
         }
@@ -84,8 +115,10 @@ export class MapComponent implements OnInit {
   private initMarkerSubsription(): void {
     this.markerService.markersSubject.subscribe(
       data => {
-        if (data != undefined && data[0] && this.routeLayer)
+        if (data != undefined && data[0] && this.routeLayer) {
+          this.showRouteInfo = false;
           this.map.removeLayer(this.routeLayer);
+        }
       });
   }
 
@@ -135,8 +168,8 @@ export class MapComponent implements OnInit {
 
   calculateRoute(): void {
     if (this.markerService.isMaxMarkers() && this.mobilityService.isMobilitySelected() && this.routeStrategyService.isStrategySelected()){
-      this.isMobilitySelected = this.mobilityService.isMobilitySelected();
-      this.mobilitySelected = this.mobilityService.getMobilitySelected();
+      // this.isMobilitySelected = this.mobilityService.isMobilitySelected();
+      // this.mobilitySelected = this.mobilityService.getMobilitySelected();
       this.openRouteService.setRouteData(
         this.markerService.getStart(),
         this.markerService.getEnd(),
@@ -215,5 +248,9 @@ export class MapComponent implements OnInit {
       }
     }).addTo(this.map);
     this.map.fitBounds(this.routeLayer.getBounds());
+  }
+
+  selectedSite(site: Sites): void {
+    this.markerService.addSite(this.map, site);
   }
 }

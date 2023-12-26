@@ -38,6 +38,24 @@
           <mat-radio-button value="2" class="radio-button">Más Corta</mat-radio-button>
           <mat-radio-button value="3" class="radio-button">Recomendada</mat-radio-button>
         </mat-radio-group>
+        <mat-accordion>
+          <mat-expansion-panel (opened)="panelOpenState = true"
+                               (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Elige un lugar de interés
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <tbody>
+              <tr *ngFor="let site of sitesData">  
+                <td>{{ site.name }}</td>
+                <td>
+                  <button class="my-button" (click)="selectedSite(site)">Seleccionar <mat-icon>room</mat-icon></button>
+                </td>
+              </tr>
+            </tbody>
+          </mat-expansion-panel>
+        </mat-accordion>
       </div>
     </td>
   </tr>
