@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Firestore, collection, addDoc, collectionData, deleteDoc, doc, getDocs, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, deleteDoc, doc, getDocs, query, where, updateDoc } from '@angular/fire/firestore';
 import { Sites } from "../interfaces/site.class";
 import { Observable } from "rxjs";
 
@@ -41,5 +41,30 @@ export class SitesService {
   getSites(userID: string): Observable<Sites[]> {
     const sitesRef = collection(this.firestore, 'users/' + userID + '/sites');
     return collectionData(sitesRef, { idField: userID }) as Observable<Sites[]>;
+  }
+
+
+  async modifySiteFavorite(userId: string, siteSelected: Sites): Promise<any> {
+    this.foundFirstDoc = false;
+    const siteToUpdateRef = collection(this.firestore, 'users/', userId, '/sites');
+    const querySnapshot = await getDocs(query(siteToUpdateRef,
+      where('name', '==', siteSelected.name),
+      where('coorLat', '==', siteSelected.coorLat),
+      where('coorLon', '==', siteSelected.coorLon)
+    ));
+
+    querySnapshot.forEach((doc) => {
+      if (!this.foundFirstDoc) { // Si todavía no hemos encontrado el primer documento
+        try {
+          updateDoc(doc.ref, {
+            favorite: siteSelected.favorite,
+          });
+          console.log(`Documento ${doc.id} actualizado correctamente.`);
+          this.foundFirstDoc = true;
+        } catch (error) {
+          console.error(`Error al eliminar documento ${doc.id}:`, error);
+        }
+      }
+    });
   }
 }

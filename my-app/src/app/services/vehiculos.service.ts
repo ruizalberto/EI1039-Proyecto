@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, deleteDoc, getDocs, query, where, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Mobility } from '../interfaces/mobility.interface';
+import { Vehiculo } from '../interfaces/vehicle.class';
 
 @Injectable({
   providedIn: 'root'
@@ -67,8 +68,33 @@ export class VehiculosService {
     });
   }
 
-  getVehicles(userID: string): Observable<Mobility[]> {
+  getVehicles(userID: string): Observable<Vehiculo[]> {
     const vehiclesRef = collection(this.firestore, 'users/' + userID + '/vehicles');
-    return collectionData(vehiclesRef, { idField: userID }) as Observable<Mobility[]>;
+    return collectionData(vehiclesRef, { idField: userID }) as Observable<Vehiculo[]>;
+  }
+
+  async modifyVehicleFavorite(userId: string, vehicleSelected: Vehiculo): Promise<any> {
+    this.foundFirstDoc = false;
+    const vehicleToUpdateRef = collection(this.firestore, 'users/', userId, '/vehicles');
+    const querySnapshot = await getDocs(query(vehicleToUpdateRef,
+      where('nombre', '==', vehicleSelected.nombre),
+      where('marca', '==', vehicleSelected.marca),
+      where('tipo', '==', vehicleSelected.tipo),
+      where('consumo', '==', vehicleSelected.consumo)
+    ));
+
+    querySnapshot.forEach((doc) => {
+      if (!this.foundFirstDoc) { // Si todavía no hemos encontrado el primer documento
+        try {
+          updateDoc(doc.ref, {
+            favorite: vehicleSelected.favorite,
+          });
+          console.log(`Documento ${doc.id} actualizado correctamente.`);
+          this.foundFirstDoc = true;
+        } catch (error) {
+          console.error(`Error al eliminar documento ${doc.id}:`, error);
+        }
+      }
+    });
   }
 }

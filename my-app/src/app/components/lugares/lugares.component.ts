@@ -74,8 +74,12 @@ export class LugaresComponent implements OnInit, AfterViewInit {
 
   private initSitesSubsrciption() {
     this.siteSubscription = this.sitesService.getSites(this.userID).subscribe( sites => {
-      this.sitesData = sites;
+      this.orderListSitesFav(sites)
+      //this.sitesData = sites;
     })
+  }
+  orderListSitesFav(sites: Sites[]){
+    this.sitesData = sites.sort((a,b) => (b.favorite ? 1 : 0 - (a.favorite ? 1 : 0)));
   }
 
   private removeInfoShowed() {
@@ -104,7 +108,8 @@ export class LugaresComponent implements OnInit, AfterViewInit {
     const siteToAdd = {
       name: this.selectedName,
       coorLat: this.selectedLat,
-      coorLon: this.selectedLon
+      coorLon: this.selectedLon,
+      favorite: false
     };
     this.sitesService.addSiteToUserCollection(this.userID, siteToAdd)
     .then((docRef) => {
@@ -150,6 +155,10 @@ export class LugaresComponent implements OnInit, AfterViewInit {
     this.sitesService.removeSiteFromUserCollection(this.userID, site);
   }
 
-  // selectedSite(site: Sites){}
-  // modifySite(site: Sites){}
+  onCheckFavorite(site: Sites): void{
+    console.log(site.favorite);
+    console.log(site.name);
+    console.log(site)
+    this.sitesService.modifySiteFavorite(this.userID,site)
+  }
 }

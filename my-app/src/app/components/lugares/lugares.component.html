@@ -8,8 +8,7 @@
       <th>Nombre</th>
       <th>Latitud</th>
       <th>Longitud</th>
-      <th>Seleccionar</th>
-      <th>Modificar</th>
+      <th>Favorito</th>
       <th>Borrar</th>
     </tr>
   </thead>
@@ -24,6 +23,7 @@
       <!-- <td>
         <button class="my-button" (click)="modifySite(site)">Modificar <mat-icon>edit</mat-icon></button>[disabled]="!p.timeLastAccess"></button>
       </td> -->
+      <td><input type="checkbox" [(ngModel)]="site.favorite" id="fCheckbox" (change)="onCheckFavorite(site)"><label for="fCheckbox"></label></td>
       <td>
         <button class="my-button" (click)="deleteSite(site)">Borrar <mat-icon>delete</mat-icon></button>
       </td>

@@ -17,7 +17,7 @@ import { VehiculosService } from 'src/app/services/vehiculos.service';
   styleUrls: ['./vehiculos.component.css']
 })
 export class VehiculosComponent implements OnInit {
-  vehiclesData: Mobility[] = [];
+  vehiclesData: Vehiculo[] = [];
   vehiclesSubscription!: Subscription;
   userSubscription!: Subscription;
   userID: any;
@@ -52,8 +52,13 @@ export class VehiculosComponent implements OnInit {
 
   private initVehiclesSubsrciption() {
     this.vehiclesSubscription = this.vehiculosService.getVehicles(this.userID).subscribe( vehicles => {
-      this.vehiclesData = vehicles;
+      this.orderListVehiclesFav(vehicles);
+      //this.vehiclesData = vehicles;
     })
+  }
+
+  orderListVehiclesFav(vehiculos: Vehiculo[]){
+    this.vehiclesData = vehiculos.sort((a,b) => (b.favorite ? 1 : 0 - (a.favorite ? 1 : 0)));
   }
   
   newVehicle(): void {
@@ -79,18 +84,18 @@ export class VehiculosComponent implements OnInit {
       });
   }
 
-  vehicleSelected(vehicle: Mobility) {
+  vehicleSelected(vehicle: Vehiculo) {
     var vehicleSelected = new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo);
     this.mobilityService.setMobilySelected(vehicleSelected);
     this.router.navigate(['/']);
   }
 
-  deleteVehicle(vehicle: Mobility): void {
+  deleteVehicle(vehicle: Vehiculo): void {
     this.vehiculosService.removeVehicleFromUserCollection(this.userID, vehicle);
     this.mobilityService.setIsMobilitySelected(false);
   }
 
-  modifyVehicle(vehiclePast: Mobility): void {
+  modifyVehicle(vehiclePast: Vehiculo): void {
     const vehicleToUpdate = new Vehiculo(vehiclePast.nombre, vehiclePast.marca, vehiclePast.tipo, vehiclePast.consumo);
     const dialogRef = this.dialog.open(VehiculosDialogComponent, {
       width: '270px',
@@ -104,5 +109,8 @@ export class VehiculosComponent implements OnInit {
       }
       this.vehiculosService.modifyVehicleFromUserCollection(this.userID, vehicleToUpdate, result.vehicle);
     });
+  }
+  onCheckFavorite(vehicle: Vehiculo){
+    this.vehiculosService.modifyVehicleFavorite(this.userID, vehicle);
   }
 }
