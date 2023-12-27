@@ -71,18 +71,18 @@
       <div class="box-derecha">
       <basic-data-box [title]="('Datos de ruta')" [isBtn]="true" [actionBtn]="('Calcula ruta')"
         (actionBtnTap)="calculateRoute()">
-        <table class="mobilidad-seleccionada">
+        <table class="mobilidad-seleccionada" *ngIf="showRouteInfo">
           <tr>
             <td>Distancia: </td>
-            <td *ngIf="showRouteInfo">{{ distanceInKMs }} Km</td>
+            <td>{{ distanceInKMs }} Km</td>
           </tr>
           <tr>
             <td>Duración: </td>
-            <td *ngIf="showRouteInfo">{{ timeInMinutes }} minutos</td>
+            <td>{{ timeInMinutes }} minutos</td>
           </tr>
           <tr>
             <td>Coste: </td>
-            <td *ngIf="showRouteInfo">{{ costRoute }} {{ uniCost }}</td>
+            <td>{{ costRoute }} {{ uniCost }}</td>
           </tr>
         </table>
       </basic-data-box>
