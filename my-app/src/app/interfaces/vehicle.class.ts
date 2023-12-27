@@ -1,7 +1,7 @@
 import { Mobility } from "./mobility.interface";
 
 export class Vehiculo implements Mobility {
-    private id?:string;
+    private id?: string;
     nombre: string;
     marca: string;
     tipo: string;
@@ -21,6 +21,6 @@ export class Vehiculo implements Mobility {
         return this.perfil;
     }
 
-    getId(): string | undefined { return this.id; }
-    setId(id: string) { this.id = id; }
+    // setId(id: string) { this.id = id; }
+    // getId(): string { return this.id; }
 }

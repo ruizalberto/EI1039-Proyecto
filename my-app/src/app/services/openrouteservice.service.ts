@@ -20,10 +20,7 @@ export class OpenRouteService {
   routeSubject: BehaviorSubject<Object[]> = new BehaviorSubject<Object[]>([]);
   routeData$ = this.routeSubject.asObservable();
 
-  constructor(private http: HttpClient, private mobilityService: MobilityService) {
-    this.getFuelPrice();
-    this.getLightPrice();
-  }
+  constructor(private http: HttpClient, private mobilityService: MobilityService) {}
   
   getFuelPrice(): void {
     const fuelPriceUrl = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/';
@@ -43,7 +40,7 @@ export class OpenRouteService {
     
     this.http.get<any>(lightPriceUrl).subscribe({
       next: lightPriceData => {
-        this.precioLuz = lightPriceData;
+        this.precioLuz = lightPriceData.price;
         console.log("Precio luz: " + this.precioLuz);
       },
       error: err => {
@@ -85,13 +82,12 @@ export class OpenRouteService {
               if (mobility.tipo == "Gasolina"){
                 this.getFuelCost();
               } else if (mobility.tipo == "Eléctrico"){
-                console.log("Funciono correctamente");
                 this.getLightCost();
               }
             } else if (mobility.getPerfil() == "cycling-regular") {
-              // this.getCosteBicicleta();
+              this.getCosteBicicleta();
             } else if (mobility.getPerfil() == "foot-walking") {
-              // this.getCostePie();
+              this.getCostePie();
             }
             
             this.updateRouteSubject();
@@ -123,11 +119,11 @@ export class OpenRouteService {
   }
 
   getCosteBicicleta(){
-    this.costRoute = Number((Number(this.distance) * 45).toFixed(2));
+    this.costRoute = Number((Number(this.distance) * this.mobilityService.getMobilitySelected().consumo).toFixed(2));
   }
 
   getCostePie(){
-    this.costRoute = Number((Number(this.distance) * 75).toFixed(2));
+    this.costRoute = Number((Number(this.distance) * this.mobilityService.getMobilitySelected().consumo).toFixed(2));
   }
 }
 

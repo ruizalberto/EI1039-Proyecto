@@ -8,6 +8,7 @@
   height: 50px;
   left: 0;
   top: 0;
+
  /* position: fixed;*/
   
 }
@@ -18,36 +19,51 @@
   font-weight: bold;
   cursor: pointer;
 }
+/*
 .login{
   align-items: center;
   height: 50px;
-  margin-top: 7.5px;
+  /*margin-top: 7.5px;
   margin-right: 30px;
 }
-
 .inicio-sesion{
   margin-right: 7px;
 }
-
 .salir-sesion{
   margin-right: 7px;
 }
-
 .logout{
   align-items: center;
   height: 50px;
-  margin-top: 7.5px;
+ /* margin-top: 7.5px;
   margin-right: 30px;
+}*/
+.nav-list{
+  cursor: pointer;
+  font-size: 16px;
 }
+.nav-list:hover{
+  font-size: 18px;
+  color: goldenrod;
+}
+.li-list{
+  display: inline;
+  margin-right: 10%;
+}
+.ul-list{
+  min-width: 300px;
+}
+
 
 .my-button {
   height: 100%;
-  padding: 10px 20px;
+  padding: 10px 10px;
   background-color: rgb(101, 10, 185);
   color: white;
   border: none;
   cursor: pointer;
   font-size: 16px;
+  font-weight: bold;
 }
 .my-button:hover {
   background-color: #8d33d1;
@@ -56,10 +72,13 @@
   background-color: #965bd1;
 }
 
+.btDeleteAccount:hover{
+  background-color: crimson;
+}
+
 ul {
   list-style-type: none;
 }
-
 a {
   text-decoration: none;
   color: #fff;

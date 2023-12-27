@@ -1,0 +1,21 @@
+<app-navbar></app-navbar>
+<table class="prueba-tabla prueba-tabla-general">
+  <thead>
+    <tr class="header-table">
+      <th class="data-cell">Nombre</th>
+      <th class="data-cell">Distancia</th>
+      <th class="data-cell">Duración</th>
+      <th class="bt-cell">Seleccionar</th>
+      <th class="bt-cell">Borrar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let route of routesData">  
+      <td class="data-cell">{{ route.nombre }}</td>
+      <td class="data-cell">{{ route.distancia }} Km</td>
+      <td class="data-cell">{{ route.duracion }} minutos</td>
+      <td class="bt-cell"><button class="my-button" (click)="selectedRoute(route)"><mat-icon>swap_calls</mat-icon></button></td>
+      <td class="bt-cell"><button class="my-button" (click)="deleteRoute(route)"><mat-icon>delete</mat-icon></button></td>
+    </tr>
+  </tbody>
+</table>

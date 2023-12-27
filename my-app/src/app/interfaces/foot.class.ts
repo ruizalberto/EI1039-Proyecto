@@ -1,7 +1,7 @@
 import { Mobility } from "./mobility.interface";
 
 
-export class Foot implements Mobility{
+export class Foot implements Mobility {
     nombre: string;
     marca: string;
     tipo: string; 

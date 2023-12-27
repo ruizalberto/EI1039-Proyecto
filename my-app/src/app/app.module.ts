@@ -8,6 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -28,6 +29,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { RegistroComponent } from './components/registro/registro.component';
 import { LoginComponent } from './components/login/login.component';
 import { EliminarCuentaDialogComponent } from './components/eliminar-cuenta-dialog/eliminar-cuenta-dialog.component';
+import { LugaresComponent } from './components/lugares/lugares.component';
+import { RutasComponent } from './components/rutas/rutas.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,8 @@ import { EliminarCuentaDialogComponent } from './components/eliminar-cuenta-dial
     MapComponent,
     NavbarComponent,
     VehiculosComponent,
+    LugaresComponent,
+    RutasComponent,
     VehiculosDialogComponent,
     BasicDataBox,
     RegistroComponent,
@@ -53,6 +58,7 @@ import { EliminarCuentaDialogComponent } from './components/eliminar-cuenta-dial
     AppRoutingModule,
     HttpClientModule,
     MatInputModule,
+    MatExpansionModule,
     BrowserAnimationsModule,
     FormsModule,
     provideFirebaseApp(() => initializeApp({"projectId":"ei1039-proyecto","appId":"1:179739788323:web:eb7516375f3164d3391d96","databaseURL":"https://ei1039-proyecto-default-rtdb.europe-west1.firebasedatabase.app","storageBucket":"ei1039-proyecto.appspot.com","apiKey":"AIzaSyBA3ddHIlCvJkpcUK_b_arObp36f1hQEGQ","authDomain":"ei1039-proyecto.firebaseapp.com","messagingSenderId":"179739788323"})),

@@ -34,22 +34,38 @@
           </table>
         </basic-data-box>
         <mat-radio-group aria-labelledby="route-strategies" class="radio-group" (change)="onRadioChange($event)">
-          <mat-radio-button value="1" class="radio-button">Fastest</mat-radio-button>
-          <mat-radio-button value="2" class="radio-button">Shortest</mat-radio-button>
-          <mat-radio-button value="3" class="radio-button">Recommended</mat-radio-button>
+          <mat-radio-button value="1" class="radio-button">Más Rápida</mat-radio-button>
+          <mat-radio-button value="2" class="radio-button">Más Corta</mat-radio-button>
+          <mat-radio-button value="3" class="radio-button">Recomendada</mat-radio-button>
         </mat-radio-group>
+        <mat-accordion>
+          <mat-expansion-panel (opened)="panelOpenState = true"
+                               (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Elige un lugar de interés
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <tbody>
+              <tr *ngFor="let site of sitesData">  
+                <td>{{ site.name }}</td>
+                <td>
+                  <button class="my-button" (click)="selectedSite(site)">Seleccionar <mat-icon>room</mat-icon></button>
+                </td>
+              </tr>
+            </tbody>
+          </mat-expansion-panel>
+        </mat-accordion>
       </div>
     </td>
   </tr>
   <tr class="fila-base">
-    <td class="columna-base">
-      <!-- <basic-data-box [title]="('title')" helpBtn="false">
-        <p>Vehiculo Seleccionado 3</p>
-        <p>Vehiculo Seleccionado 3</p>
-        <p>Vehiculo Seleccionado 3</p>
-        <p>Vehiculo Seleccionado 3</p>
-        <p>Vehiculo Seleccionado 3</p>
-      </basic-data-box> -->
+    <td class="columna-base" >
+      <div *ngIf="showRouteInfo">
+        <p></p>
+        <textarea id="routeName" placeholder="Introduce un nombre para la ruta..." [(ngModel)]="routeName" class="field-class" required></textarea>
+        <button class="my-button" (click)="saveRoute()">¿Quieres guardar esta ruta (distancia, trayecto y duración)?<mat-icon>save</mat-icon></button>
+      </div>
     </td>
     <td class="columna-base">
       <div class="box-derecha">

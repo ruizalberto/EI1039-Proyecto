@@ -1,21 +1,22 @@
-<ng-container>
+
 	<div class="my-header">
 		<div class="my-title-app">
 			<p id="titulo" routerLink="">{{ title }}</p>
 		</div>
 		<div>
-			<ul>
-				<li><a routerLink="vehiculos"> Vehículos </a></li>
+			<ul class="ul-list">
+				<li class="li-list"><a (click)="clickVehicles()" class="nav-list"> Vehículos </a></li>
+				<li class="li-list"><a (click)="clickSites()" class="nav-list"> Lugares </a></li>
+				<li class="li-list"><a (click)="clickRoutes()" class="nav-list"> Rutas </a></li>
 			</ul>
 		</div>
 		<div class="login" *ngIf="!logged">
-			<button mat-raised-button color="accent" routerLink="login" class="inicio-sesion">Iniciar Sesión</button>
-			<button mat-raised-button color="accent" routerLink="registro">Registrar</button>
+			<button (click)="clickLogin()" class="my-button">Iniciar Sesión</button>
+			<button (click)="clickRegister()" class="my-button">Registrar</button>
 		</div>
 		<div class="logout" *ngIf="logged">
-			{{ userEmail }}
-			<button mat-raised-button color="warn" (click)="logOut()" *ngIf="logged" routerLink="" class="salir-sesion">Log Out</button>
-			<button mat-raised-button (click)="openDialogRemoveAccount('600ms', '300ms')" >Borrar Cuenta</button>
+			{{ userName }}
+			<button (click)="logOut()" *ngIf="logged" routerLink="" class="my-button">Cerrar Sesión</button>
+			<button (click)="openDialogRemoveAccount('600ms', '300ms')" class="btDeleteAccount my-button">Borrar Cuenta</button>
 		</div>
 	</div>
-</ng-container>

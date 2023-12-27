@@ -1,0 +1,55 @@
+
+.content-wrapper {
+    margin: 20px;
+    text-align: right;
+    margin-right: 5%;
+  }
+  .header-table{
+    height: 30px;
+    background-color: rgb(201, 146, 253);
+    color: #4d0c8f;
+    font-size: 18px;
+    vertical-align: middle;
+  }
+  .bt-cell{
+    width: 5%;
+  }
+  .data-cell{
+    width: 10%;
+  }
+    .prueba-tabla-general {
+      width: 90%;
+      margin-left: 5%;
+      margin-top: 2.5%;
+      background-color: #ffffff;
+      border-spacing: 0px;
+      text-align: center;
+    }
+    .prueba-tabla tbody tr:nth-of-type(odd) {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  
+    .my-button {
+      height: 100%;
+      padding: 5px 20px;
+      background-color: #4d0c8f;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      border-radius: 10px;
+      margin: 5px;
+      vertical-align: middle;
+    }
+    .bt-add{
+      font-size: 16px;
+      padding: 10px 20px;
+      margin: 0px;
+    
+    }
+    .my-button:hover {
+      background-color: #8d33d1;
+    }
+    .my-button:active {
+      background-color: #965bd1;
+    }

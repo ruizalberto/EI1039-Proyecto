@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import { BehaviorSubject } from 'rxjs';
+import { Sites } from '../interfaces/site.class';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -49,10 +50,26 @@ export class MarkerService {
     });
   }
 
-  getCountMarkers(): number{ return this.markers.length; }
-  isMaxMarkers(): boolean{ return this. markers.length === this.maxMarkers; }
-  getStart():L.LatLng{ return this.markers[0].getLatLng(); }
-  getEnd():L.LatLng{ return this.markers[1].getLatLng(); }
+  addSite(map: L.Map, site: Sites): void {
+    if (this.markers.length < this.maxMarkers) {
+      const marker = L.marker([site.coorLat, site.coorLon])
+        .addTo(map)
+        .bindPopup('Click derecho para eliminar')
+        .on('contextmenu', () => {
+          map.removeLayer(marker);
+          this.markers = this.markers.filter(m => m !== marker);
+          this.updateMarkersSubject();
+        });
+
+      this.markers.push(marker);
+      this.updateMarkersSubject();
+    }
+  }
+
+  getCountMarkers(): number { return this.markers.length; }
+  isMaxMarkers(): boolean { return this. markers.length === this.maxMarkers; }
+  getStart(): L.LatLng { return this.markers[0].getLatLng(); }
+  getEnd(): L.LatLng { return this.markers[1].getLatLng(); }
 
   private updateMarkersSubject(): void {
     const markerPositions = this.markers.map(marker => marker.getLatLng());

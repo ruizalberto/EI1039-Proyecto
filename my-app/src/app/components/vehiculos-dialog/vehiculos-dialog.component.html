@@ -1,28 +1,16 @@
-<mat-dialog-content>
-    <mat-form-field>
-        <mat-label>Nombre</mat-label>
-        <input matInput cdkFocusInitial [(ngModel)]="data.vehicle.nombre" required/>
-    </mat-form-field>
+<mat-dialog-content class="dialog-class">
+    <textarea placeholder="Nombre*" class="field-class" cdkFocusInitial [(ngModel)]="data.vehicle.nombre" required></textarea>
+    <textarea placeholder="Marca*" class="field-class" [(ngModel)]="data.vehicle.marca" required></textarea>
+    <textarea placeholder="Consumo*" class="field-class" [(ngModel)]="data.vehicle.consumo" required></textarea>
+
+    <select name="Tipo" class="select-class" [(ngModel)]="data.vehicle.tipo" required>
+        <!-- <option value="" hidden>Tipo*</option> -->
+        <option value="Gasolina">Gasolina</option>
+        <option value="Eléctrico">Eléctrico</option>
+    </select>
     
-    <mat-form-field>
-        <mat-label>Marca</mat-label>
-        <textarea matInput [(ngModel)]="data.vehicle.marca" required></textarea>
-    </mat-form-field>
-    
-    <mat-form-field>
-        <mat-label>Tipo</mat-label>
-            <mat-select [(ngModel)]="data.vehicle.tipo" required>
-                <mat-option value="Gasolina">Gasolina</mat-option>
-                <mat-option value="Eléctrico">Eléctrico</mat-option>
-            </mat-select>
-        </mat-form-field>
-    <mat-form-field>
-        <mat-label>Consumo</mat-label>
-        <textarea matInput [(ngModel)]="data.vehicle.consumo" required></textarea>
-    </mat-form-field>
-    
-    <div mat-dialog-actions>
-        <button mat-button [mat-dialog-close]="{ vehicle: data.vehicle }" [disabled]="!validarFormulario()">OK</button>
+    <div mat-dialog-actions class="myalign-div">
+        <button class="my-button" [mat-dialog-close]="{ vehicle: data.vehicle }" [disabled]="!validarFormulario()">Añadir</button>
     <!-- <button mat-button (click)="cancel()">Cancel</button> -->
     <!-- <button
         *ngIf="data.enableDelete"
@@ -30,7 +18,7 @@
         color="primary"
         aria-label="Delete"
         [mat-dialog-close]="{ vehicle: data.vehicle, delete: true }">
-        <mat-icon>delete</mat-icon>
+        <mat-icon>Delete</mat-icon>
     </button> -->
     </div>
 </mat-dialog-content>

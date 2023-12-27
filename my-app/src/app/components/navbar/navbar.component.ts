@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit{
   title = 'EI1039 Proyecto';
   logged: boolean;
   userEmail: any;
+  userName: string="";
 
   constructor(
     private dialog: MatDialog,
@@ -24,11 +25,28 @@ export class NavbarComponent implements OnInit{
     this.userLogged();
   }
 
+  clickVehicles(){
+    this.router.navigate(['vehiculos']);
+  }
+  clickSites(){
+    this.router.navigate(['lugares']);
+  }
+  clickRoutes(){
+    this.router.navigate(['rutas']);
+  }
+  clickRegister(){
+    this.router.navigate(['registro']);
+  }
+  clickLogin(){
+    this.router.navigate(['login']);
+  }
+
   userLogged(){
     this.userService.getInfoUserLogged().subscribe(res=>{
       if(res != null){
         this.logged = true;
         this.userEmail = res.email;
+        this.userName = this.userEmail.split("@")[0];
       } else {
         this.logged = false;
       }
@@ -37,12 +55,11 @@ export class NavbarComponent implements OnInit{
 
   logOut(): void {
     this.userService.logout()
-      .then(response => {
-        console.log(response);
-        this.logged = false;
-        this.router.navigate(['']);
-      })
-      .catch(error => console.log(error));
+    .then(response => {
+      console.log(response);
+      this.logged = false;
+    })
+    .catch(error => console.log(error));
   }
 
   openDialogRemoveAccount(enterAnimationDuration: string, exitAnimationDuration: string): void {

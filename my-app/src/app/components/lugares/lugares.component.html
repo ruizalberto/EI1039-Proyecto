@@ -1,0 +1,50 @@
+<app-navbar></app-navbar>
+<table class="lugares-all-table">
+  <tr>
+  <th>
+<table class="prueba-tabla prueba-tabla-general">
+  <thead class="thead-table">
+    <tr>
+      <th>Nombre</th>
+      <th>Latitud</th>
+      <th>Longitud</th>
+      <th>Seleccionar</th>
+      <th>Modificar</th>
+      <th>Borrar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let site of sitesData">  
+      <td>{{ site.name }}</td>
+      <td>{{ site.coorLat }}</td>
+      <td>{{ site.coorLon }}</td>
+      <!-- <td>
+        <button class="my-button" (click)="selectedSite(site)">Seleccionar <mat-icon>room</mat-icon></button>
+      </td> -->
+      <!-- <td>
+        <button class="my-button" (click)="modifySite(site)">Modificar <mat-icon>edit</mat-icon></button>[disabled]="!p.timeLastAccess"></button>
+      </td> -->
+      <td>
+        <button class="my-button" (click)="deleteSite(site)">Borrar <mat-icon>delete</mat-icon></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</th>
+<th>
+  <div class="map-frame">
+    <div id="mapSites"></div>
+  </div>
+  <div>
+    <textarea placeholder="Nombre*" [(ngModel)]="selectedName" class="field-class" required></textarea>
+    <!--boton buscar?-->
+  </div>
+  <div>
+    <textarea id="latitud" placeholder="Latitud*" [(ngModel)]="selectedLat" class="field-class" required></textarea>
+    <textarea id="longitud" placeholder="Longitud*" [(ngModel)]="selectedLon" class="field-class" required></textarea>
+    <button class="my-button" (click)="searchSite()">Buscar Coordenadas<mat-icon>search</mat-icon></button>
+    <button class="my-button" (click)="saveSite()">Guardar<mat-icon>save</mat-icon></button>
+  </div>
+</th>
+</tr>
+</table>

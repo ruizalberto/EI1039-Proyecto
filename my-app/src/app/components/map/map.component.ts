@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import * as L from 'leaflet';
 import { Geocoder, geocoders } from 'leaflet-control-geocoder';
 import { Mobility } from 'src/app/interfaces/mobility.interface';
@@ -12,7 +11,12 @@ import { FastestRouteStrategy, RecommendedRouteStrategy, RouteStrategy, Shortest
 import { Bike } from 'src/app/interfaces/bike.class';
 import { Foot } from 'src/app/interfaces/foot.class';
 import { UserService } from 'src/app/services/user.service';
-import { Vehiculo } from 'src/app/interfaces/vehicle.class';
+import { RouteService } from 'src/app/services/route.service';
+import { Route } from 'src/app/interfaces/route.class';
+import { SitesService } from 'src/app/services/site.service';
+import { Subscription } from 'rxjs';
+import { Sites } from 'src/app/interfaces/site.class';
+
 
 @Component({
   selector: 'app-map',
@@ -22,9 +26,15 @@ import { Vehiculo } from 'src/app/interfaces/vehicle.class';
 })
 
 export class MapComponent implements OnInit {
+  // map
   private map: any;
   private routeLayer: any;
+
+  // user
+  private userID: string = "";
   btn = true;
+
+  // route info (distance, time, cost)
   distanceInKMs: string | undefined;
   timeInMinutes: number | undefined;
   costRoute: number = 0;
@@ -32,18 +42,31 @@ export class MapComponent implements OnInit {
   showRouteInfo: boolean = false;
   isMobilitySelected: boolean = false;
   mobilitySelected!: Mobility;
-  routeStrategy: RouteStrategy | undefined;
 
+  // routes
+  routeStrategy: RouteStrategy | undefined;
+  route: Route | undefined;
+  routeName: string = "";
+
+  // sites
+  sitesData: Sites[] = [];
+  siteSubscription!: Subscription;
+  panelOpenState = false;
+  
   constructor(
     private markerService: MarkerService,
     private openRouteService: OpenRouteService,
     private router: Router,
     private mobilityService: MobilityService,
     private routeStrategyService: RouteStrategyService,
-    private userService: UserService
+    private userService: UserService,
+    private routeService: RouteService,
+    private sitesService: SitesService
   ) {}
 
   ngOnInit(): void {
+    this.openRouteService.getFuelPrice();
+    this.openRouteService.getLightPrice();
     this.initMap();
     this.markerService.makeMarkers(this.map);
     this.initGeocoderControl();
@@ -55,16 +78,33 @@ export class MapComponent implements OnInit {
   private initUserSubscription() {
     this.userService.getInfoUserLogged().subscribe(user => {
       if (!user){
+        if (this.siteSubscription) {
+          this.siteSubscription.unsubscribe();
+        }
+        if (this.routeLayer) {
+          this.map.removeLayer(this.routeLayer);
+        }
+        // falta borrar marcadores y mirar si se puede deseleccionar el fastest shortest recommended
+        // tambien falta quitar lo de seleccionar ruta en el apartado de rutas y poner datos relevantes de esa ruta paq ue haya mas chicha
         this.isMobilitySelected = false;
         this.showRouteInfo = false;
+      } else {
+        this.userID = user.uid;
+        this.initSitesSubscription();
       }
     });
+  }
+
+  private initSitesSubscription(): void {
+    this.siteSubscription = this.sitesService.getSites(this.userID).subscribe( sites => {
+      this.sitesData = sites;
+    })
   }
 
   private initMobilitySubscription(): void {
     this.mobilityService.mobilitySubject.subscribe(
       data => {
-        if ( data != undefined && data[0] ){
+        if (data != undefined && data[0]) {
           this.isMobilitySelected = this.mobilityService.isMobilitySelected();
           this.mobilitySelected = this.mobilityService.getMobilitySelected();
         }
@@ -75,8 +115,10 @@ export class MapComponent implements OnInit {
   private initMarkerSubsription(): void {
     this.markerService.markersSubject.subscribe(
       data => {
-        if (data != undefined && data[0] && this.routeLayer)
+        if (data != undefined && data[0] && this.routeLayer) {
+          this.showRouteInfo = false;
           this.map.removeLayer(this.routeLayer);
+        }
       });
   }
 
@@ -121,35 +163,67 @@ export class MapComponent implements OnInit {
   }
 
   eligeVehiculo():void{
-    this.router.navigate(['/vehiculos'])
+    this.router.navigate(['/vehiculos']);
   }
 
   calculateRoute(): void {
     if (this.markerService.isMaxMarkers() && this.mobilityService.isMobilitySelected() && this.routeStrategyService.isStrategySelected()){
-      this.isMobilitySelected = this.mobilityService.isMobilitySelected();
-      this.mobilitySelected = this.mobilityService.getMobilitySelected();
+      // this.isMobilitySelected = this.mobilityService.isMobilitySelected();
+      // this.mobilitySelected = this.mobilityService.getMobilitySelected();
       this.openRouteService.setRouteData(
         this.markerService.getStart(),
-        this.markerService.getEnd(), 
+        this.markerService.getEnd(),
         this.mobilityService.getMobilitySelected(),
         this.routeStrategyService.getStrategySelected()
         );
-        this.openRouteService.routeSubject.subscribe(
-          data =>{
-            if (data != undefined && data[0]){
-              this.drawRoute(data[0]);
-              this.distanceInKMs = data[1] as string;
-              this.timeInMinutes = data[2] as number;
-              this.costRoute = data[3] as number;
-              if ( this.mobilitySelected.getPerfil() == "driving-car" ){
-                this.uniCost = "€";
-              } else {
-                this.uniCost = "Calorias";
-              }
-              this.showRouteInfo = true;   
+      this.openRouteService.routeSubject.subscribe(
+        data => {
+          if (data != undefined && data[0]){
+            this.drawRoute(data[0]);
+            this.distanceInKMs = data[1] as string;
+            this.timeInMinutes = data[2] as number;
+            this.costRoute = data[3] as number;
+        
+            this.setRouteData(this.markerService.getStart().toString(), this.markerService.getEnd().toString(), data[0], this.distanceInKMs, this.timeInMinutes);
+            if ( this.mobilitySelected.getPerfil() == "driving-car" ){
+              this.uniCost = "€";
+            } else {
+              this.uniCost = "Calorias";
             }
-          } 
+            this.showRouteInfo = true;
+          }
+        } 
       );
+    }
+  }
+
+  private setRouteData(inicio: string, final: string, geometry: any, distance: string, time: number): void {
+    const coordinates = geometry.coordinates;
+    this.route = new Route("", inicio, final, coordinates, distance, time);
+  }
+
+  saveRoute(): void {
+    if (this.route){
+      this.route.nombre = this.routeName;
+      const routeToAdd = {
+        nombre: this.route.nombre,
+        inicio: this.route.inicio,
+        final: this.route.final,
+        trayecto: this.route.trayecto,
+        distancia: this.route.distancia,
+        duracion: this.route.duracion
+      };
+
+      this.routeService.addRouteToUserCollection(this.userID, routeToAdd)
+      .then((docRef) => {
+        console.log('Documento agregado con ID:', docRef.id);
+        this.router.navigate(['/rutas']);
+      })
+      .catch((error) => {
+        console.error('Error al agregar documento:', error);
+      });
+    } else {
+      console.log("No se ha podido guardar el nombre de la ruta...");
     }
   }
 
@@ -174,5 +248,9 @@ export class MapComponent implements OnInit {
       }
     }).addTo(this.map);
     this.map.fitBounds(this.routeLayer.getBounds());
+  }
+
+  selectedSite(site: Sites): void {
+    this.markerService.addSite(this.map, site);
   }
 }

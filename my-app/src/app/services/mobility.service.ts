@@ -25,6 +25,10 @@ export class MobilityService{
         return this.mobilitySelected;
     }
 
+    setIsMobilitySelected(boolean: boolean): void {
+        this.isSelected = boolean;
+    }
+
     isMobilitySelected(): boolean {
         return this.isSelected;
     }
