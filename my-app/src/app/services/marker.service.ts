@@ -23,6 +23,7 @@ L.Marker.prototype.options.icon = iconDefault;
 })
 export class MarkerService {
   private readonly maxMarkers = 2;
+  private map: any;
   private markers: L.Marker[] = [];
   markersSubject: BehaviorSubject<L.LatLng[]> = new BehaviorSubject<L.LatLng[]>([]);
   markersData$ = this.markersSubject.asObservable();
@@ -30,6 +31,7 @@ export class MarkerService {
   constructor() {}
 
   makeMarkers(map: L.Map): void {
+    this.map = map;
     map.on('click', (e: L.LeafletMouseEvent) => {
       if (this.markers.length < this.maxMarkers){
         const lon = e.latlng.lng;
@@ -48,6 +50,12 @@ export class MarkerService {
         this.updateMarkersSubject();
       }
     });
+  }
+
+  removeMarkers(): void {
+    this.markers.forEach(marker => this.map.removeLayer(marker));
+    this.markers = [];
+    this.updateMarkersSubject();
   }
 
   addSite(map: L.Map, site: Sites): void {

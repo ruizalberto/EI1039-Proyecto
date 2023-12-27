@@ -79,13 +79,13 @@ export class MapComponent implements OnInit {
     this.userService.getInfoUserLogged().subscribe(user => {
       if (!user){
         if (this.siteSubscription) {
+          this.sitesData = [];
           this.siteSubscription.unsubscribe();
         }
         if (this.routeLayer) {
           this.map.removeLayer(this.routeLayer);
         }
-        // falta borrar marcadores y mirar si se puede deseleccionar el fastest shortest recommended
-        // tambien falta quitar lo de seleccionar ruta en el apartado de rutas y poner datos relevantes de esa ruta paq ue haya mas chicha
+        this.markerService.removeMarkers();
         this.isMobilitySelected = false;
         this.showRouteInfo = false;
       } else {
