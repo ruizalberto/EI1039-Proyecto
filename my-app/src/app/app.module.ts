@@ -31,6 +31,7 @@ import { LoginComponent } from './components/login/login.component';
 import { EliminarCuentaDialogComponent } from './components/eliminar-cuenta-dialog/eliminar-cuenta-dialog.component';
 import { LugaresComponent } from './components/lugares/lugares.component';
 import { RutasComponent } from './components/rutas/rutas.component';
+import { DefaultComponent } from './components/default/default.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { RutasComponent } from './components/rutas/rutas.component';
     BasicDataBox,
     RegistroComponent,
     LoginComponent,
-    EliminarCuentaDialogComponent
+    EliminarCuentaDialogComponent,
+    DefaultComponent
   ],
   imports: [
     BrowserModule,

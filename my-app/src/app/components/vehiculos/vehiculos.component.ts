@@ -53,8 +53,7 @@ export class VehiculosComponent implements OnInit {
   private initVehiclesSubsrciption() {
     this.vehiclesSubscription = this.vehiculosService.getVehicles(this.userID).subscribe( vehicles => {
       this.orderListVehiclesFav(vehicles);
-      //this.vehiclesData = vehicles;
-    })
+    });
   }
 
   orderListVehiclesFav(vehiculos: Vehiculo[]){

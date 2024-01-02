@@ -7,6 +7,7 @@
       <th class="data-cell">Final</th>
       <th class="data-cell">Distancia</th>
       <th class="data-cell">Duración</th>
+      <th class="data-cell">Favorito</th>
       <th class="bt-cell">Borrar</th>
     </tr>
   </thead>
@@ -17,6 +18,7 @@
       <td class="data-cell">{{ transformarCoordenadas(route.final) }}</td>
       <td class="data-cell">{{ route.distancia }} Km</td>
       <td class="data-cell">{{ route.duracion }} minutos</td>
+      <td class="bt-cell"><input type="checkbox" [(ngModel)]="route.favorite" id="fCheckbox" (change)="onCheckFavorite(route)"><label for="fCheckbox"></label></td>
       <td class="bt-cell"><button class="my-button" (click)="deleteRoute(route)"><mat-icon>delete</mat-icon></button></td>
     </tr>
   </tbody>

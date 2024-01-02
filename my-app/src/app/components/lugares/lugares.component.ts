@@ -102,6 +102,7 @@ export class LugaresComponent implements OnInit, AfterViewInit {
     }
 
     this.posMarker = L.marker([this.selectedLat,this.selectedLon]).addTo(this.mapSite);
+    this.mapSite.setView([this.selectedLat, this.selectedLon, 15]);
   }
 
   saveSite(){
@@ -123,6 +124,7 @@ export class LugaresComponent implements OnInit, AfterViewInit {
 
   searchSite(){
     this.mapSiteNewSite(this.selectedLat,this.selectedLon);
+
   }
 
   private initGeocoderControl():void {
@@ -156,9 +158,6 @@ export class LugaresComponent implements OnInit, AfterViewInit {
   }
 
   onCheckFavorite(site: Sites): void{
-    console.log(site.favorite);
-    console.log(site.name);
-    console.log(site)
     this.sitesService.modifySiteFavorite(this.userID,site)
   }
 }

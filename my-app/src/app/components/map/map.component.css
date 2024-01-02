@@ -6,8 +6,6 @@
   margin-bottom: 3%;
   background-color: rgb(34, 34, 34);
   border-spacing: 1px;
-  
-
 }
 .columna-base{
   width: 50%;
@@ -18,9 +16,8 @@
   vertical-align: top;
 }
 
-
 .map-frame {
-  height: 400px;
+  height: 600px;
   width: 100%;
 }
 #map {
@@ -38,11 +35,26 @@
 .ruta-info p {
   margin: 5px 0;
 }
+.field-class{
+  height: 30px;
+  padding-top: 13px;
+  padding-left: 13px;
+  font-size: 16px;
+  width: 35%;
+  background-color: lightgray;
+  color: black;
+  resize: none;
+}
+
+.field-class:invalid{
+  outline: 1px solid #ff0000;
+}
+
 
 .mobilidad-seleccionada {
-
   padding: 0.75rem 1.25rem;
 }
+
 .div-laterales{
   display:flex;
   justify-content: space-between;
@@ -55,10 +67,12 @@
 }
 
 .radio-group {
-  color: white;
+  color: #f0f0f0;
   display: flex;
-  margin: 15px 0;
+  margin-top: 15px;
   align-items: flex-start;
+  font-size: large;
+  margin-bottom: 20px;
 }
 
 .radio-button {
@@ -66,18 +80,91 @@
 }
 
 .my-button {
-  height: 10%;
-  padding: 5px 5px;
+  padding: 5px 7.5px;
   background-color: #4d0c8f;
   color: white;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 12px;
-  margin-right: 7.5px;
 }
 .my-button:hover {
   background-color: #8d33d1;
 }
 .my-button:active {
   background-color: #965bd1;
+}
+
+.mat-expansion-list{
+  border-bottom: 10px;
+}
+
+.mat-expansion-panel-header {
+  background-color: rgb(201, 146, 253); /* Puedes cambiar el color según tus preferencias */
+  color: #4d0c8f; /* Cambia el color del texto si es necesario */
+  font-size: medium;
+  font-weight: bold;
+  padding: 0 8px;
+} 
+.expansion-panel-td-button{
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgb(201, 146, 253);
+  width: 10%;
+
+}
+.expansion-panel-td-text{
+  padding-top: 10px;
+  border-bottom: 1px solid rgb(201, 146, 253);
+}
+.expansion-panel-tr:nth-child(odd){
+  border-bottom: 1px solid rgb(201, 146, 253);
+}
+.expansion-panel-tbody{
+  width: 100%;
+}
+
+.mat-expansion-panel {
+  background-color: #f0f0f0;
+  color: #000000;
+  font-size: medium;
+  border: 1px solid rgb(201, 146, 253);
+  margin-bottom: 10px;
+ 
+}
+
+
+.mat-expansion-panel-header.mat-expanded,
+.mat-expansion-panel:not(.mat-expanded):hover,
+.mat-expansion-panel-header.mat-expanded:hover,
+.mat-expansion-panel-header.mat-expanded:focus{
+  background-color: rgb(182, 110, 250); /* Puedes cambiar el color según tus preferencias */
+  color: #4d0c8f; /* Cambia el color del texto si es necesario */
+}
+
+.save-question-class{
+  color: #f0f0f0;
+  font-size: large;
+  margin: 50px 0px 30px 0px;
+}
+
+.my-button-save {
+  padding: 5px 7.5px;
+  margin-left: 15px;
+  background-color: #4d0c8f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 45px;
+  width: 45px;
+}
+.my-button-save:hover {
+  background-color: #8d33d1;
+}
+.my-button-save:active {
+  background-color: #965bd1;
+}
+.prueba{
+  display: flex;
 }

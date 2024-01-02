@@ -13,12 +13,25 @@
   
 }
 .my-title-app{
-  margin-top: 15px;
+  display: flex;
   margin-left: 30px;
   font-size: 20px;
   font-weight: bold;
+  
+}
+.app-logo{
+  width: 25px;
+  height: 40px;
+  margin-top: 5px;
+  margin-right: 10px;
+  
+}
+.title-text{
+  margin-top: 15px;
+  margin-left: 5px;
   cursor: pointer;
 }
+
 /*
 .login{
   align-items: center;
@@ -83,3 +96,13 @@ a {
   text-decoration: none;
   color: #fff;
 }
+
+.myUsername{
+  cursor: pointer;
+}
+.myUsername:hover{
+  font-size: 15px;
+  color: goldenrod;
+}
+
+

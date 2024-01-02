@@ -8,8 +8,8 @@ export class Route {
     distancia: string;
     duracion: number;
 
-    //@Favorite()
-    //favorite:boolean;
+    @Favorite()
+    favorite:boolean;
 
     constructor(nombre: string, inicio: string, final: string, trayecto: any, distancia: string, duracion: number){
         this.nombre = nombre;
@@ -18,6 +18,6 @@ export class Route {
         this.trayecto = trayecto;
         this.distancia = distancia;
         this.duracion = duracion;
-        //this.favorite = false;
+        this.favorite = false;
     }
  }

@@ -1,7 +1,11 @@
 
 	<div class="my-header">
 		<div class="my-title-app">
-			<p id="titulo" routerLink="">{{ title }}</p>
+			<div>
+			<img src="assets/icono_web_1.png" alt=" " class="app-logo"></div>
+			<div class="title-text">
+				<p id="titulo" routerLink="">{{ title }}</p>
+			</div>
 		</div>
 		<div>
 			<ul class="ul-list">
@@ -15,7 +19,7 @@
 			<button (click)="clickRegister()" class="my-button">Registrar</button>
 		</div>
 		<div class="logout" *ngIf="logged">
-			{{ userName }}
+			<a (click)="clickUserName()" class="myUsername" > {{ userName }} </a>
 			<button (click)="logOut()" *ngIf="logged" routerLink="" class="my-button">Cerrar Sesión</button>
 			<button (click)="openDialogRemoveAccount('600ms', '300ms')" class="btDeleteAccount my-button">Borrar Cuenta</button>
 		</div>

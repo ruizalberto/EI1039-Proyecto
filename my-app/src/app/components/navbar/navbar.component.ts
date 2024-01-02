@@ -10,7 +10,7 @@ import { EliminarCuentaDialogComponent } from '../eliminar-cuenta-dialog/elimina
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit{
-  title = 'EI1039 Proyecto';
+  title = 'THE HERMES PATH (PROVISIONAL)';
   logged: boolean;
   userEmail: any;
   userName: string="";
@@ -39,6 +39,9 @@ export class NavbarComponent implements OnInit{
   }
   clickLogin(){
     this.router.navigate(['login']);
+  }
+  clickUserName(){
+    this.router.navigate(['default']);
   }
 
   userLogged(){

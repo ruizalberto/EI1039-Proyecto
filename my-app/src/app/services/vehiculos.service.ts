@@ -97,4 +97,11 @@ export class VehiculosService {
       }
     });
   }
+  /* ejemplo solicitud lista con condicion
+  getVehicleWithId(userId: string, vehicleIdRecived: String): Observable<Vehiculo[]>{
+    const vehiclesRef = collection(this.firestore, 'users/' + userId + '/vehicles');
+    const q = query(vehiclesRef, where('id','==',vehicleIdRecived));
+    return collectionData(q, {idField: 'id'}) as Observable<Vehiculo[]>
+  }*/
+
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import * as L from 'leaflet';
 import { Geocoder, geocoders } from 'leaflet-control-geocoder';
 import { Mobility } from 'src/app/interfaces/mobility.interface';
@@ -16,6 +16,10 @@ import { Route } from 'src/app/interfaces/route.class';
 import { SitesService } from 'src/app/services/site.service';
 import { Subscription } from 'rxjs';
 import { Sites } from 'src/app/interfaces/site.class';
+import { DefaultService } from 'src/app/services/default.service';
+import { VehiculosService } from 'src/app/services/vehiculos.service';
+import { Vehiculo } from 'src/app/interfaces/vehicle.class';
+import { Favorite } from 'src/app/interfaces/favorite.decorator';
 
 
 @Component({
@@ -52,6 +56,14 @@ export class MapComponent implements OnInit {
   sitesData: Sites[] = [];
   siteSubscription!: Subscription;
   panelOpenState = false;
+
+  // vehicles
+  mobilityData: Vehiculo[] = []; 
+  mobilityOpenState = false;
+
+  //default
+  typeDefault = ""; //default
+  //mobilitySelected -> default
   
   constructor(
     private markerService: MarkerService,
@@ -61,13 +73,17 @@ export class MapComponent implements OnInit {
     private routeStrategyService: RouteStrategyService,
     private userService: UserService,
     private routeService: RouteService,
-    private sitesService: SitesService
-  ) {}
+    private sitesService: SitesService,
+    private defaultService: DefaultService,
+    private vehiculoService: VehiculosService
+    ) {
+    }
 
   ngOnInit(): void {
     this.openRouteService.getFuelPrice();
     this.openRouteService.getLightPrice();
     this.initMap();
+
     this.markerService.makeMarkers(this.map);
     this.initGeocoderControl();
     this.initMarkerSubsription();
@@ -86,19 +102,90 @@ export class MapComponent implements OnInit {
           this.map.removeLayer(this.routeLayer);
         }
         this.markerService.removeMarkers();
-        this.isMobilitySelected = false;
+        //this.isMobilitySelected = false;
         this.showRouteInfo = false;
       } else {
         this.userID = user.uid;
         this.initSitesSubscription();
+        this.initDefaultSubscription();
+        this.initMobilitySubs();
       }
     });
   }
 
+  private initDefaultSubscription():void{
+    this.defaultService.getDefault(this.userID).subscribe( async defaultRef =>{
+      if(defaultRef[0] != undefined){
+        this.isMobilitySelected = true;
+        if(defaultRef[0].nombreMobility == "A pie"){
+            this.mobilitySelected = new Foot("A pie");
+            this.typeDefault = defaultRef[0].estrategiaRoute;
+        }
+        else if(defaultRef[0].nombreMobility == "Bicicleta"){
+            this.mobilitySelected = new Bike("Bicicleta", "Carretera");
+            this.typeDefault = defaultRef[0].estrategiaRoute;
+        }
+        else{
+            this.mobilitySelected = new Vehiculo(defaultRef[0].nombreMobility,
+                                                defaultRef[0].marcaMobility,
+                                                defaultRef[0].tipoMobility,
+                                                defaultRef[0].consumoMobility);
+        }
+        this.typeDefault = defaultRef[0].estrategiaRoute;
+        this.mobilityService.setMobilySelected(this.mobilitySelected);
+        this.modifyTypeRoute(this.typeDefault);
+    }else{
+      this.defaultService.addDefaultToUserCollection(this.userID,new Bike("Bicicleta", "Bicicleta"),"type_3")
+    }
+
+      /*this.vehiculoService.getVehicleWithId(this.userID, defaultRef[0].vehiculo).subscribe(q => {
+        this.mobilitySelected = q[0];
+        console.log("valor devuelto de vehiculo " +  q[0])
+      });*/
+
+    });
+  }
+  
+
   private initSitesSubscription(): void {
-    this.siteSubscription = this.sitesService.getSites(this.userID).subscribe( sites => {
-      this.sitesData = sites;
-    })
+    this.sitesService.getSites(this.userID).subscribe( sites => {
+      this.orderListSitesFav(sites);
+    });
+  }
+  orderListSitesFav(sites: Sites[]){
+    this.sitesData = sites.sort((a,b) => (b.favorite ? 1 : 0 - (a.favorite ? 1 : 0)));
+  }
+
+  private initMobilitySubs():void{
+    this.vehiculoService.getVehicles(this.userID).subscribe( vehiclesRef =>{
+      this.orderListVehiclesFav(vehiclesRef);
+    });
+  }
+  orderListVehiclesFav(vehicles:Vehiculo[]){
+    this.mobilityData = [];
+    for(let vehicle of vehicles){
+      this.mobilityData.push(new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo));
+    this.mobilityData = this.mobilityData.sort((a,b) => (b.favorite ? 1 : 0 - (a.favorite ? 1 : 0)));
+    }
+  }
+  selectedVehicle(vehicle : Mobility){
+    this.mobilitySelected = vehicle;
+    //this.mobilityOpenState = false;
+    this.mobilityService.setMobilySelected(this.mobilitySelected);
+  }
+  selectedFoot(){
+    this.mobilitySelected = new Foot("A pie");
+    this.mobilityOpenState = false;
+    this.mobilityService.setMobilySelected(this.mobilitySelected);
+  }
+  selectedCicle(){
+    this.mobilitySelected = new Bike("Bicicleta", "Carretera");
+    this.mobilityOpenState = false;
+    this.mobilityService.setMobilySelected(this.mobilitySelected);
+  }
+  footBoton() {
+    var foot = new Foot("A pie");
+    this.mobilityService.setMobilySelected(foot);
   }
 
   private initMobilitySubscription(): void {
@@ -123,13 +210,17 @@ export class MapComponent implements OnInit {
   }
 
   onRadioChange(event: any) {
-    if (event.value == 1){
+    this.modifyTypeRoute(event.target.value);
+  }
+
+  modifyTypeRoute(type:string){
+    if (type == "type_1"){
       this.routeStrategyService.setStrategySelected(new FastestRouteStrategy());
     } 
-    if (event.value == 2){
+    if (type == "type_2"){
       this.routeStrategyService.setStrategySelected(new ShortestRouteStrategy());
     }
-    if (event.value == 3) {
+    if (type == "type_3") {
       this.routeStrategyService.setStrategySelected(new RecommendedRouteStrategy());
     }
   }
@@ -160,10 +251,6 @@ export class MapComponent implements OnInit {
       ])
       this.map.fitBounds(poly.getBounds());
     }).addTo(this.map);
-  }
-
-  eligeVehiculo():void{
-    this.router.navigate(['/vehiculos']);
   }
 
   calculateRoute(): void {
@@ -203,7 +290,7 @@ export class MapComponent implements OnInit {
   }
 
   saveRoute(): void {
-    if (this.route){
+    if (this.route && (document.getElementById('routeName') as HTMLTextAreaElement).value){
       this.route.nombre = this.routeName;
       const routeToAdd = {
         nombre: this.route.nombre,
@@ -211,7 +298,8 @@ export class MapComponent implements OnInit {
         final: this.route.final,
         trayecto: this.route.trayecto,
         distancia: this.route.distancia,
-        duracion: this.route.duracion
+        duracion: this.route.duracion,
+        favorite: this.route.favorite
       };
 
       this.routeService.addRouteToUserCollection(this.userID, routeToAdd)
@@ -225,16 +313,6 @@ export class MapComponent implements OnInit {
     } else {
       console.log("No se ha podido guardar el nombre de la ruta...");
     }
-  }
-
-  cicleBoton() {
-    var bike = new Bike("Bicicleta","Bicicleta");
-    this.mobilityService.setMobilySelected(bike);
-  }
-
-  footBoton() {
-    var foot = new Foot("A pie");
-    this.mobilityService.setMobilySelected(foot);
   }
 
   private drawRoute(geometry: any): void{

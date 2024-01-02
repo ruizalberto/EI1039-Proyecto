@@ -1,0 +1,58 @@
+<app-navbar></app-navbar>
+<div class="div-type-default">
+<basic-data-box [title]="('Mobilidad por defecto')" [isBtn]="true" [actionBtn]="('Restablecer')" (actionBtnTap)="removeTipeDefault()">
+  <mat-radio-group aria-labelledby="route-strategies" class="radio-group" (change)="onRadioChange($event)">
+    <input type="radio" id="radio1" value="type_1" name="tipedefault" [checked]="typeDefault === 'type_1'">Más Rápida
+    <input type="radio" id="radio1" value="type_2" name="tipedefault" [checked]="typeDefault === 'type_2'">Más corta
+    <input type="radio" id="radio1" value="type_3" name="tipedefault" [checked]="typeDefault === 'type_3'">Recomendada
+  </mat-radio-group>
+</basic-data-box>
+</div>
+<div class="div-mobility-default">
+<mat-expansion-panel class="mat-expansion-list" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+  <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
+    Selecciona vehículo
+  </mat-expansion-panel-header>
+  <table class="expansion-panel-tbody">
+    <tr *ngFor="let vehicle of vehiclesData">  
+      <td class="expansion-panel-td-text">{{ vehicle.nombre }}</td>
+      <td class="expansion-panel-td-text">{{ vehicle.marca }}</td>
+      <td class="expansion-panel-td-text">{{ vehicle.tipo }}</td>
+      <td class="expansion-panel-td-button"><button class="my-button" (click)="selectedVehicle(vehicle)"><mat-icon>directions_car</mat-icon></button></td>
+    </tr>
+    <tr>
+      <td class="expansion-panel-td-text">A pie</td>
+      <td class="expansion-panel-td-text">---</td>
+      <td class="expansion-panel-td-text">---</td>
+      <td class="expansion-panel-td-button"><button class="my-button" (click)="selectedFoot()"><mat-icon>directions_car</mat-icon></button></td>
+    </tr>
+    <tr>
+      <td class="expansion-panel-td-text">Bicicleta</td>
+      <td class="expansion-panel-td-text">---</td>
+      <td class="expansion-panel-td-text">---</td>
+      <td class="expansion-panel-td-button"><button class="my-button" (click)="selectedCicle()"><mat-icon>directions_car</mat-icon></button></td>
+    </tr>
+  </table>
+</mat-expansion-panel>
+
+<basic-data-box [title]="('Mobilidad por defecto')" [isBtn]="true" [actionBtn]="('Restablecer')" (actionBtnTap)="removeMobilityDefault()">
+  <table class="mobilidad-seleccionada">
+    <tr>
+      <td>Nombre: </td>
+      <td >{{ mobilityDefault.nombre }}</td>
+    </tr>
+    <tr>
+      <td>Marca: </td>
+      <td >{{ mobilityDefault.marca }}</td>
+    </tr>
+    <tr>
+      <td>Tipo: </td>
+      <td >{{ mobilityDefault.tipo }}</td>
+    </tr>
+    <tr>
+      <td>Consumo: </td>
+      <td >{{ mobilityDefault.consumo }}</td>
+    </tr>
+  </table>
+</basic-data-box>
+</div>
