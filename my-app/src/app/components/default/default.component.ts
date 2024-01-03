@@ -14,7 +14,7 @@ import { VehiculosService } from "src/app/services/vehiculos.service";
     styleUrls: ['./default.component.css']
 })
   
-  export class DefaultComponent implements OnInit { 
+export class DefaultComponent implements OnInit { 
     vehiclesData: Vehiculo[] = [];
     vehiclesSubscription!: Subscription;
     userSubscription!: Subscription;
@@ -22,6 +22,7 @@ import { VehiculosService } from "src/app/services/vehiculos.service";
     panelOpenState = false;
 
     typeDefault:string = "";
+    defaultSubscription!: Subscription
     mobilityDefault: Mobility;
 
     constructor(private vehiculosService: VehiculosService, private userService: UserService, private defaultService: DefaultService){
@@ -37,6 +38,15 @@ import { VehiculosService } from "src/app/services/vehiculos.service";
             this.userID = user.uid;
             this.initVehiclesSubscription();
             this.initDefaultData();
+          } else {
+            if (this.vehiclesSubscription) {
+                this.vehiclesData = [];
+                this.vehiclesSubscription.unsubscribe();
+            }
+
+            if (this.defaultSubscription) {
+                this.defaultSubscription.unsubscribe();
+            }
           }
         });
     }
@@ -52,7 +62,7 @@ import { VehiculosService } from "src/app/services/vehiculos.service";
     //--------------------------------------------------------------------------------
     //----------------- rellena datos por defecto iniciales --------------------------
     private initDefaultData(){
-        this.defaultService.getDefault(this.userID).subscribe( defaultRef =>{
+        this.defaultSubscription = this.defaultService.getDefault(this.userID).subscribe( defaultRef =>{
             if(defaultRef[0] != undefined){
                 if(defaultRef[0].nombreMobility == "A pie"){
                     this.mobilityDefault = new Foot("A pie");
@@ -108,5 +118,5 @@ import { VehiculosService } from "src/app/services/vehiculos.service";
         this.typeDefault = "type_3";
     }
     //--------------------------------------------------------------------------------
-  
+    
 }

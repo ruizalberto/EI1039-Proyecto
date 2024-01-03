@@ -60,9 +60,11 @@ export class MapComponent implements OnInit {
   // vehicles
   mobilityData: Vehiculo[] = []; 
   mobilityOpenState = false;
+  vehiclesSubscription!: Subscription;
 
   //default
   typeDefault = ""; //default
+  defaultSubscription!: Subscription;
   //mobilitySelected -> default
   
   constructor(
@@ -94,15 +96,12 @@ export class MapComponent implements OnInit {
   private initUserSubscription() {
     this.userService.getInfoUserLogged().subscribe(user => {
       if (!user){
-        if (this.siteSubscription) {
-          this.sitesData = [];
-          this.siteSubscription.unsubscribe();
-        }
+        this.unsuscribeFromAllServices();
         if (this.routeLayer) {
           this.map.removeLayer(this.routeLayer);
         }
         this.markerService.removeMarkers();
-        //this.isMobilitySelected = false;
+        this.isMobilitySelected = false;
         this.showRouteInfo = false;
       } else {
         this.userID = user.uid;
@@ -113,11 +112,27 @@ export class MapComponent implements OnInit {
     });
   }
 
+  private unsuscribeFromAllServices(): void {
+    if (this.siteSubscription) {
+      this.sitesData = [];
+      this.siteSubscription.unsubscribe();
+    }
+
+    if (this.defaultSubscription) {
+      this.defaultSubscription.unsubscribe();
+    }
+
+    if (this.vehiclesSubscription) {
+      this.mobilityData = [];
+      this.vehiclesSubscription.unsubscribe();
+    }    
+  }
+
   private initDefaultSubscription():void{
-    this.defaultService.getDefault(this.userID).subscribe( async defaultRef =>{
-      if(defaultRef[0] != undefined){
+    this.defaultSubscription = this.defaultService.getDefault(this.userID).subscribe( async defaultRef =>{
+      if (defaultRef[0] != undefined) {
         this.isMobilitySelected = true;
-        if(defaultRef[0].nombreMobility == "A pie"){
+        if (defaultRef[0].nombreMobility == "A pie") {
             this.mobilitySelected = new Foot("A pie");
             this.typeDefault = defaultRef[0].estrategiaRoute;
         }
@@ -125,7 +140,7 @@ export class MapComponent implements OnInit {
             this.mobilitySelected = new Bike("Bicicleta", "Carretera");
             this.typeDefault = defaultRef[0].estrategiaRoute;
         }
-        else{
+        else {
             this.mobilitySelected = new Vehiculo(defaultRef[0].nombreMobility,
                                                 defaultRef[0].marcaMobility,
                                                 defaultRef[0].tipoMobility,
@@ -134,7 +149,7 @@ export class MapComponent implements OnInit {
         this.typeDefault = defaultRef[0].estrategiaRoute;
         this.mobilityService.setMobilySelected(this.mobilitySelected);
         this.modifyTypeRoute(this.typeDefault);
-    }else{
+    } else {
       this.defaultService.addDefaultToUserCollection(this.userID,new Bike("Bicicleta", "Bicicleta"),"type_3")
     }
 
@@ -148,41 +163,46 @@ export class MapComponent implements OnInit {
   
 
   private initSitesSubscription(): void {
-    this.sitesService.getSites(this.userID).subscribe( sites => {
+    this.siteSubscription = this.sitesService.getSites(this.userID).subscribe( sites => {
       this.orderListSitesFav(sites);
     });
   }
+
   orderListSitesFav(sites: Sites[]){
     this.sitesData = sites.sort((a,b) => (b.favorite ? 1 : 0 - (a.favorite ? 1 : 0)));
   }
 
   private initMobilitySubs():void{
-    this.vehiculoService.getVehicles(this.userID).subscribe( vehiclesRef =>{
+    this.vehiclesSubscription = this.vehiculoService.getVehicles(this.userID).subscribe( vehiclesRef => {
       this.orderListVehiclesFav(vehiclesRef);
     });
   }
+
   orderListVehiclesFav(vehicles:Vehiculo[]){
-    this.mobilityData = [];
-    for(let vehicle of vehicles){
+    for (let vehicle of vehicles) {
       this.mobilityData.push(new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo));
-    this.mobilityData = this.mobilityData.sort((a,b) => (b.favorite ? 1 : 0 - (a.favorite ? 1 : 0)));
+      this.mobilityData = this.mobilityData.sort((a,b) => (b.favorite ? 1 : 0 - (a.favorite ? 1 : 0)));
     }
   }
+
   selectedVehicle(vehicle : Mobility){
     this.mobilitySelected = vehicle;
     //this.mobilityOpenState = false;
     this.mobilityService.setMobilySelected(this.mobilitySelected);
   }
+
   selectedFoot(){
     this.mobilitySelected = new Foot("A pie");
     this.mobilityOpenState = false;
     this.mobilityService.setMobilySelected(this.mobilitySelected);
   }
+
   selectedCicle(){
     this.mobilitySelected = new Bike("Bicicleta", "Carretera");
     this.mobilityOpenState = false;
     this.mobilityService.setMobilySelected(this.mobilitySelected);
   }
+
   footBoton() {
     var foot = new Foot("A pie");
     this.mobilityService.setMobilySelected(foot);
