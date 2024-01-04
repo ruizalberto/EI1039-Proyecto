@@ -2,7 +2,6 @@ import { Favorite } from "./favorite.decorator";
 import { Mobility } from "./mobility.interface";
 
 export class Vehiculo implements Mobility {
-    private id?: string;
     nombre: string;
     marca: string;
     tipo: string;
@@ -24,7 +23,4 @@ export class Vehiculo implements Mobility {
     getPerfil(): string {
         return this.perfil;
     }
-
-    // setId(id: string) { this.id = id; }
-    // getId(): string { return this.id; }
 }

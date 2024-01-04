@@ -16,14 +16,15 @@ export class VehiculosDialogComponent {
   ) { }
 
   validarFormulario(): boolean {
-    return !!(
-      this.data.vehicle &&
-      this.data.vehicle.nombre &&
-      this.data.vehicle.marca &&
-      this.data.vehicle.tipo &&
-      this.data.vehicle.consumo !== undefined
-    );
-  }
+    const consumoValido = this.data.vehicle &&
+        this.data.vehicle.nombre &&
+        this.data.vehicle.marca &&
+        this.data.vehicle.tipo &&
+        this.data.vehicle.consumo !== undefined &&
+        this.data.vehicle.consumo > 0 && this.data.vehicle.consumo <= 50;
+
+    return !!consumoValido;
+}
 }
 
 export interface VehicleDialogData {
