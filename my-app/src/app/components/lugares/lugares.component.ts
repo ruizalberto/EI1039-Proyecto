@@ -74,8 +74,12 @@ export class LugaresComponent implements OnInit, AfterViewInit {
 
   private initSitesSubsrciption() {
     this.siteSubscription = this.sitesService.getSites(this.userID).subscribe( sites => {
-      this.sitesData = sites;
+      this.orderListSitesFav(sites)
+      //this.sitesData = sites;
     })
+  }
+  orderListSitesFav(sites: Sites[]){
+    this.sitesData = sites.sort((a,b) => (b.favorite ? 1 : 0 - (a.favorite ? 1 : 0)));
   }
 
   private removeInfoShowed() {
@@ -98,13 +102,15 @@ export class LugaresComponent implements OnInit, AfterViewInit {
     }
 
     this.posMarker = L.marker([this.selectedLat,this.selectedLon]).addTo(this.mapSite);
+    this.mapSite.setView([this.selectedLat, this.selectedLon, 15]);
   }
 
   saveSite(){
     const siteToAdd = {
       name: this.selectedName,
       coorLat: this.selectedLat,
-      coorLon: this.selectedLon
+      coorLon: this.selectedLon,
+      favorite: false
     };
     this.sitesService.addSiteToUserCollection(this.userID, siteToAdd)
     .then((docRef) => {
@@ -118,6 +124,7 @@ export class LugaresComponent implements OnInit, AfterViewInit {
 
   searchSite(){
     this.mapSiteNewSite(this.selectedLat,this.selectedLon);
+
   }
 
   private initGeocoderControl():void {
@@ -150,6 +157,16 @@ export class LugaresComponent implements OnInit, AfterViewInit {
     this.sitesService.removeSiteFromUserCollection(this.userID, site);
   }
 
-  // selectedSite(site: Sites){}
-  // modifySite(site: Sites){}
+  onCheckFavorite(site: Sites): void{
+    this.sitesService.modifySiteFavorite(this.userID,site)
+  }
+
+  validarFormulario(): boolean {
+
+    return !!(
+      this.selectedName &&
+      !isNaN(this.selectedLat) &&
+      !isNaN(this.selectedLon)
+    );
+  }
 }

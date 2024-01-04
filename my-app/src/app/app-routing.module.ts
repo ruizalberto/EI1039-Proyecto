@@ -7,6 +7,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthguardService } from './services/authguard.service';
 import { LugaresComponent } from './components/lugares/lugares.component';
 import { RutasComponent } from './components/rutas/rutas.component';
+import { DefaultComponent } from './components/default/default.component';
 
 
 const routes: Routes = [
@@ -15,9 +16,10 @@ const routes: Routes = [
   { path: 'vehiculos', component: VehiculosComponent, canActivate: [AuthguardService]},
   { path: 'lugares', component: LugaresComponent, canActivate:[AuthguardService]},
   { path: 'rutas', component: RutasComponent, canActivate:[AuthguardService]},
+  { path: 'default', component: DefaultComponent, canActivate:[AuthguardService]},
   { path: 'registro', component: RegistroComponent},
   { path: 'login', component: LoginComponent},
-  //{ path: '**', redirectTo: ''}
+  { path: '**', redirectTo: 'home'}
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, deleteDoc, GeoPoint, collectionData, getDocs, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, deleteDoc, GeoPoint, collectionData, getDocs, query, where, updateDoc } from '@angular/fire/firestore';
 import { Route } from '../interfaces/route.class';
 import { Observable } from 'rxjs';
 import { Sites } from '../interfaces/site.class';
@@ -47,5 +47,29 @@ export class RouteService {
   getRoutes(userID: string): Observable<Route[]> {
     const routesRef = collection(this.firestore, 'users/' + userID + '/routes');
     return collectionData(routesRef, { idField: userID }) as Observable<Route[]>;
+  }
+
+  async modifyRouteFavorite(userId: string, routeSelected: Route): Promise<any>{
+    this.foundFirstDoc = false;
+    const routeToUpdateRef = collection(this.firestore, 'users/', userId, '/routes');
+    const querySnapshot = await getDocs(query(routeToUpdateRef,
+      where('nombre', '==', routeSelected.nombre),
+      where('distancia', '==', routeSelected.distancia),
+      where('duracion', '==', routeSelected.duracion)
+    ));
+
+    querySnapshot.forEach((doc) => {
+      if (!this.foundFirstDoc) { // Si todavía no hemos encontrado el primer documento
+        try {
+          updateDoc(doc.ref, {
+            favorite: routeSelected.favorite,
+          });
+          console.log(`Documento ${doc.id} actualizado correctamente.`);
+          this.foundFirstDoc = true;
+        } catch (error) {
+          console.error(`Error al eliminar documento ${doc.id}:`, error);
+        }
+      }
+    });
   }
 }

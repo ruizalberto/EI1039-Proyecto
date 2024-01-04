@@ -1,0 +1,70 @@
+
+.radio-group {
+    color: black;
+    display: flex;
+    margin: 15px 0;
+    align-items: flex-start;
+  }
+  .div-type-default{
+    margin: 30px 35% 0px 35%;
+  }
+  .div-mobility-default{
+    margin: 0px 35% 0px 35%;
+  }
+  .mat-expansion-list{
+    border-bottom: 10px;
+  }
+  .expansion-panel-tbody{
+    width: 100%;
+  }
+  .mat-expansion-panel-header {
+    background-color: rgb(201, 146, 253);
+    color: #4d0c8f;
+    font-size: medium;
+    font-weight: bold;
+    padding: 0 8px;
+  } 
+  .expansion-panel-td-button{
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgb(201, 146, 253);
+    width: 10%;
+  
+  }
+  .expansion-panel-td-text{
+    padding-top: 10px;
+    border-bottom: 1px solid rgb(201, 146, 253);
+  }
+  .expansion-panel-tr:nth-child(odd){
+    border-bottom: 1px solid rgb(201, 146, 253);
+  }
+
+  .mat-expansion-panel {
+    background-color: #f0f0f0;
+    color: #000000;
+    font-size: medium;
+    border: 1px solid rgb(201, 146, 253);
+    margin-bottom: 10px;
+  }
+  .mat-expansion-panel-header.mat-expanded,
+  .mat-expansion-panel:not(.mat-expanded):hover,
+  .mat-expansion-panel-header.mat-expanded:hover,
+  .mat-expansion-panel-header.mat-expanded:focus{
+    background-color: rgb(182, 110, 250); /* Puedes cambiar el color según tus preferencias */
+    color: #4d0c8f; /* Cambia el color del texto si es necesario */
+  }
+  .my-button {
+    padding: 5px 7.5px;
+    background-color: #4d0c8f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .my-button:hover {
+    background-color: #8d33d1;
+  }
+  .my-button:active {
+    background-color: #965bd1;
+  }

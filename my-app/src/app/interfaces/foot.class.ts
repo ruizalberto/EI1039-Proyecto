@@ -1,18 +1,17 @@
 import { Mobility } from "./mobility.interface";
 
-
 export class Foot implements Mobility {
     nombre: string;
     marca: string;
     tipo: string; 
-    consumo: number; //consumo en litros por 100 km´s "consumption"
-    perfil: string; //profile "driving-car" / "cycling-regular" / "foot-walking"
+    consumo: number;
+    perfil: string; 
 
     constructor(name: string){
         this.nombre= name;
         this.marca= "";
         this.tipo= "";
-        this.consumo= 75; // consumo por kilometro
+        this.consumo= 75;
         this.perfil= "foot-walking";  
     }
 

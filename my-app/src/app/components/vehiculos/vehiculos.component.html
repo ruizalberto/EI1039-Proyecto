@@ -6,7 +6,7 @@
       <th class="data-cell">Marca</th>
       <th class="data-cell">Tipo</th>
       <th class="data-cell">Consumo</th>
-      <th class="bt-cell">Seleccionar</th>
+      <th class="bt-cell">Favorito</th>
       <th class="bt-cell">Modificar</th>
       <th class="bt-cell">Borrar</th>
     </tr>
@@ -17,8 +17,8 @@
       <td class="data-cell">{{ vehiculo.marca }}</td>
       <td class="data-cell">{{ vehiculo.tipo }}</td>
       <td class="data-cell">{{ vehiculo.consumo }}</td>
-      <td class="bt-cell"><button class="my-button" (click)="vehicleSelected(vehiculo)"><mat-icon>directions_car</mat-icon></button></td>
-      <td class="bt-cell"><button class="my-button" (click)="modifyVehicle(vehiculo)"><mat-icon>edit</mat-icon><!--</button>[disabled]="!p.timeLastAccess"> --></button></td>
+      <td><input type="checkbox" [(ngModel)]="vehiculo.favorite" id="fCheckbox" (change)="onCheckFavorite(vehiculo)"><label for="fCheckbox"></label></td>
+      <td class="bt-cell"><button class="my-button" (click)="modifyVehicle(vehiculo)"><mat-icon>edit</mat-icon></button></td>
       <td class="bt-cell"><button class="my-button" (click)="deleteVehicle(vehiculo)"><mat-icon>delete</mat-icon></button></td>
     </tr>
   </tbody>

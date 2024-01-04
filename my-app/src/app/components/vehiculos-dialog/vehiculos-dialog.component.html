@@ -4,21 +4,11 @@
     <textarea placeholder="Consumo*" class="field-class" [(ngModel)]="data.vehicle.consumo" required></textarea>
 
     <select name="Tipo" class="select-class" [(ngModel)]="data.vehicle.tipo" required>
-        <!-- <option value="" hidden>Tipo*</option> -->
         <option value="Gasolina">Gasolina</option>
         <option value="Eléctrico">Eléctrico</option>
     </select>
     
     <div mat-dialog-actions class="myalign-div">
         <button class="my-button" [mat-dialog-close]="{ vehicle: data.vehicle }" [disabled]="!validarFormulario()">Añadir</button>
-    <!-- <button mat-button (click)="cancel()">Cancel</button> -->
-    <!-- <button
-        *ngIf="data.enableDelete"
-        mat-fab
-        color="primary"
-        aria-label="Delete"
-        [mat-dialog-close]="{ vehicle: data.vehicle, delete: true }">
-        <mat-icon>Delete</mat-icon>
-    </button> -->
     </div>
 </mat-dialog-content>

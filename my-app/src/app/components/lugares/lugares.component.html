@@ -1,50 +1,48 @@
 <app-navbar></app-navbar>
 <table class="lugares-all-table">
   <tr>
-  <th>
-<table class="prueba-tabla prueba-tabla-general">
-  <thead class="thead-table">
-    <tr>
-      <th>Nombre</th>
-      <th>Latitud</th>
-      <th>Longitud</th>
-      <th>Seleccionar</th>
-      <th>Modificar</th>
-      <th>Borrar</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let site of sitesData">  
-      <td>{{ site.name }}</td>
-      <td>{{ site.coorLat }}</td>
-      <td>{{ site.coorLon }}</td>
-      <!-- <td>
-        <button class="my-button" (click)="selectedSite(site)">Seleccionar <mat-icon>room</mat-icon></button>
-      </td> -->
-      <!-- <td>
-        <button class="my-button" (click)="modifySite(site)">Modificar <mat-icon>edit</mat-icon></button>[disabled]="!p.timeLastAccess"></button>
-      </td> -->
-      <td>
-        <button class="my-button" (click)="deleteSite(site)">Borrar <mat-icon>delete</mat-icon></button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-</th>
-<th>
-  <div class="map-frame">
-    <div id="mapSites"></div>
-  </div>
-  <div>
-    <textarea placeholder="Nombre*" [(ngModel)]="selectedName" class="field-class" required></textarea>
-    <!--boton buscar?-->
-  </div>
-  <div>
-    <textarea id="latitud" placeholder="Latitud*" [(ngModel)]="selectedLat" class="field-class" required></textarea>
-    <textarea id="longitud" placeholder="Longitud*" [(ngModel)]="selectedLon" class="field-class" required></textarea>
-    <button class="my-button" (click)="searchSite()">Buscar Coordenadas<mat-icon>search</mat-icon></button>
-    <button class="my-button" (click)="saveSite()">Guardar<mat-icon>save</mat-icon></button>
-  </div>
-</th>
-</tr>
+    <td class="col">
+      <div class="map-frame">
+        <div id="mapSites"></div>
+      </div>
+
+      <div>
+        <textarea placeholder="Nombre*" [(ngModel)]="selectedName" class="field-class" required></textarea>
+      </div>
+      <div>
+        <textarea id="latitud" placeholder="Latitud*" [(ngModel)]="selectedLat" class="field-class" required></textarea>
+        <textarea id="longitud" placeholder="Longitud*" [(ngModel)]="selectedLon" class="field-class" required></textarea>
+        </div>
+      <div class="div-buttons-search">
+        <button class="my-button" (click)="searchSite()">Buscar coordenadas</button>
+        <button class="my-button" (click)="saveSite()" [disabled]="!validarFormulario()">Guardar sitio</button>
+      </div>
+    </td>
+
+    <td class="col">
+      <table class="prueba-tabla prueba-tabla-general">
+        <thead class="header-table">
+          <tr>
+            <th class="data-cell">Nombre</th>
+            <th class="data-cell">Latitud</th>
+            <th class="data-cell">Longitud</th>
+            <th class="bt-cell">Favorito</th>
+            <th class="bt-cell">Borrar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let site of sitesData">
+            <td class="data-cell">{{ site.name }}</td>
+            <td class="data-cell">{{ site.coorLat }}</td>
+            <td class="bt-cell">{{ site.coorLon }}</td>
+            <td class="bt-cell"><input type="checkbox" [(ngModel)]="site.favorite" id="fCheckbox"
+                (change)="onCheckFavorite(site)"><label for="fCheckbox"></label></td>
+            <td>
+              <button class="my-button-delete" (click)="deleteSite(site)">    <mat-icon>delete</mat-icon></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
 </table>

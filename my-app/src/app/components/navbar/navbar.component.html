@@ -1,21 +1,25 @@
 
 	<div class="my-header">
 		<div class="my-title-app">
-			<p id="titulo" routerLink="">{{ title }}</p>
+			<div>
+			<img src="assets/icono_web_1.png" alt=" " class="app-logo"></div>
+			<div class="title-text">
+				<p id="titulo" routerLink="">{{ title }}</p>
+			</div>
 		</div>
 		<div>
 			<ul class="ul-list">
-				<li class="li-list"><a (click)="clickVehicles()" class="nav-list"> Vehículos </a></li>
-				<li class="li-list"><a (click)="clickSites()" class="nav-list"> Lugares </a></li>
-				<li class="li-list"><a (click)="clickRoutes()" class="nav-list"> Rutas </a></li>
+				<li class="li-list"><a routerLink="/vehiculos" class="nav-list"> Vehículos </a></li>
+				<li class="li-list"><a routerLink="/lugares" class="nav-list"> Lugares </a></li>
+				<li class="li-list"><a routerLink="/rutas" class="nav-list"> Rutas </a></li>
 			</ul>
 		</div>
 		<div class="login" *ngIf="!logged">
-			<button (click)="clickLogin()" class="my-button">Iniciar Sesión</button>
-			<button (click)="clickRegister()" class="my-button">Registrar</button>
+			<button routerLink="/login" class="my-button">Iniciar Sesión</button>
+			<button routerLink="/registro" class="my-button">Registrar</button>
 		</div>
 		<div class="logout" *ngIf="logged">
-			{{ userName }}
+			<a routerLink="/default" class="myUsername" > {{ userName }} </a>
 			<button (click)="logOut()" *ngIf="logged" routerLink="" class="my-button">Cerrar Sesión</button>
 			<button (click)="openDialogRemoveAccount('600ms', '300ms')" class="btDeleteAccount my-button">Borrar Cuenta</button>
 		</div>

@@ -47,17 +47,28 @@ export class RutasComponent implements OnInit {
 
   private initRoutesSubsrciption() {
     this.routeSubscription = this.routeService.getRoutes(this.userID).subscribe( routes => {
-      this.routesData = routes;
+      this.orderListSitesFav(routes)
     })
   }
-  
-  selectedRoute(route: Route) {
-    /*var vehicleSelected = new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo);
-    this.mobilityService.setMobilySelected(vehicleSelected);
-    this.router.navigate(['/']);*/
+  orderListSitesFav(sites: Route[]){
+    this.routesData = sites.sort((a,b) => (b.favorite ? 1 : 0 - (a.favorite ? 1 : 0)));
   }
+
 
   deleteRoute(route: Route): void {
     this.routeService.removeRouteFromUserCollection(this.userID, route);
+  }
+
+  transformarCoordenadas(coordenadas: string): string {
+    // Lógica para manipular las coordenadas
+    const coordenadasArray = coordenadas.match(/-?\d+\.\d+/g); // Extraer valores numéricos
+    if (coordenadasArray && coordenadasArray.length >= 2) {
+      return `${coordenadasArray[0]}, ${coordenadasArray[1]}`;
+    } else {
+      return coordenadas; // Devolver las coordenadas originales si no se pueden manipular
+    }
+  }
+  onCheckFavorite(route: Route){
+    this.routeService.modifyRouteFavorite(this.userID, route);
   }
 }

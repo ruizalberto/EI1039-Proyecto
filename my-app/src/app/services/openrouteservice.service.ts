@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Mobility } from '../interfaces/mobility.interface';
 import { RouteStrategy } from '../interfaces/route-strategy';
 import { MobilityService } from './mobility.service';
+import { RouteData } from '../interfaces/route-data.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -67,34 +68,50 @@ export class OpenRouteService {
       preference: strategy.getPreference()
     };
 
-    return this.http.post(url, body, { headers });
+    return this.http.post<any>(url, body, { headers }).pipe(
+      map(response => this.adaptResponse(response))
+    );
+  }
+
+  private adaptResponse(response: any): RouteData {
+    const adaptedData: RouteData = {
+      distance: 0,
+      time: 0,
+      geometry: null
+    };
+
+    if (response && response.features && response.features.length > 0) {
+      adaptedData.geometry = response.features[0].geometry;
+      adaptedData.distance = response.features[0].properties.summary.distance / 1000;
+      adaptedData.time = Math.ceil(response.features[0].properties.summary.duration / 60); 
+    } else {
+      console.error('No se encontraron datos de ruta en la respuesta.');
+    }
+
+    return adaptedData;
   }
 
   setRouteData(start: L.LatLng, end: L.LatLng, mobility: Mobility, strategy: RouteStrategy){
     this.getDirections(start, end, mobility, strategy).subscribe({
-      next: response => {
-          if (response && response.features && response.features.length > 0) {
-            this.geometry = response.features[0].geometry;
-            this.distance = (response.features[0].properties.summary.distance/1000).toFixed(2);
-            this.time = Math.ceil(response.features[0].properties.summary.duration/60);
+      next: adaptedResponse => {
+        this.geometry = adaptedResponse.geometry;
+        this.distance = adaptedResponse.distance.toFixed(2);
+        this.time = Math.ceil(adaptedResponse.time);
 
-            if (mobility.getPerfil() == "driving-car"){
-              if (mobility.tipo == "Gasolina"){
-                this.getFuelCost();
-              } else if (mobility.tipo == "Eléctrico"){
-                this.getLightCost();
-              }
-            } else if (mobility.getPerfil() == "cycling-regular") {
-              this.getCosteBicicleta();
-            } else if (mobility.getPerfil() == "foot-walking") {
-              this.getCostePie();
-            }
-            
-            this.updateRouteSubject();
-          } else {
-            console.error('No se encontraron datos de ruta en la respuesta.');
+        if (mobility.getPerfil() == "driving-car"){
+          if (mobility.tipo == "Gasolina"){
+            this.getFuelCost();
+          } else if (mobility.tipo == "Eléctrico"){
+            this.getLightCost();
           }
-        },
+        } else if (mobility.getPerfil() == "cycling-regular") {
+          this.getCosteBicicleta();
+        } else if (mobility.getPerfil() == "foot-walking") {
+          this.getCostePie();
+        }
+        
+        this.updateRouteSubject();
+      },
       error: err => {
         console.error('Error al obtener la ruta:', err);
       }

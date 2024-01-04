@@ -13,31 +13,25 @@
   
 }
 .my-title-app{
-  margin-top: 15px;
+  display: flex;
   margin-left: 30px;
   font-size: 20px;
   font-weight: bold;
+  
+}
+.app-logo{
+  width: 25px;
+  height: 40px;
+  margin-top: 5px;
+  margin-right: 10px;
+  
+}
+.title-text{
+  margin-top: 15px;
+  margin-left: 5px;
   cursor: pointer;
 }
-/*
-.login{
-  align-items: center;
-  height: 50px;
-  /*margin-top: 7.5px;
-  margin-right: 30px;
-}
-.inicio-sesion{
-  margin-right: 7px;
-}
-.salir-sesion{
-  margin-right: 7px;
-}
-.logout{
-  align-items: center;
-  height: 50px;
- /* margin-top: 7.5px;
-  margin-right: 30px;
-}*/
+
 .nav-list{
   cursor: pointer;
   font-size: 16px;
@@ -83,3 +77,13 @@ a {
   text-decoration: none;
   color: #fff;
 }
+
+.myUsername{
+  cursor: pointer;
+}
+.myUsername:hover{
+  font-size: 15px;
+  color: goldenrod;
+}
+
+

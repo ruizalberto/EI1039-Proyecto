@@ -1,13 +1,15 @@
+import { Favorite } from "./favorite.decorator";
 import { Mobility } from "./mobility.interface";
 
 export class Vehiculo implements Mobility {
-    private id?: string;
     nombre: string;
     marca: string;
     tipo: string;
     consumo: number;
     perfil: string;
 
+    @Favorite()
+    favorite:boolean;
 
     constructor(name: string, marca: string, tipo: string, consumo: number){
         this.nombre = name;
@@ -15,12 +17,10 @@ export class Vehiculo implements Mobility {
         this.tipo = tipo;
         this.consumo = consumo;
         this.perfil= "driving-car";
+        this.favorite=false;
     }
 
     getPerfil(): string {
         return this.perfil;
     }
-
-    // setId(id: string) { this.id = id; }
-    // getId(): string { return this.id; }
 }

@@ -5,15 +5,45 @@
       <div class="map-frame">
         <div id="map"></div>
       </div>
+      <div class="save-question-class">
+      <label  *ngIf="showRouteInfo">¿Quieres guardar esta ruta (distancia, trayecto y duración)?</label>
+    </div>
+      <div class="prueba"  *ngIf="showRouteInfo"> 
+        <textarea id="routeName" placeholder="Introduce un nombre para la ruta..." [(ngModel)]="routeName" class="field-class" required></textarea>
+        <div class="error">
+          {{ errorNameRoute }}
+        </div>
+        <button class="my-button-save" (click)="saveRoute()"><mat-icon>save</mat-icon></button>
+      </div>
     </td>
     <td class="columna-base">
       <div class="box-derecha">
-        <div class="additional-buttons">
-          <button (click)="cicleBoton()"><mat-icon> directions_bike</mat-icon></button>
-          <button (click)="footBoton()"><mat-icon> directions_walk</mat-icon></button>
-        </div>
-        <basic-data-box [title]="('Vehículo Seleccionado')" [isBtn]="true" [actionBtn]="('Elige Vehículo')"
-          (actionBtnTap)="eligeVehiculo()">
+            <mat-expansion-panel class="mat-expansion-list" (opened)="mobilityOpenState = true" (closed)="mobilityOpenState = false">
+              <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
+                Selecciona vehículo
+              </mat-expansion-panel-header>
+              <table class="expansion-panel-tbody">
+                <tr *ngFor="let vehicle of mobilityData">  
+                  <td class="expansion-panel-td-text">{{ vehicle.nombre }}</td>
+                  <td class="expansion-panel-td-text">{{ vehicle.marca }}</td>
+                  <td class="expansion-panel-td-text">{{ vehicle.tipo }}</td>
+                  <td class="expansion-panel-td-button"><button class="my-button" (click)="selectedVehicle(vehicle)"><mat-icon>directions_car</mat-icon></button></td>
+                </tr>
+                <tr>
+                  <td class="expansion-panel-td-text">A pie</td>
+                  <td class="expansion-panel-td-text">---</td>
+                  <td class="expansion-panel-td-text">---</td>
+                  <td class="expansion-panel-td-button"><button class="my-button" (click)="selectedFoot()"><mat-icon>directions_car</mat-icon></button></td>
+                </tr>
+                <tr>
+                  <td class="expansion-panel-td-text">Bicicleta</td>
+                  <td class="expansion-panel-td-text">---</td>
+                  <td class="expansion-panel-td-text">---</td>
+                  <td class="expansion-panel-td-button"><button class="my-button" (click)="selectedCicle()"><mat-icon>directions_car</mat-icon></button></td>
+                </tr>
+              </table>
+            </mat-expansion-panel>
+        <basic-data-box [title]="('Vehículo seleccionado')" [isBtn]="false" [actionBtn]="('Elige Vehículo')">
           <table class="mobilidad-seleccionada">
             <tr>
               <td>Nombre: </td>
@@ -34,58 +64,48 @@
           </table>
         </basic-data-box>
         <mat-radio-group aria-labelledby="route-strategies" class="radio-group" (change)="onRadioChange($event)">
-          <mat-radio-button value="1" class="radio-button">Más Rápida</mat-radio-button>
-          <mat-radio-button value="2" class="radio-button">Más Corta</mat-radio-button>
-          <mat-radio-button value="3" class="radio-button">Recomendada</mat-radio-button>
+          <input type="radio" id="radio1" value="type_1" name="type" [checked]="typeDefault === 'type_1'">Más Rápida
+          <input type="radio" id="radio2" value="type_2" name="type" [checked]="typeDefault === 'type_2'">Más corta
+          <input type="radio" id="radio3" value="type_3" name="type" [checked]="typeDefault === 'type_3'">Recomendada
         </mat-radio-group>
-        <mat-accordion>
-          <mat-expansion-panel (opened)="panelOpenState = true"
-                               (closed)="panelOpenState = false">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+            <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
                 Elige un lugar de interés
-              </mat-panel-title>
             </mat-expansion-panel-header>
-            <tbody>
+            <table class="expansion-panel-tbody">
               <tr *ngFor="let site of sitesData">  
-                <td>{{ site.name }}</td>
-                <td>
-                  <button class="my-button" (click)="selectedSite(site)">Seleccionar <mat-icon>room</mat-icon></button>
-                </td>
+                <td class="expansion-panel-td-text">{{ site.name }}</td>
+                <td class="expansion-panel-td-text">{{ site.coorLat }}</td>
+                <td class="expansion-panel-td-text">{{ site.coorLon }}</td>
+                <td class="expansion-panel-td-button"><button class="my-button" (click)="selectedSite(site)"><mat-icon>room</mat-icon></button></td>
               </tr>
-            </tbody>
+            </table>
           </mat-expansion-panel>
-        </mat-accordion>
+          <basic-data-box [title]="('Datos de ruta')" [isBtn]="true" [actionBtn]="('Calcula ruta')"
+        (actionBtnTap)="calculateRoute()">
+        <table class="mobilidad-seleccionada" *ngIf="showRouteInfo">
+          <tr>
+            <td>Distancia: </td>
+            <td>{{ distanceInKMs }} Km</td>
+          </tr>
+          <tr>
+            <td>Duración: </td>
+            <td>{{ timeInMinutes }} minutos</td>
+          </tr>
+          <tr>
+            <td>Coste: </td>
+            <td>{{ costRoute }} {{ uniCost }}</td>
+          </tr>
+        </table>
+      </basic-data-box>
       </div>
     </td>
   </tr>
   <tr class="fila-base">
     <td class="columna-base" >
-      <div *ngIf="showRouteInfo">
-        <p></p>
-        <textarea id="routeName" placeholder="Introduce un nombre para la ruta..." [(ngModel)]="routeName" class="field-class" required></textarea>
-        <button class="my-button" (click)="saveRoute()">¿Quieres guardar esta ruta (distancia, trayecto y duración)?<mat-icon>save</mat-icon></button>
-      </div>
     </td>
     <td class="columna-base">
       <div class="box-derecha">
-      <basic-data-box [title]="('Datos de ruta')" [isBtn]="true" [actionBtn]="('Calcula ruta')"
-        (actionBtnTap)="calculateRoute()">
-        <table class="mobilidad-seleccionada">
-          <tr>
-            <td>Distancia: </td>
-            <td *ngIf="showRouteInfo">{{ distanceInKMs }} Km</td>
-          </tr>
-          <tr>
-            <td>Duración: </td>
-            <td *ngIf="showRouteInfo">{{ timeInMinutes }} minutos</td>
-          </tr>
-          <tr>
-            <td>Coste: </td>
-            <td *ngIf="showRouteInfo">{{ costRoute }} {{ uniCost }}</td>
-          </tr>
-        </table>
-      </basic-data-box>
     </div>
     </td>
   </tr>
