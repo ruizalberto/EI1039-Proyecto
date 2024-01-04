@@ -162,10 +162,11 @@ export class LugaresComponent implements OnInit, AfterViewInit {
   }
 
   validarFormulario(): boolean {
+
     return !!(
       this.selectedName &&
-      this.selectedLat &&
-      this.selectedLon !== undefined
+      !isNaN(this.selectedLat) &&
+      !isNaN(this.selectedLon)
     );
   }
 }

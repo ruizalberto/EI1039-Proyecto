@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, authState } from '@angular/fire/auth';
 import { Firestore, collection, deleteDoc, getDocs, getFirestore, query } from '@angular/fire/firestore';
-import { signOut } from 'firebase/auth';
+import { User, signOut } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -44,14 +44,10 @@ export class UserService implements OnDestroy {
     try {
       const user = this.auth.currentUser;
       if (user) {
-        const vehiclesRef = collection(this.firestore, 'users/', user.uid, '/vehicles');
-        const q = query(vehiclesRef);
-        const querySnapshot = await getDocs(q);
-
-        querySnapshot.forEach(async (doc) => {
-          await deleteDoc(doc.ref);
-          console.log(`Documento ${doc.id} eliminado correctamente`);
-        });
+        await this.remove(user, "/vehicles");
+        await this.remove(user, "/default");
+        await this.remove(user, "/sites");
+        await this.remove(user, "/routes");
         await user.delete();
         console.log("Usuario eliminado correctamente");
       }
@@ -60,4 +56,16 @@ export class UserService implements OnDestroy {
     }
   }
   
+  private async remove(user: User, removeRef: string) {
+    console.log("Estoy borrando..." + removeRef);
+    const toRemoveRef = collection(this.firestore, 'users/', user.uid, removeRef);
+    const q = query(toRemoveRef);
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+      console.log(`Documento ${doc.id} eliminado correctamente`);
+    });
+
+  }
 }

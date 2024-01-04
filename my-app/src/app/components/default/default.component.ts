@@ -39,13 +39,13 @@ export class DefaultComponent implements OnInit {
             this.initVehiclesSubscription();
             this.initDefaultData();
           } else {
+            if (this.defaultSubscription) {
+                this.defaultSubscription.unsubscribe();
+            }
+
             if (this.vehiclesSubscription) {
                 this.vehiclesData = [];
                 this.vehiclesSubscription.unsubscribe();
-            }
-
-            if (this.defaultSubscription) {
-                this.defaultSubscription.unsubscribe();
             }
           }
         });
@@ -79,9 +79,9 @@ export class DefaultComponent implements OnInit {
                                                         defaultRef[0].consumoMobility);
                 }
                 this.typeDefault = defaultRef[0].estrategiaRoute;
-            }else{
+            } else {
                 this.defaultService.addDefaultToUserCollection(this.userID,new Bike("Bicicleta", "Bicicleta"),"type_3")
-              }
+            }
         });
     }
     //--------------------------------------------------------------------------------
@@ -116,7 +116,5 @@ export class DefaultComponent implements OnInit {
     removeTipeDefault(){
         this.defaultService.modifyTypeDefault(this.userID, "type_3");
         this.typeDefault = "type_3";
-    }
-    //--------------------------------------------------------------------------------
-    
+    }    
 }

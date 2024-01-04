@@ -150,15 +150,7 @@ export class MapComponent implements OnInit {
         this.typeDefault = defaultRef[0].estrategiaRoute;
         this.mobilityService.setMobilySelected(this.mobilitySelected);
         this.modifyTypeRoute(this.typeDefault);
-    } else {
-      this.defaultService.addDefaultToUserCollection(this.userID,new Bike("Bicicleta", "Bicicleta"),"type_3")
-    }
-
-      /*this.vehiculoService.getVehicleWithId(this.userID, defaultRef[0].vehiculo).subscribe(q => {
-        this.mobilitySelected = q[0];
-        console.log("valor devuelto de vehiculo " +  q[0])
-      });*/
-
+    } 
     });
   }
   

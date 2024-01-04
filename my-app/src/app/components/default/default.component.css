@@ -18,8 +18,8 @@
     width: 100%;
   }
   .mat-expansion-panel-header {
-    background-color: rgb(201, 146, 253); /* Puedes cambiar el color según tus preferencias */
-    color: #4d0c8f; /* Cambia el color del texto si es necesario */
+    background-color: rgb(201, 146, 253);
+    color: #4d0c8f;
     font-size: medium;
     font-weight: bold;
     padding: 0 8px;
