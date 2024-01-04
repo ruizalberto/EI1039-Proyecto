@@ -11,7 +11,7 @@ export class Foot implements Mobility {
         this.nombre= name;
         this.marca= "";
         this.tipo= "";
-        this.consumo= 75; // consumo por kilometro
+        this.consumo= 75;
         this.perfil= "foot-walking";  
     }
 

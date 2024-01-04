@@ -12,7 +12,7 @@ export class Bike implements Mobility{
         this.nombre= name;
         this.marca= marca;
         this.tipo= "Bicicleta";
-        this.consumo= 45; // consumo por kilometro
+        this.consumo= 45;
         this.perfil= "cycling-regular";  
     }
 

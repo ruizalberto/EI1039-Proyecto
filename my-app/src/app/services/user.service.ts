@@ -57,7 +57,6 @@ export class UserService implements OnDestroy {
   }
   
   private async remove(user: User, removeRef: string) {
-    console.log("Estoy borrando..." + removeRef);
     const toRemoveRef = collection(this.firestore, 'users/', user.uid, removeRef);
     const q = query(toRemoveRef);
     const querySnapshot = await getDocs(q);

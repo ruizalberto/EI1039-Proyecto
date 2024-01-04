@@ -32,6 +32,7 @@ export class DefaultComponent implements OnInit {
     ngOnInit(): void {
         this.initUserSubscription();
     }
+
     private initUserSubscription() {
         this.userSubscription = this.userService.getInfoUserLogged().subscribe(user => {
           if (user){
