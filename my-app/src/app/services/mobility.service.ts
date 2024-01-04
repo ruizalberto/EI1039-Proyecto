@@ -16,6 +16,10 @@ export class MobilityService{
     }
 
     setMobilySelected(mobility: Mobility){
+        console.log(mobility.nombre);
+        console.log(mobility.marca);
+        console.log(mobility.consumo);
+        console.log(mobility.tipo);
         this.mobilitySelected = mobility;
         this.isSelected = true;
         this.updateMobilitySubject();

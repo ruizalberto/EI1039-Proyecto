@@ -51,6 +51,7 @@ export class MapComponent implements OnInit {
   routeStrategy: RouteStrategy | undefined;
   route: Route | undefined;
   routeName: string = "";
+  errorNameRoute: string = "";
 
   // sites
   sitesData: Sites[] = [];
@@ -179,33 +180,24 @@ export class MapComponent implements OnInit {
   }
 
   orderListVehiclesFav(vehicles:Vehiculo[]){
-    for (let vehicle of vehicles) {
-      this.mobilityData.push(new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo));
-      this.mobilityData = this.mobilityData.sort((a,b) => (b.favorite ? 1 : 0 - (a.favorite ? 1 : 0)));
-    }
+    this.mobilityData = vehicles;
+    this.mobilityData.sort((a,b) => (b.favorite ? 1 : 0 - (a.favorite ? 1 : 0)));
   }
 
-  selectedVehicle(vehicle : Mobility){
-    this.mobilitySelected = vehicle;
-    //this.mobilityOpenState = false;
+  selectedVehicle(vehicle: Mobility){
+    var vehicleSelected = new Vehiculo(vehicle.nombre, vehicle.marca, vehicle.tipo, vehicle.consumo);
+    this.mobilitySelected = vehicleSelected
     this.mobilityService.setMobilySelected(this.mobilitySelected);
   }
 
   selectedFoot(){
     this.mobilitySelected = new Foot("A pie");
-    this.mobilityOpenState = false;
     this.mobilityService.setMobilySelected(this.mobilitySelected);
   }
 
   selectedCicle(){
     this.mobilitySelected = new Bike("Bicicleta", "Carretera");
-    this.mobilityOpenState = false;
     this.mobilityService.setMobilySelected(this.mobilitySelected);
-  }
-
-  footBoton() {
-    var foot = new Foot("A pie");
-    this.mobilityService.setMobilySelected(foot);
   }
 
   private initMobilitySubscription(): void {
@@ -275,8 +267,6 @@ export class MapComponent implements OnInit {
 
   calculateRoute(): void {
     if (this.markerService.isMaxMarkers() && this.mobilityService.isMobilitySelected() && this.routeStrategyService.isStrategySelected()){
-      // this.isMobilitySelected = this.mobilityService.isMobilitySelected();
-      // this.mobilitySelected = this.mobilityService.getMobilitySelected();
       this.openRouteService.setRouteData(
         this.markerService.getStart(),
         this.markerService.getEnd(),
@@ -331,7 +321,7 @@ export class MapComponent implements OnInit {
         console.error('Error al agregar documento:', error);
       });
     } else {
-      console.log("No se ha podido guardar el nombre de la ruta...");
+      this.errorNameRoute = "Pon nombre a la ruta.";
     }
   }
 

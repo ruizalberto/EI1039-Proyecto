@@ -79,6 +79,12 @@
   margin: 5px;
 }
 
+.error {
+  font-size: large;
+  margin: 20px;
+  color: red;
+}
+
 .my-button {
   padding: 5px 7.5px;
   background-color: #4d0c8f;
