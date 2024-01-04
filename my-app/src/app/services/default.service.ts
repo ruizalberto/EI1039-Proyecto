@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, deleteDoc, getDocs, query, where, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Mobility } from '../interfaces/mobility.interface';
+import { Bike } from '../interfaces/bike.class';
 
 interface DefaultData {
     nombreMobility: string;
@@ -92,11 +93,19 @@ export class DefaultService {
     querySnapshot.forEach((doc) => {
       if (!this.foundFirstDoc) { // Si todavía no hemos encontrado el primer documento
         try {
-          deleteDoc(doc.ref);
-          console.log(`Documento ${doc.id} eliminado correctamente.`);
+          const bikeByDefault = new Bike("Bicicleta", "Carretera");
+          const typeByDefault = "type_3";
+          updateDoc(doc.ref, {
+            nombreMobility: bikeByDefault.nombre,
+            marcaMobility: bikeByDefault.marca,
+            tipoMobility: bikeByDefault.tipo,
+            consumoMobility: bikeByDefault.consumo,
+            estrategiaRoute: typeByDefault
+          });
+          console.log(`Documento ${doc.id} actualizado correctamente.`);
           this.foundFirstDoc = true;
         } catch (error) {
-          console.error(`Error al eliminar documento ${doc.id}:`, error);
+          console.error(`Error al actualizar documento ${doc.id}:`, error);
         }
       }
     });

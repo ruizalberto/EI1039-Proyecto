@@ -81,7 +81,7 @@ export class DefaultComponent implements OnInit {
                 }
                 this.typeDefault = defaultRef[0].estrategiaRoute;
             } else {
-                this.defaultService.addDefaultToUserCollection(this.userID,new Bike("Bicicleta", "Bicicleta"),"type_3")
+                this.defaultService.addDefaultToUserCollection(this.userID,new Bike("Bicicleta", "Carretera"),"type_3")
             }
         });
     }
@@ -91,7 +91,6 @@ export class DefaultComponent implements OnInit {
         this.mobilityDefault = vehicle;
         this.defaultService.modifyVehicleDefault(this.userID,this.mobilityDefault);
         this.panelOpenState = false;
-
     }
     selectedFoot(){
         this.mobilityDefault = new Foot("A pie");
