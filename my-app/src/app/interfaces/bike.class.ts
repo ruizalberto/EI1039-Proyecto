@@ -5,8 +5,8 @@ export class Bike implements Mobility{
     nombre: string;
     marca: string;
     tipo: string; 
-    consumo: number; //consumo en litros por 100 km´s "consumption"
-    perfil: string; //profile "driving-car" / "cycling-regular" / "foot-walking"
+    consumo: number;
+    perfil: string;
 
     constructor(name: string, marca: string){
         this.nombre= name;

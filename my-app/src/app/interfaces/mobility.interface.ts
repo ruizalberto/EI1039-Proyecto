@@ -1,10 +1,9 @@
-import { Favorite } from "./favorite.decorator";
 
 export interface Mobility{
     nombre: string;
     marca: string;
-    tipo: string; //
-    consumo: number; //consumo en litros por 100 km´s "consumption"
+    tipo: string;
+    consumo: number;
     perfil: string;
     
     getPerfil(): string;
