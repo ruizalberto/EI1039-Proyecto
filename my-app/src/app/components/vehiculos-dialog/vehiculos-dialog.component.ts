@@ -15,14 +15,6 @@ export class VehiculosDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: VehicleDialogData
   ) { }
 
-  // cancel(): void {
-  //   this.data.vehicle.nombre = this.backupVehicle.nombre;
-  //   this.data.vehicle.marca = this.backupVehicle.marca;
-  //   this.data.vehicle.tipo = this.backupVehicle.tipo;
-  //   this.data.vehicle.consumo = this.backupVehicle.consumo;
-  //   this.dialogRef.close(this.data);
-  // }
-
   validarFormulario(): boolean {
     return !!(
       this.data.vehicle &&

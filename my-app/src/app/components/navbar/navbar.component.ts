@@ -10,7 +10,7 @@ import { EliminarCuentaDialogComponent } from '../eliminar-cuenta-dialog/elimina
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit{
-  title = 'THE HERMES PATH (PROVISIONAL)';
+  title = 'THE HERMES PATH';
   logged: boolean;
   userEmail: any;
   userName: string="";
@@ -23,25 +23,6 @@ export class NavbarComponent implements OnInit{
 
   ngOnInit(): void {
     this.userLogged();
-  }
-
-  clickVehicles(){
-    this.router.navigate(['vehiculos']);
-  }
-  clickSites(){
-    this.router.navigate(['lugares']);
-  }
-  clickRoutes(){
-    this.router.navigate(['rutas']);
-  }
-  clickRegister(){
-    this.router.navigate(['registro']);
-  }
-  clickLogin(){
-    this.router.navigate(['login']);
-  }
-  clickUserName(){
-    this.router.navigate(['default']);
   }
 
   userLogged(){

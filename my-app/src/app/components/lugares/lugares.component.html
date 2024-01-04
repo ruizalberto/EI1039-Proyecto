@@ -15,8 +15,7 @@
         </div>
       <div class="div-buttons-search">
         <button class="my-button" (click)="searchSite()">Buscar coordenadas</button>
-        <button class="my-button" (click)="saveSite()">Guardar sitio</button>
-
+        <button class="my-button" (click)="saveSite()" [disabled]="!validarFormulario()">Guardar sitio</button>
       </div>
     </td>
 

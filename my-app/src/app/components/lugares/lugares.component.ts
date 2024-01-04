@@ -160,4 +160,12 @@ export class LugaresComponent implements OnInit, AfterViewInit {
   onCheckFavorite(site: Sites): void{
     this.sitesService.modifySiteFavorite(this.userID,site)
   }
+
+  validarFormulario(): boolean {
+    return !!(
+      this.selectedName &&
+      this.selectedLat &&
+      this.selectedLon !== undefined
+    );
+  }
 }
